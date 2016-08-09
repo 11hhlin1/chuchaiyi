@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_140p"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/chufa_city_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:layout_alignParentLeft="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_aaaaaa"
+                android:textSize="@dimen/textsize_12sp"
+                android:text="@string/set_out"/>
+
+            <TextView
+                android:id="@+id/chufa_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_222222"
+                android:textSize="@dimen/textsize_18sp"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/exchange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/exchange_btn"/>
+
+        <LinearLayout
+            android:id="@+id/arrive_city_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_30p"
+            android:layout_alignParentRight="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_aaaaaa"
+                android:textSize="@dimen/textsize_12sp"
+                android:text="@string/arrive"/>
+
+            <TextView
+                android:id="@+id/arrive_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_222222"
+                android:textSize="@dimen/textsize_18sp"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+        <View
+            style="@style/personal_page_bottom_line"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_140p"
+        android:background="@color/white">
+
+
+        <LinearLayout
+            android:id="@+id/set_out_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:layout_alignParentLeft="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_aaaaaa"
+                android:textSize="@dimen/textsize_12sp"
+                android:text="@string/set_out_date"/>
+
+            <TextView
+                android:id="@+id/set_out_date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_222222"
+                android:textSize="@dimen/textsize_18sp"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+        <View
+            style="@style/personal_page_bottom_line"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_140p"
+        android:background="@color/white">
+
+
+        <LinearLayout
+            android:id="@+id/seat_wei"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:layout_alignParentLeft="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_aaaaaa"
+                android:textSize="@dimen/textsize_12sp"
+                android:text="@string/seat"/>
+
+            <TextView
+                android:id="@+id/seat_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_222222"
+                android:textSize="@dimen/textsize_18sp"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+        <View
+            style="@style/personal_page_bottom_line"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/search_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/single_line_height_132px"
+        android:layout_marginTop="@dimen/margin_40p"
+        android:layout_marginLeft="@dimen/margin_30p"
+        android:layout_marginRight="@dimen/margin_30p"
+        android:textSize="@dimen/textsize_18sp"
+        android:textColor="@color/white"
+        android:text="@string/search"
+        android:background="@drawable/common_btn"/>
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/margin_40p"
+        android:text="@string/index_tip"
+        android:textSize="@dimen/textsize_12sp"
+        android:textColor="@color/color_9b9b9b"/>
+</LinearLayout>

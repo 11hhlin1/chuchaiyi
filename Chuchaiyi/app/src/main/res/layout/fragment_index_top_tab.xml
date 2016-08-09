@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/top_rl"
+    android:layout_width="match_parent"
+    android:layout_height="42.3dp"
+    android:background="@color/white" >
+
+    <LinearLayout
+        android:id="@+id/project_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_line_height_120px"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:id="@+id/single_radio_btn"
+            style="@style/RadioButton_style"
+            android:checked="true"
+            android:text="@string/single" />
+
+        <TextView
+            android:id="@+id/twice_radio_btn"
+            style="@style/RadioButton_style"
+            android:text="@string/twice" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/line_color_gray"
+        android:layout_alignParentBottom="true"/>
+
+    <com.ccy.chuchaiyi.widget.NavLineView
+        android:id="@+id/tab_line_iv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_nav_scroll_line_height"
+        android:layout_above="@id/bottom_line"/>
+
+</RelativeLayout>

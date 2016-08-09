@@ -37,9 +37,9 @@
             android:layout_weight="1">
 
             <RadioButton
-                android:id="@+id/shopping_tab"
+                android:id="@+id/check_tab"
                 style="@style/main_Red_RadioButton_style"
-                android:drawableTop="@drawable/selector_tab_shopping"
+                android:drawableTop="@drawable/selector_tab_order"
                 android:paddingBottom="3dp"
                 android:text="@string/check" />
 
@@ -54,9 +54,9 @@
                 android:visibility="gone" />
         </FrameLayout>
         <RadioButton
-            android:id="@+id/community_tab"
+            android:id="@+id/order_tab"
             style="@style/main_RadioButton_style"
-            android:drawableTop="@drawable/selector_tab_community"
+            android:drawableTop="@drawable/selector_tab_check"
             android:paddingBottom="3dp"
             android:paddingTop="5dp"
             android:text="@string/order" />

@@ -25,7 +25,6 @@ public class MainActivity extends BaseMainActivity {
     @Bind(R.id.group_tab)
     NestRadioGroup mRadioGroup;
 
-
     private boolean mIsBackPressed = false;
 
     @Override
@@ -41,11 +40,11 @@ public class MainActivity extends BaseMainActivity {
                     case R.id.index_tab:
                         showIndexTab();
                         break;
-                    case R.id.community_tab:
-                        showCheckTab();
-                        break;
-                    case R.id.shopping_tab:
+                    case R.id.order_tab:
                         showOrderTab();
+                        break;
+                    case R.id.check_tab:
+                        showCheckTab();
                         break;
                     case R.id.person_tab:
                         showPersonTab();
@@ -62,11 +61,11 @@ public class MainActivity extends BaseMainActivity {
             case R.id.person_tab:
                 mRadioGroup.check(R.id.person_tab);
                 break;
-            case R.id.community_tab:
-                mRadioGroup.check(R.id.community_tab);
+            case R.id.order_tab:
+                mRadioGroup.check(R.id.order_tab);
                 break;
-            case R.id.shopping_tab:
-                mRadioGroup.check(R.id.shopping_tab);
+            case R.id.check_tab:
+                mRadioGroup.check(R.id.check_tab);
                 break;
             default:
                 mRadioGroup.check(R.id.index_tab);

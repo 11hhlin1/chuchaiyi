@@ -6,5 +6,13 @@
     <string name="check">审批</string>
     <string name="order">订单</string>
     <string name="person">我</string>
+    <string name="single">单程</string>
+    <string name="twice">往返</string>
+    <string name="set_out">出发</string>
+    <string name="set_out_date">出发日期</string>
+    <string name="arrive">到达</string>
+    <string name="search">查询</string>
+    <string name="seat">舱位</string>
     <string name="quit_toast">再按一次退出出差易</string>
+    <string name="index_tip">中国最专业的商旅服务公司,服务满意度超过99%</string>
 </resources>

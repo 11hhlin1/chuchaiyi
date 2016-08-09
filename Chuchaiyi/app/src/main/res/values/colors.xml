@@ -22,12 +22,13 @@
     <color name="color_f0f0f0">#f0f0f0</color>
     <color name="color_80c41c">#80c41c</color>
     <color name="color_666666">#666666</color>
+    <color name="color_9b9b9b">#9b9b9b</color>
     <color name="color_d3d3d3">#d3d3d3</color>
 
     <!-- 公共 -->
-    <color name="orange">#FF5500</color><!--橙色 -->
+    <color name="orange">#FF6600</color><!--橙色 -->
     <color name="line_color_gray">#c8c8ce</color>
-    <color name="activity_bg_gray">#eeeef4</color>
+    <color name="activity_bg_gray">#f5f5f5</color>
     <color name="blue">#507daf</color>
     <color name="green">#40d359</color>
     <color name="black">#202026</color>
@@ -39,5 +40,8 @@
     <color name="color_b18351">#b18351</color>
     <color name="dialog_bg">#99000000</color>
     <color name="color_606066">#606066</color>
-    <color name="color_EE394A">#EE394A</color>
+    <color name="color_0071c4">#0071c4</color>
+    <color name="color_222222">#222222</color>
+    <color name="color_aaaaaa">#aaaaaa</color>
+
 </resources>

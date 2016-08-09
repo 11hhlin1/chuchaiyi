@@ -41,7 +41,7 @@
     <style name="titlebar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">44dp</item>
-        <item name="android:background">@color/color_EE394A</item>
+        <item name="android:background">@color/color_0071c4</item>
     </style>
     <style name="title_textView">
         <item name="android:layout_width">wrap_content</item>
@@ -70,5 +70,25 @@
         <item name="android:paddingTop">@dimen/tab_margin</item>
         <item name="android:textColor">@color/main_text_color_selector</item>
         <item name="android:background">@android:color/white</item>
+    </style>
+
+    <!-- 施工进度页面 -->
+    <style name="RadioButton_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/personal_small_height</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:button">@null</item>
+        <item name="android:textColor">@color/main_text_color_selector</item>
+        <item name="android:textSize">@dimen/textsize_16sp</item>
+        <item name="android:drawablePadding">@dimen/margin_24px</item>
+    </style>
+
+    <style name="personal_page_top_line" parent="@style/horizontal_line">
+        <item name="android:layout_alignParentTop">true</item>
+    </style>
+
+    <style name="personal_page_bottom_line" parent="@style/horizontal_line">
+        <item name="android:layout_alignParentBottom">true</item>
     </style>
 </resources>
