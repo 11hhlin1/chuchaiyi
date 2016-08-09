@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Chuchaiyi</string>
+    <string name="dialog_default_cancel_title">取消</string>
+    <string name="dialog_default_confirm_title">确定</string>
+    <string name="index">首页</string>
+    <string name="check">审批</string>
+    <string name="order">订单</string>
+    <string name="person">我</string>
+    <string name="quit_toast">再按一次退出出差易</string>
 </resources>

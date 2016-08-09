@@ -2,4 +2,75 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="top_nav_scroll_line_height">2dp</dimen>
+    <dimen name="top_nav_scroll_line_height_negative">-2dp</dimen>
+
+    <!-- 字体大小google标准 -->
+    <dimen name="textsize_10sp">10sp</dimen>
+    <dimen name="textsize_11sp">11sp</dimen>
+    <dimen name="textsize_12sp">12sp</dimen>
+    <dimen name="textsize_14sp">14sp</dimen>
+    <dimen name="textsize_16sp">16sp</dimen>
+    <dimen name="textsize_18sp">18sp</dimen>
+    <dimen name="textsize_24sp">24sp</dimen>
+    <dimen name="textsize_15sp">15sp</dimen>
+
+    <!-- 控件间的间距，最好是8 -->
+    <dimen name="margin_12px">4dp</dimen>
+    <dimen name="tab_margin">5dp</dimen>
+    <dimen name="margin_18px">6dp</dimen>
+    <dimen name="margin_24px">8dp</dimen>
+    <dimen name="margin_30px">10dp</dimen>
+    <dimen name="margin_45px">15dp</dimen>
+    <dimen name="margin_36px">12dp</dimen>
+    <dimen name="margin_48px">16dp</dimen>
+    <dimen name="margin_60px">20dp</dimen>
+    <dimen name="margin_190px">63dp</dimen>
+    <dimen name="margin_120px">40dp</dimen>
+    <dimen name="margin_72px">24dp</dimen>
+    <dimen name="margin_90px">30dp</dimen>
+
+    <!-- 720p距离 -->
+    <dimen name="margin_70p">35dp</dimen>
+    <dimen name="margin_72p">36dp</dimen>
+    <dimen name="margin_120p">60dp</dimen>
+    <dimen name="margin_100p">50dp</dimen>
+    <dimen name="margin_88p">44dp</dimen>
+    <dimen name="margin_80p">40dp</dimen>
+    <dimen name="margin_60p">30dp</dimen>
+    <dimen name="margin_58p">28dp</dimen>
+    <dimen name="margin_50p">25dp</dimen>
+    <dimen name="margin_40p">20dp</dimen>
+    <dimen name="margin_30p">15dp</dimen>
+    <dimen name="margin_28p">14dp</dimen>
+    <dimen name="margin_25p">12.5dp</dimen>
+    <dimen name="margin_22p">11dp</dimen>
+    <dimen name="margin_20p">10dp</dimen>
+    <dimen name="margin_14p">7dp</dimen>
+    <dimen name="margin_15p">7.5dp</dimen>
+    <dimen name="margin_18p">9dp</dimen>
+    <dimen name="margin_10p">5dp</dimen>
+    <dimen name="margin_6p">3dp</dimen>
+
+    <!-- 控件的宽度，最好为48dp -->
+    <dimen name="line_height">1px</dimen>
+    <dimen name="line_width">1px</dimen>
+    <dimen name="dialog_line_height">2px</dimen>
+    <dimen name="list_img_height">54dp</dimen>
+    <dimen name="feedback_height">173dp</dimen>
+    <dimen name="feedback_max_height">300dp</dimen>
+    <dimen name="personal_head_height">80dp</dimen>
+    <dimen name="single_line_height_132px">44dp</dimen>
+    <dimen name="personal_small_height">48dp</dimen>
+    <dimen name="slide_view_icon_width_height">60dp</dimen>
+    <dimen name="title_bar_height">50dp</dimen>
+    <dimen name="title_line_height_120px">40dp</dimen>
+    <dimen name="double_line_height_210px">70dp</dimen>
+    <dimen name="double_btn_width_420px">140dp</dimen>
+    <dimen name="upgrade_dialog_width">280dp</dimen>
+    <dimen name="list_bottom_shadow_height">21dp</dimen>
+    <dimen name="project_popt_width">5dp</dimen>
 </resources>
