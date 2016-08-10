@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.gjj.applibrary.widget.KeyboardRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_rl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_fffefe">
+
+
+    <com.gjj.applibrary.widget.YScrollLinearLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/margin_30p"
+        android:layout_marginRight="@dimen/margin_30p"
+        android:orientation="vertical">
+
+        <RelativeLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            >
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="75dp"
+                android:gravity="center_horizontal"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/login_img_logo"/>
+        </RelativeLayout>
+
+        <LinearLayout android:id="@+id/login_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/margin_70p"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_marginLeft="@dimen/margin_30p"
+                    android:textSize="@dimen/textsize_15sp"
+                    android:textColor="@color/color_222222"
+                    android:text="@string/username"
+                    />
+                <com.ccy.chuchaiyi.widget.EditTextWithDel
+                    android:id="@+id/login_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    style="@style/login_edittext"
+                    android:digits="\@-+._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ"
+                    android:hint="@string/hint_login_username"
+                    android:imeOptions="actionNext"/>
+            </LinearLayout>
+
+
+            <View style="@style/personal_page_top_line"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_marginLeft="@dimen/margin_30p"
+                    android:textSize="@dimen/textsize_15sp"
+                    android:textColor="@color/color_222222"
+                    android:text="@string/password"
+                    />
+                <com.ccy.chuchaiyi.widget.EditTextWithDel
+                    android:id="@+id/login_identify_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    style="@style/login_edittext"
+                    android:digits="\@-+._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ"
+                    android:hint="@string/hint_login_psw"
+                    android:imeOptions="actionNext"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_login"
+                android:background="@drawable/common_btn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/single_line_height_132px"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_18sp"
+                android:text="@string/login"/>
+            <TextView
+                android:id="@+id/forget_psw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="right"
+                android:text="@string/forget_psw"
+                android:textColor="@color/secondary_gray"
+                android:textSize="@dimen/textsize_15sp"/>
+        </LinearLayout>
+
+    </com.gjj.applibrary.widget.YScrollLinearLayout>
+
+</com.gjj.applibrary.widget.KeyboardRelativeLayout>

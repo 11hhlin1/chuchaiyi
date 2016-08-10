@@ -91,4 +91,13 @@
     <style name="personal_page_bottom_line" parent="@style/horizontal_line">
         <item name="android:layout_alignParentBottom">true</item>
     </style>
+    <!-- 登录页面 -->
+    <style name="login_edittext">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@null</item>
+        <item name="android:layout_marginLeft">@dimen/margin_40p</item>
+        <item name="android:textSize">@dimen/textsize_15sp</item>
+        <item name="android:textColorHint">@color/color_aaaaaa</item>
+        <item name="android:textColor">@color/color_222222</item>
+    </style>
 </resources>

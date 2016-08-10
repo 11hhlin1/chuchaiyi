@@ -15,4 +15,12 @@
     <string name="seat">舱位</string>
     <string name="quit_toast">再按一次退出出差易</string>
     <string name="index_tip">中国最专业的商旅服务公司,服务满意度超过99%</string>
+    <string name="forget_psw">忘记密码?</string>
+    <string name="login">登录</string>
+    <string name="username">账号</string>
+    <string name="hint_login_username">手机/邮箱/账号</string>
+    <string name="hint_login_psw">请输入密码</string>
+    <string name="enter_mobile_error">请输入正确的账号</string>
+    <string name="login_ing_tip">正在登录...</string>
+    <string name="password">密码</string>
 </resources>
