@@ -80,14 +80,6 @@ public class LoginActivity extends Activity implements AndroidBug5497Workaround.
             return;
         }
         hideKeyboardForCurrentFocus();
-//        Request req;
-//        if (Util.isEmail(un)) {
-//            req = GjjRequestFactory.getLoginRequest(IdType.ID_TYPE_EMAIL.getValue(), un, sms);
-//        } else {
-//            req = GjjRequestFactory.getLoginRequest(IdType.ID_TYPE_MOBILE.getValue(), un, sms);
-//        }
-//        GjjRequestManager.getInstance().execute(req, this);
-
         CustomProgressDialog loginDialog = mLoginDialog;
         if (null == loginDialog) {
             loginDialog = new CustomProgressDialog(this);
@@ -117,15 +109,13 @@ public class LoginActivity extends Activity implements AndroidBug5497Workaround.
         OkHttpUtils.post(ApiConstants.LOGIN)
                 .tag(this)
                 .cacheMode(CacheMode.NO_CACHE)
-                .params(params)
-//                .postJson(jsonObject.toString())
+                .postJson(jsonObject.toString())
                 .execute(new JsonCallback<UserInfo>(UserInfo.class) {
                     @Override
                     public void onResponse(boolean isFromCache, UserInfo rspInfo, Request request, @Nullable Response response) {
-
                         dismissProgressDialog();
                         if(rspInfo != null) {
-                            L.d("@@@@@>>", rspInfo.getToken());
+                            L.d("LoginActivity [%s]" , rspInfo);
                             PreferencesManager.getInstance().put(BundleKey.TOKEN, rspInfo.getToken());
                             Intent intent = new Intent();
                             intent.setClass(LoginActivity.this, MainActivity.class);
@@ -137,7 +127,7 @@ public class LoginActivity extends Activity implements AndroidBug5497Workaround.
                     public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
                         dismissProgressDialog();
                         if(response != null)
-                            L.d("@@@@@>>", response.code());
+                            L.d("LoginActivity[%s]", response);
                     }
                 });
     }
@@ -158,8 +148,6 @@ public class LoginActivity extends Activity implements AndroidBug5497Workaround.
             }
         });
     }
-
-//
 
     public void hideKeyboardForCurrentFocus() {
         if (getCurrentFocus() != null) {
