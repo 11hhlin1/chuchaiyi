@@ -4,11 +4,13 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.gjj.applibrary.event.EventOfTokenError;
 import com.gjj.applibrary.log.L;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.callback.AbsCallback;
 
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
@@ -42,8 +44,8 @@ public abstract class JsonCallback<T> extends CommonCallback<T> {
          * 以下只是一个示例，具体业务具体实现
          */
         JSONObject jsonObject = new JSONObject(responseData);
-        final String msg = jsonObject.optString("msg", "");
-        final int code = jsonObject.optInt("code", 0);
+        final String msg = jsonObject.optString("Message", "");
+        final int code = jsonObject.optInt("Code", 0);
         String data = responseData;
         switch (code) {
             case 0:
@@ -60,8 +62,9 @@ public abstract class JsonCallback<T> extends CommonCallback<T> {
                 }
                 if (type != null) return JSON.parseObject(data, type);
                 break;
-            case 104:
+            case 401:
                 //比如：用户授权信息无效，在此实现相应的逻辑，弹出对话或者跳转到其他页面等,该抛出错误，会在onError中回调。
+                EventBus.getDefault().post(new EventOfTokenError());
                 throw new IllegalStateException("用户授权信息无效");
             case 105:
                 //比如：用户收取信息已过期，在此实现相应的逻辑，弹出对话或者跳转到其他页面等,该抛出错误，会在onError中回调。

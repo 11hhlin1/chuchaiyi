@@ -41,4 +41,7 @@ public class AppLib {
     public static ContentResolver getContentResolver() {
         return mAppLib.mApplication.getContentResolver();
     }
+    public static String getPackageName() {
+        return getContext().getPackageName();
+    }
 }

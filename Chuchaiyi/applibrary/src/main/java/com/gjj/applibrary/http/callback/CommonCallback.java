@@ -17,7 +17,7 @@ public abstract class CommonCallback<T> extends AbsCallback<T> {
         //如果账户已经登录，就添加 token 等等
         String token = PreferencesManager.getInstance().get(BundleKey.TOKEN);
         if(!TextUtils.isEmpty(token)) {
-            request.params(BundleKey.TOKEN, token);
+            request.headers(BundleKey.TOKEN, token);
         }
     }
 }
