@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
+import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.main.MainActivity;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.widget.CustomProgressDialog;
@@ -65,7 +66,10 @@ public class LoginActivity extends Activity implements AndroidBug5497Workaround.
     @Bind(R.id.imageView1)
     ImageView mIconImg;
     private int[] mIconImgLocation;
-
+    @OnClick(R.id.forget_psw)
+    void forgetPsw() {
+        PageSwitcher.switchToTopNavPage(this,ForgetPswFragment.class,null,getString(R.string.forget_psw_title),null);
+    }
     @OnClick(R.id.btn_login)
     void login() {
         String un = mAccountET.getText().toString();

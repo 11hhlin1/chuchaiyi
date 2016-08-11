@@ -16,11 +16,19 @@
     <string name="quit_toast">再按一次退出出差易</string>
     <string name="index_tip">中国最专业的商旅服务公司,服务满意度超过99%</string>
     <string name="forget_psw">忘记密码?</string>
+    <string name="forget_psw_title">忘记密码</string>
     <string name="login">登录</string>
+    <string name="sure">确认</string>
     <string name="username">账号</string>
+    <string name="phone">手机号</string>
     <string name="hint_login_username">手机/邮箱/账号</string>
+    <string name="hint_login_phone">请输入手机号</string>
+    <string name="hint_sms_code">请填写验证码</string>
+    <string name="sms_code">验证码</string>
     <string name="hint_login_psw">请输入密码</string>
     <string name="enter_mobile_error">请输入正确的账号</string>
     <string name="login_ing_tip">正在登录...</string>
     <string name="password">密码</string>
+    <string name="find_psw_tip">只支持手机号的用户找回密码,非手机号注册的用户请访问官网找回密码</string>
+    <string name="send_sms">发送验证码</string>
 </resources>
