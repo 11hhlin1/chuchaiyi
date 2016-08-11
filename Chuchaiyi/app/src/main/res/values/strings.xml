@@ -31,4 +31,9 @@
     <string name="password">密码</string>
     <string name="find_psw_tip">只支持手机号的用户找回密码,非手机号注册的用户请访问官网找回密码</string>
     <string name="send_sms">发送验证码</string>
+    <string name="setting">设置</string>
+    <string name="set_psw">修改密码</string>
+    <string name="apartment">部门</string>
+    <string name="company">企业</string>
+    <string name="logout">退出登录</string>
 </resources>
