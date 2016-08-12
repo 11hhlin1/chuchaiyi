@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/new_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_88p"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/personal_item">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:text="@string/news"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_16sp" />
+
+        <ImageView style="@style/raw_Button" />
+
+        <View style="@style/personal_page_bottom_line" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/version_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_88p"
+        android:background="@drawable/personal_item">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:text="@string/check_version"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_16sp" />
+        <TextView
+            android:id="@+id/version_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_24px"
+            android:drawableRight="@mipmap/ic_detail_disable"
+            android:drawablePadding="10dp"
+            android:text="v1.0"
+            android:textColor="@color/color_aaaaaa"
+            android:textSize="@dimen/textsize_11sp" />
+
+    </RelativeLayout>
+</LinearLayout>
