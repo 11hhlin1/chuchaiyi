@@ -46,5 +46,6 @@
     <color name="color_222222">#222222</color>
     <color name="color_aaaaaa">#aaaaaa</color>
     <color name="color_979797">#979797</color>
+    <color name="effect_tm_black">#cc000000</color>
 
 </resources>

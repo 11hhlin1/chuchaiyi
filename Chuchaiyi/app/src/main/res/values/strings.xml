@@ -48,4 +48,15 @@
     <string name="hint_new_psw">新密码</string>
     <string name="check_psw">确认密码</string>
     <string name="hint_check_psw">请再次确认</string>
+    <string name="choose_set_out_date">选择出发日期</string>
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="monday">一</string>
+    <string name="tuesday">二</string>
+    <string name="wednesday">三</string>
+    <string name="thursday">四</string>
+    <string name="friday">五</string>
+    <string name="saturday">六</string>
+    <string name="sunday">日</string>
+    <string name="today">今天</string>
 </resources>
