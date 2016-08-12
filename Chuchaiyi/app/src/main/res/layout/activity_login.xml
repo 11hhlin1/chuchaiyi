@@ -90,7 +90,7 @@
 
             <Button
                 android:id="@+id/btn_login"
-                android:background="@drawable/common_btn"
+                android:background="@drawable/selector_common_btn"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/single_line_height_132px"
                 android:layout_gravity="center_horizontal"

@@ -4,66 +4,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_30p"
-        android:layout_marginLeft="@dimen/margin_30p"
-        android:layout_marginRight="@dimen/margin_30p"
-        android:gravity="left"
-        android:textColor="@color/color_9b9b9b"
-        android:textSize="@dimen/textsize_11sp"
-        android:text="@string/find_psw_tip"/>
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:orientation="horizontal"
+        android:layout_marginTop="10dp"
         android:background="@color/white"
-        android:layout_marginTop="7dp"
         >
         <TextView
-            android:id="@+id/phone_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_marginLeft="@dimen/margin_30p"
             android:textSize="@dimen/textsize_15sp"
             android:textColor="@color/color_222222"
-            android:text="@string/phone"
+            android:text="@string/old_psw"
             />
-
-        <Button
-            android:id="@+id/send_again_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:paddingLeft="@dimen/margin_30p"
-            android:paddingRight="@dimen/margin_30p"
-            android:layout_centerVertical="true"
-            android:singleLine="true"
-            android:background="@null"
-            android:gravity="center"
-            android:textColor="@color/orange"
-            android:text="@string/send_sms"
-            android:textSize="13sp" />
-
-        <View
-            style="@style/vertical_line"
-            android:id="@+id/line"
-            android:layout_toLeftOf="@+id/send_again_btn"/>
         <com.ccy.chuchaiyi.widget.EditTextWithDel
-            android:id="@+id/login_name"
+            android:id="@+id/old_psw"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             style="@style/login_edittext"
-            android:layout_toRightOf="@+id/phone_title"
-            android:layout_toLeftOf="@+id/line"
             android:digits="\@-+._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ"
-            android:hint="@string/hint_login_phone"
+            android:hint="@string/hint_old_psw"
             android:imeOptions="actionNext"/>
-    </RelativeLayout>
-    <View style="@style/horizontal_line"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:textSize="@dimen/textsize_15sp"
+            android:textColor="@color/color_222222"
+            android:text="@string/password"
+            />
+        <com.ccy.chuchaiyi.widget.EditTextWithDel
+            android:id="@+id/new_psw"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/login_edittext"
+            android:digits="\@-+._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ"
+            android:hint="@string/hint_new_psw"
+            android:imeOptions="actionNext"/>
+    </LinearLayout>
+
+    <View
+        style="@style/personal_page_top_line" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
@@ -77,7 +71,7 @@
             android:layout_marginLeft="@dimen/margin_30p"
             android:textSize="@dimen/textsize_15sp"
             android:textColor="@color/color_222222"
-            android:text="@string/sms_code"
+            android:text="@string/check_psw"
             />
         <com.ccy.chuchaiyi.widget.EditTextWithDel
             android:id="@+id/sms_code"
@@ -85,50 +79,9 @@
             android:layout_height="match_parent"
             style="@style/login_edittext"
             android:digits="\@-+._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ"
-            android:hint="@string/hint_sms_code"
+            android:hint="@string/hint_check_psw"
             android:imeOptions="actionNext"/>
     </LinearLayout>
-    <View style="@style/horizontal_line"/>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:orientation="horizontal"
-        android:background="@color/white"
-        >
-        <TextView
-            android:id="@+id/psw_title"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_marginLeft="@dimen/margin_30p"
-            android:textSize="@dimen/textsize_15sp"
-            android:textColor="@color/color_222222"
-            android:text="@string/sms_code"
-            />
-        <CheckBox
-            android:id="@+id/psw_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/selector_psw_icon"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/margin_30p"
-            android:layout_marginLeft="@dimen/margin_30p"
-            android:button="@null"
-            android:checked="false"
-            android:layout_alignParentRight="true"/>
-        <com.ccy.chuchaiyi.widget.EditTextWithDel
-            android:id="@+id/new_psw"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            style="@style/login_edittext"
-            android:layout_toRightOf="@+id/psw_title"
-            android:layout_toLeftOf="@+id/psw_icon"
-            android:inputType="textPassword"
-            android:digits="\@-+._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ"
-            android:hint="@string/hint_sms_code"
-            android:imeOptions="actionNext"/>
-    </RelativeLayout>
-
 
     <Button
         android:id="@+id/btn_sure"

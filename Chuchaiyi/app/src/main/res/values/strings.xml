@@ -36,4 +36,16 @@
     <string name="apartment">部门</string>
     <string name="company">企业</string>
     <string name="logout">退出登录</string>
+    <string name="news">新消息通知</string>
+    <string name="check_version">检测更新</string>
+    <string name="open">已开启</string>
+    <string name="news_setting_tip">如果你要关闭或开启出差易的新消息通知,请在设备的 "设置" - "通知中心"功能中, 找到应用程序"出差易"进行修改</string>
+    <string name="received_new">接收新消息通知</string>
+    <string name="voice">声音</string>
+    <string name="vibrate">震动</string>
+    <string name="old_psw">原密码</string>
+    <string name="hint_old_psw">原密码</string>
+    <string name="hint_new_psw">新密码</string>
+    <string name="check_psw">确认密码</string>
+    <string name="hint_check_psw">请再次确认</string>
 </resources>

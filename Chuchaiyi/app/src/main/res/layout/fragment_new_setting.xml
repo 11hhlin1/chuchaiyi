@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_88p"
+        android:layout_marginTop="8dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:text="@string/received_new"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_16sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_30p"
+            android:text="@string/open"
+            android:textColor="@color/color_aaaaaa"
+            android:textSize="@dimen/textsize_14sp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="@dimen/margin_30p"
+        android:paddingRight="@dimen/margin_30p"
+        android:gravity="left"
+        android:textColor="@color/color_aaaaaa"
+        android:textSize="@dimen/textsize_12sp"
+        android:text="@string/news_setting_tip"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_88p"
+        android:layout_marginTop="8dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:text="@string/voice"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_16sp" />
+
+        <com.ccy.chuchaiyi.widget.EaseSwitchButton
+            android:id="@+id/voice_switch_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            app:switchStatus="close" />
+
+    </RelativeLayout>
+    <View
+        style="@style/personal_page_top_line" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_88p"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:text="@string/vibrate"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_16sp" />
+
+        <com.ccy.chuchaiyi.widget.EaseSwitchButton
+            android:id="@+id/vibrate_switch_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            app:switchStatus="close" />
+
+    </RelativeLayout>
+</LinearLayout>

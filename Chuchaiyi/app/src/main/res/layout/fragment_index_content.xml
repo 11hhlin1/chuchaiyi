@@ -146,7 +146,7 @@
         android:textSize="@dimen/textsize_18sp"
         android:textColor="@color/white"
         android:text="@string/search"
-        android:background="@drawable/common_btn"/>
+        android:background="@drawable/selector_common_btn"/>
     
     <TextView
         android:layout_width="match_parent"
