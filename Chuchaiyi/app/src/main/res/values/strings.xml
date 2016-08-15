@@ -49,6 +49,8 @@
     <string name="check_psw">确认密码</string>
     <string name="hint_check_psw">请再次确认</string>
     <string name="choose_set_out_date">选择出发日期</string>
+    <string name="choose_set_out_city">选择出发城市</string>
+    <string name="choose_arrive_city">选择到达城市</string>
     <string name="year">年</string>
     <string name="month">月</string>
     <string name="monday">一</string>
@@ -59,4 +61,6 @@
     <string name="saturday">六</string>
     <string name="sunday">日</string>
     <string name="today">今天</string>
+    <string name="hot_city">热门城市</string>
+    <string name="submitting">正在请求网络</string>
 </resources>

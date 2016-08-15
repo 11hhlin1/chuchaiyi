@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="16dp"
+        android:text="@string/hot_city"
+        android:textColor="@color/color_222222"
+        android:textSize="13sp" />
+
+    <com.ccy.chuchaiyi.widget.UnScrollableGridView
+        android:id="@+id/gv_hot_city"
+        android:layout_width="match_parent"
+        android:numColumns="3"
+        android:listSelector="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:padding="@dimen/margin_30p"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="8dp"
+        android:horizontalSpacing="19dp"
+        android:background="@color/white"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

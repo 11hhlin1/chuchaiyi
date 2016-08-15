@@ -1,4 +1,4 @@
-package com.ccy.chuchaiyi.clanda;
+package com.ccy.chuchaiyi.calendar;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,18 +41,18 @@ public class CalendarAdapter extends BaseAdapter {
     }
 
     @Override
-    public Day getItem(int arg0) {
-        return days.get(arg0);
+    public Day getItem(int position) {
+        return days.get(position);
     }
 
     @Override
-    public long getItemId(int arg0) {
+    public long getItemId(int position) {
         return 0;
     }
 
     @Override
-    public View getView(int arg0, View arg1, ViewGroup arg2) {
-        View v = arg1;
+    public View getView(int position, View convertView, ViewGroup arg2) {
+        View v = convertView;
         ViewHolder holder = null;
         if (v == null) {
             v = mInflater.inflate(R.layout.calendar_item, arg2, false);
@@ -62,18 +62,34 @@ public class CalendarAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) v.getTag();
         }
-        Day d = getItem(arg0);
+        Day d = getItem(position);
         switch (d.getType()) {
             case TODAY:
-                holder.tv.setText(context.getString(R.string.today));
-                holder.tv.setEnabled(true);
-                holder.tv.setTextColor(context.getResources().getColor(R.color.color_222222));
+                if(d.isOrdered()) {
+                    holder.tv.setText(d.getName());
+                    holder.tv.setTextColor(context.getResources().getColor(R.color.white));
+                    holder.tv.setBackgroundResource(R.drawable.circle_orange);
+                } else {
+                    holder.tv.setText(context.getString(R.string.today));
+                    holder.tv.setTextColor(context.getResources().getColor(R.color.color_222222));
+                    holder.tv.setBackgroundResource(R.drawable.normal_calendar_order_item_bg);
+                }
                 holder.tv.setTextSize(14);
+                holder.tv.setEnabled(true);
+                break;
             case TOMORROW:
             case T_D_A_T:
+                if(d.isOrdered()) {
+                    holder.tv.setTextColor(context.getResources().getColor(R.color.white));
+                    holder.tv.setBackgroundResource(R.drawable.circle_orange);
+                } else {
+                    holder.tv.setTextColor(context.getResources().getColor(R.color.color_222222));
+                    holder.tv.setBackgroundResource(R.drawable.normal_calendar_order_item_bg);
+                }
                 holder.tv.setText(d.getName());
                 holder.tv.setEnabled(true);
-                holder.tv.setTextColor(context.getResources().getColor(R.color.color_222222));
+//                holder.tv.setBackgroundResource(R.drawable.circle_orange);
+//                holder.tv.setTextColor(context.getResources().getColor(R.color.color_222222));
                 holder.tv.setTextSize(14);
                 break;
             case ENABLE:
@@ -81,7 +97,7 @@ public class CalendarAdapter extends BaseAdapter {
                 holder.tv.setEnabled(true);
                 holder.tv.setTextColor(d.isOrdered() ? Color.WHITE : context.getResources().getColor(
                         R.color.color_222222));
-                holder.tv.setBackgroundResource(d.isOrdered() ? R.drawable.calendar_order_item_bg
+                holder.tv.setBackgroundResource(d.isOrdered() ? R.drawable.circle_orange
                         : R.drawable.normal_calendar_order_item_bg);
                 holder.tv.setTextSize(14);
                 break;

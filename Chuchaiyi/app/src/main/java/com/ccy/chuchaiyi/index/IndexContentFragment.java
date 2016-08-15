@@ -1,20 +1,15 @@
 package com.ccy.chuchaiyi.index;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,17 +22,20 @@ import android.widget.TextView;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.PageSwitcher;
-import com.ccy.chuchaiyi.clanda.CalendarSelectorFragment;
+import com.ccy.chuchaiyi.calendar.CalendarSelectorFragment;
+import com.ccy.chuchaiyi.city.ChooseCityFragment;
+import com.ccy.chuchaiyi.event.EventOfSelCity;
 import com.ccy.chuchaiyi.event.EventOfSelDate;
-import com.ccy.chuchaiyi.login.LoginActivity;
-import com.ccy.chuchaiyi.person.SettingFragment;
-import com.gjj.applibrary.event.EventOfTokenError;
+import com.gjj.applibrary.log.L;
+import com.gjj.applibrary.util.Util;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.Bind;
@@ -75,6 +73,8 @@ public class IndexContentFragment extends BaseFragment {
     private ListPopupAdapter mSelectorAdapter;
     private int mSeatIndex = 0;
     private List<String> mItemList;
+    private String mSelDate;
+    private int mSelMax = 30;
 
 
     @Override
@@ -89,23 +89,34 @@ public class IndexContentFragment extends BaseFragment {
         mItemList.add("经济舱");
         mItemList.add("公务舱/头等舱");
         seatTv.setText(mItemList.get(mSeatIndex));
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M月d日");
+        setOutDateTv.setText(simpleDateFormat.format(calendar.getTime()));
+
+        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy#MM#dd");
+        mSelDate = simpleDateFormat1.format(calendar.getTime());
         EventBus.getDefault().register(this);
     }
 
 
     @OnClick({R.id.chufa_city_ll, R.id.exchange, R.id.arrive_city_ll, R.id.set_out_date, R.id.seat_wei, R.id.search_btn})
     public void onClick(View view) {
+        Bundle bundle = new Bundle();
         switch (view.getId()) {
             case R.id.chufa_city_ll:
+                bundle.putInt("type", ChooseCityFragment.SET_OUT);
+                PageSwitcher.switchToTopNavPage(getActivity(), ChooseCityFragment.class, bundle, getString(R.string.choose_set_out_city),null);
                 break;
             case R.id.exchange:
                 break;
             case R.id.arrive_city_ll:
+                bundle.putInt("type", ChooseCityFragment.ARRIVE);
+                PageSwitcher.switchToTopNavPage(getActivity(), ChooseCityFragment.class, bundle, getString(R.string.choose_arrive_city),null);
                 break;
             case R.id.set_out_date:
-                Bundle bundle = new Bundle();
-                bundle.putInt(CalendarSelectorFragment.DAYS_OF_SELECT, 30);
-                bundle.putString(CalendarSelectorFragment.ORDER_DAY, "2016#08#16");
+                bundle.putInt(CalendarSelectorFragment.DAYS_OF_SELECT, mSelMax);
+                L.d("@@@@@@" + mSelDate);
+                bundle.putString(CalendarSelectorFragment.ORDER_DAY, mSelDate);
                 PageSwitcher.switchToTopNavPage(getActivity(), CalendarSelectorFragment.class, bundle, getString(R.string.choose_set_out_date),null);
                 break;
             case R.id.seat_wei:
@@ -118,7 +129,20 @@ public class IndexContentFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void setDate(EventOfSelDate event) {
-        setOutDateTv.setText(event.mDate);
+        String [] dates = event.mDate.split("#");
+        StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+        stringBuilder.append(dates[1]).append(getString(R.string.month)).append(dates[2]).append(getString(R.string.sunday));
+        setOutDateTv.setText(stringBuilder.toString());
+        mSelDate = event.mDate;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void setCity(EventOfSelCity event) {
+        if(event.mType == ChooseCityFragment.ARRIVE) {
+            arriveCity.setText(event.mCity.getName());
+        } else {
+            chufaCity.setText(event.mCity.getName());
+        }
     }
     /**
      * 显示选择框

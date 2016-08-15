@@ -1,4 +1,4 @@
-package com.ccy.chuchaiyi.clanda;
+package com.ccy.chuchaiyi.calendar;
 
 import java.util.Calendar;
 
@@ -52,8 +52,8 @@ public class CalendarListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int arg0, View arg1, ViewGroup arg2) {
-        View v = arg1;
+    public View getView(int position, View convertView, ViewGroup arg2) {
+        View v = convertView;
         ViewHolder holder = null;
         if (v == null) {
             v = mInflater.inflate(R.layout.calendar, arg2, false);
@@ -65,15 +65,16 @@ public class CalendarListAdapter extends BaseAdapter {
             holder = (ViewHolder) v.getTag();
         }
         final Calendar c = Calendar.getInstance();
-        c.add(Calendar.MONTH, arg0);
-        holder.yearAndMonth.setText(c.get(Calendar.YEAR) + context.getString(R.string.year)
-                + (c.get(Calendar.MONTH) + 1) + context.getString(R.string.month));
+        c.add(Calendar.MONTH, position);
+        StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+        stringBuilder.append(c.get(Calendar.YEAR)).append(context.getString(R.string.year)).append((c.get(Calendar.MONTH) + 1)).append(context.getString(R.string.month));
+        holder.yearAndMonth.setText(stringBuilder.toString());
 
         CalendarAdapter cAdapter = null;
-        if (arg0 == 0) {
+        if (position == 0) {
             cAdapter = new CalendarAdapter(context, c, daysOfSelect, orderDay);
         } else {
-            int d = daysOfSelect - CalendarUtils.currentMonthRemainDays() - CalendarUtils.getFlowMonthDays(arg0 - 1);
+            int d = daysOfSelect - CalendarUtils.currentMonthRemainDays() - CalendarUtils.getFlowMonthDays(position - 1);
             cAdapter = new CalendarAdapter(context, c, d, orderDay);
         }
         holder.calendarGrid.setAdapter(cAdapter);
@@ -89,7 +90,7 @@ public class CalendarListAdapter extends BaseAdapter {
                 if (day <= 0 || !dayTv.isEnabled())
                     return;
                 StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
-                String orderInfo = stringBuilder.append(c.get(Calendar.MONTH) + 1).append(context.getString(R.string.month)).append(day).append(context.getString(R.string.sunday)).toString();
+                String orderInfo = stringBuilder.append(c.get(Calendar.YEAR)).append("#").append(c.get(Calendar.MONTH) + 1).append("#").append(day).toString();
                 cl.clear();
                 cl = null;
                 if (listener != null)
