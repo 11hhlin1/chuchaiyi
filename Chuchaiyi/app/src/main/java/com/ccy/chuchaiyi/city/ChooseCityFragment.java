@@ -1,5 +1,6 @@
 package com.ccy.chuchaiyi.city;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -19,6 +20,7 @@ import com.ccy.chuchaiyi.event.EventOfSelDate;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.widget.EditTextWithDel;
 import com.ccy.chuchaiyi.widget.UnScrollableGridView;
+import com.gjj.applibrary.event.EventOfTokenError;
 import com.gjj.applibrary.http.callback.CommonCallback;
 import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
@@ -57,6 +59,7 @@ public class ChooseCityFragment extends BaseFragment {
     public static final int ARRIVE = 1;
 
     private int mType;
+    private String mSelCity;
     @Override
     public int getContentViewLayout() {
         return R.layout.fragment_choose_city;
@@ -65,16 +68,17 @@ public class ChooseCityFragment extends BaseFragment {
     @Override
     public void initView() {
 //        initDatas();
+        Bundle bundle = getArguments();
+        mType = bundle.getInt("type");
+        mSelCity = bundle.getString("selCity");
         initEvents();
         setAdapter();
-        mType = getArguments().getInt("type");
         OkHttpUtils.get(ApiConstants.GET_FLIGHT_LOCATION)
                 .tag(this)
                 .cacheMode(CacheMode.FIRST_CACHE_THEN_REQUEST)
                 .execute(new CommonCallback<CitySortList>() {
                     @Override
                     public CitySortList parseNetworkResponse(Response response) throws Exception {
-                        super.parseNetworkResponse(response);
                         String responseData = response.body().string();
                         JSONObject jsonObject = JSON.parseObject(responseData);
                         final String msg = jsonObject.getString("Message");
@@ -85,6 +89,10 @@ public class ChooseCityFragment extends BaseFragment {
                                 citySortList.mAllList = JSON.parseArray(jsonObject.getString("All"), CitySort.class);
                                 citySortList.mHotList = JSON.parseArray(jsonObject.getString("Hot"), CitySort.class);
                                 return citySortList;
+                            }
+                            case 401: {
+                                EventBus.getDefault().post(new EventOfTokenError());
+                                throw new IllegalStateException("用户授权信息无效");
                             }
                             default:
                                 throw new IllegalStateException("错误代码：" + code + "，错误信息：" + msg);
@@ -132,7 +140,7 @@ public class ChooseCityFragment extends BaseFragment {
     private void setAdapter() {
         allCitySorts = new ArrayList<>();
         Collections.sort(allCitySorts, new PinyinComparator());
-        adapter = new SortAdapter(getActivity(), allCitySorts);
+        adapter = new SortAdapter(getActivity(), allCitySorts, mSelCity);
         countryList.addHeaderView(initHeadView());
         countryList.setAdapter(adapter);
     }
@@ -232,8 +240,9 @@ public class ChooseCityFragment extends BaseFragment {
         } else {
             mSortList.clear();
             for (CitySort sortModel : filterCitySorts) {
-                String name = sortModel.getName();
-                if (name.toUpperCase().indexOf(filterStr.toString().toUpperCase()) != -1 || PinyinUtils.getPingYin(name).toUpperCase().startsWith(filterStr.toString().toUpperCase())) {
+                String name = sortModel.getPinyin();
+                String shortPin = sortModel.getPinyinShort();
+                if (shortPin.toUpperCase().indexOf(filterStr.toString().toUpperCase()) != -1 || PinyinUtils.getPingYin(name).toUpperCase().startsWith(filterStr.toString().toUpperCase())) {
                     mSortList.add(sortModel);
                 }
             }
@@ -242,26 +251,26 @@ public class ChooseCityFragment extends BaseFragment {
         Collections.sort(mSortList, new PinyinComparator());
         adapter.setData(mSortList);
     }
-
-    private List<CitySortModel> filledData(String[] date) {
-        List<CitySortModel> mSortList = new ArrayList<>();
-        ArrayList<String> indexString = new ArrayList<>();
-
-        for (int i = 0; i < date.length; i++) {
-            CitySortModel sortModel = new CitySortModel();
-            sortModel.setName(date[i]);
-            String pinyin = PinyinUtils.getPingYin(date[i]);
-            String sortString = pinyin.substring(0, 1).toUpperCase();
-            if (sortString.matches("[A-Z]")) {
-                sortModel.setSortLetters(sortString.toUpperCase());
-                if (!indexString.contains(sortString)) {
-                    indexString.add(sortString);
-                }
-            }
-            mSortList.add(sortModel);
-        }
-        Collections.sort(indexString);
-//        sidrbar.setIndexText(indexString);
-        return mSortList;
-    }
+//
+//    private List<CitySortModel> filledData(String[] date) {
+//        List<CitySortModel> mSortList = new ArrayList<>();
+//        ArrayList<String> indexString = new ArrayList<>();
+//
+//        for (int i = 0; i < date.length; i++) {
+//            CitySortModel sortModel = new CitySortModel();
+//            sortModel.setName(date[i]);
+//            String pinyin = PinyinUtils.getPingYin(date[i]);
+//            String sortString = pinyin.substring(0, 1).toUpperCase();
+//            if (sortString.matches("[A-Z]")) {
+//                sortModel.setSortLetters(sortString.toUpperCase());
+//                if (!indexString.contains(sortString)) {
+//                    indexString.add(sortString);
+//                }
+//            }
+//            mSortList.add(sortModel);
+//        }
+//        Collections.sort(indexString);
+////        sidrbar.setIndexText(indexString);
+//        return mSortList;
+//    }
 }

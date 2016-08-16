@@ -140,6 +140,8 @@ public class PreferencesManager {
 		}
 	}
 
+
+
 	/**
 	 * 直接存放对象，反射将根据对象的属性作为key，并将对应的值保存。
 	 * 

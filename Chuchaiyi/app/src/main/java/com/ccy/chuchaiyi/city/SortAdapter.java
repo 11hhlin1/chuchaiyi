@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
@@ -16,13 +17,15 @@ import java.util.List;
 public class SortAdapter extends BaseAdapter implements SectionIndexer {
     private List<CitySort> list = null;
     private Context mContext;
+    private String mSelCity;
 
-    public SortAdapter(Context mContext, List<CitySort> list) {
+    public SortAdapter(Context mContext, List<CitySort> list, String selCity) {
         this.mContext = mContext;
         this.list = list;
+        this.mSelCity = selCity;
     }
 
-//    /**
+    //    /**
 //     * 当ListView数据发生变化时,调用此方法来更新ListView
 //     *
 //     * @param list
@@ -35,9 +38,10 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer {
 //            if (list != null) {
 //                list.clear();
 //            }
-            this.list = msg;
+        this.list = msg;
         notifyDataSetChanged();
     }
+
     public int getCount() {
         return this.list.size();
     }
@@ -50,13 +54,14 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer {
         return position;
     }
 
-    public View getView(final int position, View view, ViewGroup arg2) {
+    public View getView(final int position, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder = null;
-        final CitySort mContent = list.get(position);
+        final CitySort citySort = list.get(position);
         if (view == null) {
             viewHolder = new ViewHolder();
             view = LayoutInflater.from(mContext).inflate(R.layout.item_select_city, null);
             viewHolder.tvTitle = (TextView) view.findViewById(R.id.tv_city_name);
+            viewHolder.icon = (ImageView) view.findViewById(R.id.sel_city_icon);
             view.setTag(viewHolder);
             viewHolder.tvLetter = (TextView) view.findViewById(R.id.tv_category);
         } else {
@@ -67,23 +72,30 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer {
 
         if (position == getPositionForSection(section)) {
             viewHolder.tvLetter.setVisibility(View.VISIBLE);
-            if(mContent.getPinyinShort().length() > 0) {
-                viewHolder.tvLetter.setText(String.valueOf(mContent.getPinyinShort().charAt(0)));
+            if (citySort.getPinyinShort().length() > 0) {
+                viewHolder.tvLetter.setText(String.valueOf(citySort.getPinyinShort().charAt(0)));
+            } else {
+                viewHolder.tvLetter.setVisibility(View.GONE);
             }
         } else {
             viewHolder.tvLetter.setVisibility(View.GONE);
         }
-
-        viewHolder.tvTitle.setText(this.list.get(position).getName());
-
+        viewHolder.tvTitle.setText(citySort.getName());
+        if (citySort.getName().equals(mSelCity)) {
+            viewHolder.icon.setVisibility(View.VISIBLE);
+            viewHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.orange));
+        } else {
+            viewHolder.icon.setVisibility(View.INVISIBLE);
+            viewHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.color_222222));
+        }
         return view;
 
     }
 
-
-    final static class ViewHolder {
+    static class ViewHolder {
         TextView tvLetter;
         TextView tvTitle;
+        ImageView icon;
     }
 
     public int getSectionForPosition(int position) {

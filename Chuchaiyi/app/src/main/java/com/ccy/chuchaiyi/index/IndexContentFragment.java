@@ -24,9 +24,12 @@ import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.calendar.CalendarSelectorFragment;
 import com.ccy.chuchaiyi.city.ChooseCityFragment;
+import com.ccy.chuchaiyi.city.CitySort;
+import com.ccy.chuchaiyi.city.SaveObjUtil;
 import com.ccy.chuchaiyi.event.EventOfSelCity;
 import com.ccy.chuchaiyi.event.EventOfSelDate;
 import com.gjj.applibrary.log.L;
+import com.gjj.applibrary.util.PreferencesManager;
 import com.gjj.applibrary.util.Util;
 
 import org.greenrobot.eventbus.EventBus;
@@ -75,6 +78,8 @@ public class IndexContentFragment extends BaseFragment {
     private List<String> mItemList;
     private String mSelDate;
     private int mSelMax = 30;
+    private CitySort mArriveCity;
+    private CitySort mSetOutCity;
 
 
     @Override
@@ -96,6 +101,15 @@ public class IndexContentFragment extends BaseFragment {
         SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy#MM#dd");
         mSelDate = simpleDateFormat1.format(calendar.getTime());
         EventBus.getDefault().register(this);
+
+        mSetOutCity = SaveObjUtil.unSerialize(PreferencesManager.getInstance().get(SaveObjUtil.SET_OUT_CITY));
+        mArriveCity = SaveObjUtil.unSerialize(PreferencesManager.getInstance().get(SaveObjUtil.ARRIVE_CITY));
+        if(mArriveCity != null) {
+            arriveCity.setText(mArriveCity.getName());
+        }
+        if(mSetOutCity != null) {
+            chufaCity.setText(mSetOutCity.getName());
+        }
     }
 
 
@@ -105,12 +119,25 @@ public class IndexContentFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.chufa_city_ll:
                 bundle.putInt("type", ChooseCityFragment.SET_OUT);
+                if(mSetOutCity != null)
+                    bundle.putString("selCity", mSetOutCity.getName());
                 PageSwitcher.switchToTopNavPage(getActivity(), ChooseCityFragment.class, bundle, getString(R.string.choose_set_out_city),null);
                 break;
             case R.id.exchange:
+                if(mSetOutCity != null && mArriveCity != null) {
+                    CitySort temp = mArriveCity;
+                    mArriveCity = mSetOutCity;
+                    mSetOutCity = temp;
+                    arriveCity.setText(mArriveCity.getName());
+                    chufaCity.setText(mSetOutCity.getName());
+                    PreferencesManager.getInstance().put(SaveObjUtil.ARRIVE_CITY, SaveObjUtil.serialize(mArriveCity));
+                    PreferencesManager.getInstance().put(SaveObjUtil.SET_OUT_CITY, SaveObjUtil.serialize(mSetOutCity));
+                }
                 break;
             case R.id.arrive_city_ll:
                 bundle.putInt("type", ChooseCityFragment.ARRIVE);
+                if(mArriveCity != null)
+                    bundle.putString("selCity", mArriveCity.getName());
                 PageSwitcher.switchToTopNavPage(getActivity(), ChooseCityFragment.class, bundle, getString(R.string.choose_arrive_city),null);
                 break;
             case R.id.set_out_date:
@@ -140,8 +167,12 @@ public class IndexContentFragment extends BaseFragment {
     public void setCity(EventOfSelCity event) {
         if(event.mType == ChooseCityFragment.ARRIVE) {
             arriveCity.setText(event.mCity.getName());
+            mArriveCity = event.mCity;
+            PreferencesManager.getInstance().put(SaveObjUtil.ARRIVE_CITY, SaveObjUtil.serialize(mArriveCity));
         } else {
             chufaCity.setText(event.mCity.getName());
+            mSetOutCity = event.mCity;
+            PreferencesManager.getInstance().put(SaveObjUtil.SET_OUT_CITY, SaveObjUtil.serialize(mSetOutCity));
         }
     }
     /**

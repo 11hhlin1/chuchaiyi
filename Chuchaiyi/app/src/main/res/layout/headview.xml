@@ -17,7 +17,7 @@
         android:id="@+id/gv_hot_city"
         android:layout_width="match_parent"
         android:numColumns="3"
-        android:listSelector="@android:color/transparent"
+        android:listSelector="@drawable/selector_choose_city_grid"
         android:cacheColorHint="@android:color/transparent"
         android:padding="@dimen/margin_30p"
         android:stretchMode="columnWidth"
