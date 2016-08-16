@@ -131,4 +131,26 @@
         <item name="android:textSize">@dimen/textsize_12sp</item>
         <item name="android:gravity">center</item>
     </style>
+    <style name="main_tv_gray_16sp">
+        <item name="android:textSize">@dimen/textsize_16sp</item>
+        <item name="android:textColor">@color/secondary_gray</item>
+    </style>
+    <!-- 空白页 -->
+    <style name="empty_tv" parent="@style/main_tv_gray_16sp">
+        <item name="android:id">@id/empty_tv</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">@dimen/margin_30px</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:text">@string/empty_no_data</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:visibility">gone</item>
+    </style>
+    <!-- 空白页 -->
+    <style name="error_tv" parent="@style/empty_tv">
+        <item name="android:id">@id/error_tv</item>
+        <item name="android:text">@string/load_fail_click_reload</item>
+        <!--<item name="android:drawableTop">@drawable/blank_img_failed</item>-->
+    </style>
 </resources>

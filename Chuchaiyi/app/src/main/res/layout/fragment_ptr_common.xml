@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.handmark.pulltorefresh.library.PullToRefreshRecyclerView
+        android:id="@+id/ptr_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@null"
+        android:scrollbars="none" />
+
+    <TextView style="@style/empty_tv" />
+
+    <TextView style="@style/error_tv" />
+
+</FrameLayout>

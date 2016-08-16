@@ -1,0 +1,12 @@
+<resources>
+
+    <item name="proj_slide_viewpager" type="id"/>
+    <item name="proj_slide_indicator" type="id"/>
+    <item name="empty_tv" type="id"/>
+    <item name="error_tv" type="id"/>
+    <item name="list_item_data" type="id"/>
+    <item name="list_index" type="id"/>
+    <item type="id" name="click_stat_id" />
+    <item type="id" name="click_stat_msg" />
+    <item type="id" name="content" />
+</resources>
