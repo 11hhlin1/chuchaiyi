@@ -69,5 +69,12 @@
 
     <string name="empty_no_data">这里什么都木有</string>
     <string name="load_fail_click_reload">网络错误，请重试</string>
+    <string name="pre_day">前一天</string>
+    <string name="book">预订</string>
+    <string name="policy">差旅政策</string>
+    <string name="money">￥%1$s起</string>
+    <string name="money_no_end">￥%1$s</string>
+    <string name="num">%1$s张</string>
+    <string name="discount">%1$s折</string>
 
 </resources>

@@ -30,6 +30,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:textSize="@dimen/textsize_15sp"
+            android:textColor="@color/white"
             android:padding="10dp"
             android:text="" />
 

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/top_date"
+        android:layout_height="40dp">
+        <TextView
+            android:id="@+id/pre_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:drawableLeft="@mipmap/icon_back_un"
+            android:drawablePadding="4dp"
+            android:textSize="@dimen/textsize_12sp"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:textColor="@color/color_aaaaaa"
+            android:layout_centerVertical="true"
+            android:text="@string/pre_day"/>
+
+        <TextView
+            android:id="@+id/today_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="@dimen/textsize_13sp"
+            android:textColor="@color/color_222222"
+            />
+
+        <TextView
+            android:id="@+id/next_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:drawableRight="@mipmap/icon_back_un"
+            android:drawablePadding="4dp"
+            android:textSize="@dimen/textsize_12sp"
+            android:textColor="@color/color_aaaaaa"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_30p"
+            android:text="@string/pre_day"/>
+    </RelativeLayout>
+    <View
+        style="@style/horizontal_line"/>
+    <com.handmark.pulltorefresh.library.PullToRefreshExpandableListView
+        android:id="@+id/elistview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/top_date"
+        android:background="@null"
+        android:listSelector="@drawable/personal_item"
+        android:cacheColorHint="@android:color/transparent"
+        android:childIndicator="@null"
+        android:divider="#00000000"
+        android:fadingEdge="none"
+        android:groupIndicator="@null"
+        android:scrollbars="none" />
+
+    <TextView
+        style="@style/empty_tv" />
+
+    <TextView style="@style/error_tv" />
+
+</RelativeLayout>

@@ -75,7 +75,8 @@ public class IndexContentFragment extends BaseFragment {
     private PopupWindow mPickUpPopWindow;
     private ListPopupAdapter mSelectorAdapter;
     private int mSeatIndex = 0;
-    private List<String> mItemList;
+    private List<SeatType> mItemList;
+    private String mSeatCode;
     private String mSelDate;
     private int mSelMax = 30;
     private CitySort mArriveCity;
@@ -90,10 +91,19 @@ public class IndexContentFragment extends BaseFragment {
     @Override
     public void initView() {
         mItemList = new ArrayList<>();
-        mItemList.add( "不限机舱");
-        mItemList.add("经济舱");
-        mItemList.add("公务舱/头等舱");
-        seatTv.setText(mItemList.get(mSeatIndex));
+        String[] names = getResources().getStringArray(R.array.seatName);
+        String[] codes = getResources().getStringArray(R.array.seatCode);
+        int len = names.length;
+        for (int i=0; i< len; i++) {
+            SeatType seatType = new SeatType();
+            seatType.mCode = codes[i];
+            seatType.mName = names[i];
+            mItemList.add(seatType);
+        }
+//        mItemList.add("不限机舱");
+//        mItemList.add("经济舱");
+//        mItemList.add("公务舱/头等舱");
+        seatTv.setText(mItemList.get(mSeatIndex).mName);
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M月d日");
         setOutDateTv.setText(simpleDateFormat.format(calendar.getTime()));
@@ -150,6 +160,16 @@ public class IndexContentFragment extends BaseFragment {
                 showPickupWindow();
                 break;
             case R.id.search_btn:
+                if(mSetOutCity == null || mArriveCity == null)
+                    return;
+                bundle.putString("DepartureCode", mSetOutCity.getCode());
+                bundle.putString("ArrivalCode", mArriveCity.getCode());
+                bundle.putString("FlightDate",mSelDate.replace("#","-"));
+                bundle.putString("BunkType",mItemList.get(mSeatIndex).mCode);
+                StringBuilder title = Util.getThreadSafeStringBuilder();
+                title.append(mSetOutCity.getName()).append("-").append(mArriveCity.getName());
+                PageSwitcher.switchToTopNavPage(getActivity(), FlightsListFragment.class, bundle, title.toString() ,getString(R.string.policy));
+
                 break;
         }
     }
@@ -252,7 +272,7 @@ public class IndexContentFragment extends BaseFragment {
         }
 
         @Override
-        public String getItem(int position) {
+        public SeatType getItem(int position) {
             return mItemList.get(position);
         }
 
@@ -271,7 +291,7 @@ public class IndexContentFragment extends BaseFragment {
             } else {
                 vh = (ViewHolder) convertView.getTag();
             }
-            vh.typeName.setText(mItemList.get(position));
+            vh.typeName.setText(mItemList.get(position).mName);
             vh.typeName.setTag(position);
             if (position == mSeatIndex) {
                 vh.selIcon.setVisibility(View.VISIBLE);
@@ -300,7 +320,7 @@ public class IndexContentFragment extends BaseFragment {
                     public void onClick(View v) {
                          mSeatIndex = (int) typeName.getTag();
                          dismissConstructNoticeWindow();
-                        seatTv.setText(mItemList.get(mSeatIndex));
+                         seatTv.setText(getItem(mSeatIndex).mName);
                     }
                 });
             }

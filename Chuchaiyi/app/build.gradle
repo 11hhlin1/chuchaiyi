@@ -39,8 +39,6 @@ dependencies {
     compile project(':applibrary')
     compile project(':androidPullToRefreshRecyclerViewlibrary')
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.android.support:cardview-v7:23.3.0'
-    compile 'com.android.support:recyclerview-v7:23.3.0'
     compile 'com.kyleduo.switchbutton:library:1.4.2'
     compile files('libs/pinyin4j-2.5.0.jar')
 

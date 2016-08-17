@@ -26,5 +26,6 @@ dependencies {
     compile 'com.lzy.net:okhttpserver:+'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.alibaba:fastjson:1.2.8'
+    compile 'com.android.support:recyclerview-v7:23.3.0'
 
 }
