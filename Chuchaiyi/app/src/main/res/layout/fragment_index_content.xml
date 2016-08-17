@@ -75,7 +75,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_140p"
         android:id="@+id/set_out_date"
-        android:background="@color/white">
+        android:background="@drawable/personal_item">
 
 
         <LinearLayout
@@ -108,7 +108,7 @@
         android:id="@+id/seat_wei"
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_140p"
-        android:background="@color/white">
+        android:background="@drawable/personal_item">
 
 
         <LinearLayout

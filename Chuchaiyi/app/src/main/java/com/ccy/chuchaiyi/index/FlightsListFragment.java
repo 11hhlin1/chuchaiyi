@@ -2,9 +2,7 @@ package com.ccy.chuchaiyi.index;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
@@ -12,12 +10,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
-import com.ccy.chuchaiyi.city.CitySort;
-import com.ccy.chuchaiyi.city.CitySortList;
-import com.ccy.chuchaiyi.city.PinyinComparator;
 import com.ccy.chuchaiyi.net.ApiConstants;
+import com.ccy.chuchaiyi.widget.NestRadioGroup;
 import com.gjj.applibrary.event.EventOfTokenError;
 import com.gjj.applibrary.http.callback.CommonCallback;
+import com.gjj.applibrary.log.L;
 import com.gjj.applibrary.util.Util;
 import com.gjj.applibrary.widget.EmptyErrorViewController;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -28,14 +25,12 @@ import com.lzy.okhttputils.cache.CacheMode;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -83,18 +78,44 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
     void emptyReload() {
         mListView.setRefreshing();
     }
+
+    @Bind(R.id.group_tab)
+    NestRadioGroup mRadioGroup;
+
     private EmptyErrorViewController mEmptyErrorViewController;
     private FlightsListAdapter mAdapter;
-    String mCurrentDate;
+    private String mCurrentDateString;
+    private Date mCurrentDate;
     @OnClick({R.id.pre_day, R.id.next_day})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pre_day:
+                Date date = new Date();
+                if(date.getTime() >= mCurrentDate.getTime()) {
+                    return;
+                }
+                calendar.add(Calendar.DAY_OF_WEEK,-1);
+                setTodayTv();
+                mListView.setRefreshing();
+                if(date.getTime() == mCurrentDate.getTime()) {
+                    preDay.setEnabled(false);
+                    preDay.setTextColor(getResources().getColor(R.color.secondary_gray));
+                    preDay.setClickable(false);
+                } else {
+                    preDay.setEnabled(true);
+                    preDay.setClickable(true);
+                    preDay.setTextColor(getResources().getColor(R.color.color_aaaaaa));
+                }
                 break;
             case R.id.next_day:
+                calendar.add(Calendar.DAY_OF_WEEK,1);
+                setTodayTv();
+                mListView.setRefreshing();
                 break;
         }
     }
+    private Calendar calendar = Calendar.getInstance();
+
     @Override
     public int getContentViewLayout() {
         return R.layout.fragment_flight_list;
@@ -132,22 +153,67 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
         Bundle bundle = getArguments();
         mDepartureCode = bundle.getString("DepartureCode");
         mArrivalCode = bundle.getString("ArrivalCode");
-        mCurrentDate = bundle.getString("FlightDate");
-        String[] dates = mCurrentDate.split("-");
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Integer.valueOf(dates[0]),Integer.valueOf(dates[1]),Integer.valueOf(dates[2]));
-        Date date = calendar.getTime();
-
-        todayTv.setText(mCurrentDate);
+        mCurrentDateString = bundle.getString("FlightDate");
         mBunkType = bundle.getString("BunkType");
+        String[] dates = mCurrentDateString.split("-");
+        L.d("@@@@"+mCurrentDateString);
+        calendar.set(Integer.valueOf(dates[0]),Integer.valueOf(dates[1])-1,Integer.valueOf(dates[2]));
+
+        setTodayTv();
         mEmptyErrorViewController = new EmptyErrorViewController(mEmptyTextView, mErrorTextView, listView, new EmptyErrorViewController.AdapterWrapper(mAdapter));
+        mRadioGroup.setOnCheckedChangeListener(new NestRadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(NestRadioGroup group, int checkedId) {
+                switch (group.getCheckedRadioButtonId()) {
+                    case R.id.time_tab:
+//                        showIndexTab();
+                        break;
+                    case R.id.price_tab:
+//                        showOrderTab();
+                        break;
+                    case R.id.seat_tab:
+//                        showCheckTab();
+                        break;
+                    case R.id.company_tab:
+//                        showPersonTab();
+                        break;
+                }
+            }
+        });
+        mRadioGroup.check(R.id.time_tab);
+
     }
 
+    void setTodayTv() {
+        mCurrentDate = calendar.getTime();
+        StringBuilder dateTitle = Util.getThreadSafeStringBuilder();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM月dd日");
+        dateTitle.append(simpleDateFormat.format(mCurrentDate));
+        int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+        if(weekDay == Calendar.MONDAY) {
+            dateTitle.append(" ").append("周一");
+        } else if(weekDay == Calendar.TUESDAY) {
+            dateTitle.append(" ").append("周二");
+        } else if(weekDay == Calendar.WEDNESDAY) {
+            dateTitle.append(" ").append("周三");
+        } else if(weekDay == Calendar.THURSDAY) {
+            dateTitle.append(" ").append("周四");
+        } else if(weekDay == Calendar.FRIDAY) {
+            dateTitle.append(" ").append("周五");
+        } else if(weekDay == Calendar.SATURDAY) {
+            dateTitle.append(" ").append("周六");
+        } else if(weekDay == Calendar.SUNDAY) {
+            dateTitle.append(" ").append("周日");
+        }
+        todayTv.setText(dateTitle.toString());
+    }
     void doRequest() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        mCurrentDateString = dateFormat.format(mCurrentDate);
         GetFlightsRequest request = new GetFlightsRequest();
         request.setDepartureCode(mDepartureCode);
         request.setArrivalCode(mArrivalCode);
-        request.setFlightDate(mCurrentDate);
+        request.setFlightDate(mCurrentDateString);
         request.setBunkType(mBunkType);
         request.setDepartureCodeIsCity(true);
         request.setArrivalCodeIsCity(true);

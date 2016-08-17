@@ -146,7 +146,7 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
             childHolder.remainNum.setVisibility(View.VISIBLE);
             childHolder.remainNum.setText(mContext.getString(R.string.num,bunksBean.getRemainNum()));
         } else {
-            childHolder.remainNum.setVisibility(View.INVISIBLE);
+            childHolder.remainNum.setVisibility(View.GONE);
         }
         return convertView;
     }

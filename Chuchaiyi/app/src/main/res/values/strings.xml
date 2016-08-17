@@ -76,5 +76,9 @@
     <string name="money_no_end">￥%1$s</string>
     <string name="num">%1$s张</string>
     <string name="discount">%1$s折</string>
+    <string name="next_day">后一天</string>
+    <string name="time_tab">从早到晚</string>
+    <string name="price">价格</string>
+    <string name="plane_company">航空公司</string>
 
 </resources>
