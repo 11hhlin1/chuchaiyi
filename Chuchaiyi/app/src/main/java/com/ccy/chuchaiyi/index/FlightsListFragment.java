@@ -29,7 +29,9 @@ import com.lzy.okhttputils.cache.CacheMode;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 
 import butterknife.Bind;
@@ -61,6 +63,10 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
      */
     @Bind(R.id.error_tv)
     TextView mErrorTextView;
+    private String mDepartureCode;
+    private String mArrivalCode;
+    private String mBunkType;
+
     /**
      * 重新加载
      */
@@ -79,6 +85,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
     }
     private EmptyErrorViewController mEmptyErrorViewController;
     private FlightsListAdapter mAdapter;
+    String mCurrentDate;
     @OnClick({R.id.pre_day, R.id.next_day})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -122,16 +129,26 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                 mListView.setRefreshing();
             }
         });
+        Bundle bundle = getArguments();
+        mDepartureCode = bundle.getString("DepartureCode");
+        mArrivalCode = bundle.getString("ArrivalCode");
+        mCurrentDate = bundle.getString("FlightDate");
+        String[] dates = mCurrentDate.split("-");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Integer.valueOf(dates[0]),Integer.valueOf(dates[1]),Integer.valueOf(dates[2]));
+        Date date = calendar.getTime();
+
+        todayTv.setText(mCurrentDate);
+        mBunkType = bundle.getString("BunkType");
         mEmptyErrorViewController = new EmptyErrorViewController(mEmptyTextView, mErrorTextView, listView, new EmptyErrorViewController.AdapterWrapper(mAdapter));
     }
 
     void doRequest() {
-        Bundle bundle =getArguments();
         GetFlightsRequest request = new GetFlightsRequest();
-        request.setDepartureCode(bundle.getString("DepartureCode"));
-        request.setArrivalCode(bundle.getString("ArrivalCode"));
-        request.setFlightDate(bundle.getString("FlightDate"));
-        request.setBunkType(bundle.getString("BunkType"));
+        request.setDepartureCode(mDepartureCode);
+        request.setArrivalCode(mArrivalCode);
+        request.setFlightDate(mCurrentDate);
+        request.setBunkType(mBunkType);
         request.setDepartureCodeIsCity(true);
         request.setArrivalCodeIsCity(true);
         request.setAirlines("");
