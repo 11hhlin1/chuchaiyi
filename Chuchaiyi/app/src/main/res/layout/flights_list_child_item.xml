@@ -2,18 +2,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="40dp">
+    android:layout_height="50dp">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/left_ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/plane_type"
-        android:text="经济舱"
-        android:paddingLeft="@dimen/margin_30p"
-        android:textColor="@color/color_222222"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:textSize="@dimen/textsize_16sp"/>
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/plane_type"
+            android:text="经济舱"
+            android:paddingLeft="@dimen/margin_30p"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_14sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/change_msg"
+            android:text="退改签"
+            android:paddingLeft="@dimen/margin_30p"
+            android:textColor="@color/color_0071c4"
+            android:textSize="@dimen/textsize_12sp"/>
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -22,7 +36,7 @@
         android:text="9.5折"
         android:layout_marginLeft="6dp"
         android:textColor="@color/color_222222"
-        android:layout_toRightOf="@+id/plane_type"
+        android:layout_toRightOf="@+id/left_ll"
         android:layout_centerVertical="true"
         android:textSize="@dimen/textsize_14sp"/>
 
@@ -35,7 +49,7 @@
         android:text="@string/book"
         android:gravity="center"
         android:textColor="@color/white"
-        android:background="@color/color_0071c4"
+        android:background="@drawable/circle_rect_blue"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/margin_30p"
         android:layout_centerVertical="true"
@@ -62,7 +76,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/selector_common_btn"
             android:textColor="@color/white"
-            android:layout_marginTop="3dp"
+            android:padding="2dp"
             android:text="4张"
             android:layout_gravity="center_horizontal"
             android:textSize="@dimen/textsize_14sp"/>

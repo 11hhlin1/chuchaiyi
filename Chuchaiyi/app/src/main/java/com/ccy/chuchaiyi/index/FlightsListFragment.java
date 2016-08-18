@@ -15,6 +15,7 @@ import com.ccy.chuchaiyi.widget.NestRadioGroup;
 import com.gjj.applibrary.event.EventOfTokenError;
 import com.gjj.applibrary.http.callback.CommonCallback;
 import com.gjj.applibrary.log.L;
+import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 import com.gjj.applibrary.widget.EmptyErrorViewController;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -32,6 +33,7 @@ import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -191,19 +193,19 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
         dateTitle.append(simpleDateFormat.format(mCurrentDate));
         int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
         if(weekDay == Calendar.MONDAY) {
-            dateTitle.append(" ").append("周一");
+            dateTitle.append(" 周一");
         } else if(weekDay == Calendar.TUESDAY) {
-            dateTitle.append(" ").append("周二");
+            dateTitle.append(" 周二");
         } else if(weekDay == Calendar.WEDNESDAY) {
-            dateTitle.append(" ").append("周三");
+            dateTitle.append(" 周三");
         } else if(weekDay == Calendar.THURSDAY) {
-            dateTitle.append(" ").append("周四");
+            dateTitle.append(" 周四");
         } else if(weekDay == Calendar.FRIDAY) {
-            dateTitle.append(" ").append("周五");
+            dateTitle.append(" 周五");
         } else if(weekDay == Calendar.SATURDAY) {
-            dateTitle.append(" ").append("周六");
+            dateTitle.append(" 周六");
         } else if(weekDay == Calendar.SUNDAY) {
-            dateTitle.append(" ").append("周日");
+            dateTitle.append(" 周日");
         }
         todayTv.setText(dateTitle.toString());
     }
@@ -255,6 +257,17 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                                 if(!Util.isListEmpty(flightInfoList.mFlightInfoList)) {
                                     mAdapter.setData(flightInfoList.mFlightInfoList);
                                 }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                        super.onError(isFromCache, call, response, e);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ToastUtil.shortToast(R.string.load_fail);
                             }
                         });
                     }

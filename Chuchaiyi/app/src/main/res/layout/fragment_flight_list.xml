@@ -53,12 +53,13 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/top_date"
         android:background="@null"
-        android:listSelector="@drawable/personal_item"
         android:cacheColorHint="@android:color/transparent"
         android:childIndicator="@null"
-        android:divider="#00000000"
+        android:divider="@null"
         android:fadingEdge="none"
         android:groupIndicator="@null"
+        android:listSelector="@android:color/transparent"
+        android:scrollbarStyle="outsideOverlay"
         android:scrollbars="none" />
 
     <TextView

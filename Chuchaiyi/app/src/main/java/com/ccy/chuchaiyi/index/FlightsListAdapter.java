@@ -2,11 +2,17 @@ package com.ccy.chuchaiyi.index;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
@@ -22,10 +28,19 @@ import butterknife.ButterKnife;
  * Created by Chuck on 2016/8/17.
  */
 public class FlightsListAdapter extends BaseExpandableListAdapter {
+    private final int mColorOrange;
+    private final ForegroundColorSpan mOrangeSpan;
+    private final int mColorGray;
+    private final AbsoluteSizeSpan mSmallSpan;
+    private final ForegroundColorSpan mGraySpan;
     private Resources mRes;
     private LayoutInflater mInflater;
     private ArrayList<FlightInfo> mDataList;
     private Context mContext;
+    private SparseArray<SpannableString> mAmountCache = new SparseArray<>();
+    public static final int VIEW_HEAD = 1;
+//    public static final int VIEW_CONTENT = 2;
+
 
     public FlightsListAdapter(Context context, ArrayList<FlightInfo> dataList) {
         super();
@@ -33,6 +48,11 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
         mRes = context.getResources();
         mInflater = LayoutInflater.from(context);
         mDataList = dataList;
+        mColorOrange = mRes.getColor(R.color.orange);
+        mOrangeSpan = new ForegroundColorSpan(mColorOrange);
+        mColorGray = mRes.getColor(R.color.color_222222);
+        mGraySpan = new ForegroundColorSpan(mColorGray);
+        mSmallSpan = new AbsoluteSizeSpan(Util.px2dip(mContext, Util.sp2px(11)), true);
     }
 
     /**
@@ -48,6 +68,7 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
             mDataList = list;
         }
         notifyDataSetChanged();
+        mAmountCache.clear();
     }
 
     @Override
@@ -59,6 +80,21 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
+    public int getChildTypeCount() {
+        return 2;
+    }
+
+    @Override
+    public int getChildType(int groupPosition, int childPosition) {
+        if (childPosition == 0) {
+            return VIEW_HEAD;
+        } else {
+            return super.getChildType(groupPosition, childPosition);
+        }
+//
+    }
+
+    @Override
     public int getChildrenCount(int groupPosition) {
         if (mDataList == null || mDataList.size() == 0) {
             return 0;
@@ -67,7 +103,7 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
         if (list == null) {
             return 0;
         }
-        return list.size();
+        return list.size() + 1;
     }
 
     @Override
@@ -83,7 +119,10 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
         if (mDataList == null) {
             return null;
         }
-        return mDataList.get(groupPosition).getBunks().get(childPosition);
+        if(childPosition == 0) {
+            return null;
+        }
+        return mDataList.get(groupPosition).getBunks().get(childPosition - 1);
     }
 
     @Override
@@ -98,7 +137,7 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean hasStableIds() {
-        return false;
+        return true;
     }
 
     @Override
@@ -121,34 +160,76 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
         holder.setOutTime.setText(setOutTime.substring(len1 - 5, len1));
         holder.setOutAirport.setText(flightInfo.getDeparture().getAirportName());
         holder.arriveAirport.setText(flightInfo.getArrival().getAirportName());
-        holder.money.setText(mContext.getString(R.string.money, flightInfo.getYBunkPrice()));
+        SpannableString spannableAmount = mAmountCache.get(groupPosition);
+        if (spannableAmount == null) {
+            int price = getMinPrice(flightInfo.getBunks());
+            spannableAmount = new SpannableString(mRes.getString(R.string.money, price));
+            int length = spannableAmount.length();
+            spannableAmount.setSpan(mSmallSpan, length - 1, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableAmount.setSpan(mGraySpan, length - 1, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            mAmountCache.put(groupPosition, spannableAmount);
+        }
+        holder.money.setText(spannableAmount);
+//        holder.money.setText(mContext.getString(R.string.money, flightInfo.getYBunkPrice()));
         StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
         stringBuilder.append(flightInfo.getAirlineName()).append(flightInfo.getFlightNo()).append(" | ").append(flightInfo.getPlanType());
         holder.planeMsg.setText(stringBuilder.toString());
         return convertView;
     }
 
+    private int getMinPrice(List<FlightInfo.BunksBean> bunksBeen) {
+        int size = bunksBeen.size();
+        int price = 0;
+        for (int i = 0; i < size; i++) {
+            FlightInfo.BunksBean bunksBean = bunksBeen.get(i);
+            FlightInfo.BunksBean.BunkPriceBean bunkPriceBean = bunksBean.getBunkPrice();
+            int temp = bunkPriceBean.getBunkPrice();
+            if (i == 0) {
+                price = temp;
+            } else if (price > temp) {
+                price = temp;
+            }
+        }
+
+        return price;
+    }
+
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        ViewHolderChild childHolder = null;
-        if (null == convertView) {
-            convertView = mInflater.inflate(R.layout.flights_list_child_item, parent, false);
-            childHolder = new ViewHolderChild(convertView);
-            convertView.setTag(childHolder);
+        int type = getChildType(groupPosition, childPosition);
+
+        if (type == VIEW_HEAD) {
+            ViewHolderChildHead childHolder = null;
+            if (null == convertView) {
+                convertView = mInflater.inflate(R.layout.flight_list_child_head_item, parent, false);
+                childHolder = new ViewHolderChildHead(convertView);
+                convertView.setTag(childHolder);
+            } else {
+                childHolder = (ViewHolderChildHead) convertView.getTag();
+            }
+            return convertView;
         } else {
-            childHolder = (ViewHolderChild) convertView.getTag();
+            ViewHolderChild childHolder = null;
+            if (null == convertView) {
+                convertView = mInflater.inflate(R.layout.flights_list_child_item, parent, false);
+                childHolder = new ViewHolderChild(convertView);
+                convertView.setTag(childHolder);
+            } else {
+                childHolder = (ViewHolderChild) convertView.getTag();
+            }
+            FlightInfo.BunksBean bunksBean = getChild(groupPosition, childPosition);
+            childHolder.planeType.setText(bunksBean.getBunkName());
+            childHolder.discount.setText(mContext.getString(R.string.discount, bunksBean.getBunkPrice().getDiscount()));
+            childHolder.detailMoney.setText((mContext.getString(R.string.money_no_end, bunksBean.getBunkPrice().getBunkPrice())));
+            if (bunksBean.getRemainNum() < 5) {
+                childHolder.remainNum.setVisibility(View.VISIBLE);
+                childHolder.remainNum.setText(mContext.getString(R.string.num, bunksBean.getRemainNum()));
+            } else {
+                childHolder.remainNum.setVisibility(View.GONE);
+            }
+            return convertView;
         }
-        FlightInfo.BunksBean bunksBean = getChild(groupPosition,childPosition);
-        childHolder.planeType.setText(bunksBean.getBunkName());
-        childHolder.discount.setText(mContext.getString(R.string.discount,bunksBean.getBunkPrice().getDiscount()));
-        childHolder.detailMoney.setText((mContext.getString(R.string.money_no_end,bunksBean.getBunkPrice().getBunkPrice())));
-        if(bunksBean.getRemainNum() < 5){
-            childHolder.remainNum.setVisibility(View.VISIBLE);
-            childHolder.remainNum.setText(mContext.getString(R.string.num,bunksBean.getRemainNum()));
-        } else {
-            childHolder.remainNum.setVisibility(View.GONE);
-        }
-        return convertView;
+
     }
 
     @Override
@@ -189,6 +270,17 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
         TextView detailMoney;
 
         ViewHolderChild(View view) {
+            ButterKnife.bind(this, view);
+        }
+    }
+
+    class ViewHolderChildHead {
+        @Bind(R.id.hide_tv)
+        TextView hideTv;
+        @Bind(R.id.hide_iv)
+        ImageView hideIv;
+
+        ViewHolderChildHead(View view) {
             ButterKnife.bind(this, view);
         }
     }
