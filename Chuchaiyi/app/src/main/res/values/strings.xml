@@ -78,7 +78,10 @@
     <string name="num">%1$s张</string>
     <string name="discount">%1$s折</string>
     <string name="next_day">后一天</string>
-    <string name="time_tab">从早到晚</string>
+    <string name="time_tab">时间从早到晚</string>
+    <string name="late_to_early_tab">时间从晚到早</string>
+    <string name="low_to_high">价格从低到高</string>
+    <string name="high_to_low">价格从高到低</string>
     <string name="price">价格</string>
     <string name="plane_company">航空公司</string>
     <string name="all_seat">全部舱位</string>

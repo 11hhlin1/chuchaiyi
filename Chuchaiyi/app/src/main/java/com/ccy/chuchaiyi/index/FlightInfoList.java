@@ -9,5 +9,5 @@ import java.util.List;
  */
 public class FlightInfoList implements Serializable{
     private static final long serialVersionUID = -7671298486789733646L;
-    public ArrayList<FlightInfo> mFlightInfoList;
+    public List<FlightInfo> mFlightInfoList;
 }

@@ -35,14 +35,14 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
     private final ForegroundColorSpan mGraySpan;
     private Resources mRes;
     private LayoutInflater mInflater;
-    private ArrayList<FlightInfo> mDataList;
+    private List<FlightInfo> mDataList;
     private Context mContext;
     private SparseArray<SpannableString> mAmountCache = new SparseArray<>();
     public static final int VIEW_HEAD = 1;
 //    public static final int VIEW_CONTENT = 2;
 
 
-    public FlightsListAdapter(Context context, ArrayList<FlightInfo> dataList) {
+    public FlightsListAdapter(Context context, List<FlightInfo> dataList) {
         super();
         mContext = context;
         mRes = context.getResources();
@@ -60,7 +60,7 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
      *
      * @param list
      */
-    public void setData(ArrayList<FlightInfo> list) {
+    public void setData(List<FlightInfo> list) {
         if (list != mDataList) {
             if (mDataList != null) {
                 mDataList.clear();
@@ -177,7 +177,7 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
-    private int getMinPrice(List<FlightInfo.BunksBean> bunksBeen) {
+    public static int getMinPrice(List<FlightInfo.BunksBean> bunksBeen) {
         int size = bunksBeen.size();
         int price = 0;
         for (int i = 0; i < size; i++) {
