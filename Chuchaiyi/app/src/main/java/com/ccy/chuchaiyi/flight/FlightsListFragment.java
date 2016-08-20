@@ -147,7 +147,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
     private String mCurrentDateString;
     private Date mCurrentDate;
 
-    @OnClick({R.id.pre_day, R.id.next_day, R.id.time_tab,R.id.price_tab, R.id.seat_tab, R.id.company_fl})
+    @OnClick({R.id.pre_day, R.id.next_day, R.id.time_tab,R.id.price_tab, R.id.seat_tab, R.id.company_tab})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pre_day:
@@ -213,6 +213,9 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                 break;
             case R.id.seat_tab:
                 showPickupWindow();
+                break;
+            case R.id.company_tab:
+                showPickupCompanyWindow();
                 break;
         }
     }
@@ -384,18 +387,18 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
             contentView = LayoutInflater.from(getActivity()).inflate(
                     R.layout.choose_air_company, null);
             listView = (ListView) contentView.findViewById(R.id.listView);
-            Button cancelBtn = (Button) contentView.findViewById(R.id.btn_cancel);
+            Button cancelBtn = (Button) contentView.findViewById(R.id.company_btn_cancel);
             cancelBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    dismissConstructNoticeWindow();
+                    dismissChooseCompanyWindow();
                 }
             });
-            Button sureBtn = (Button) contentView.findViewById(R.id.btn_sure);
+            Button sureBtn = (Button) contentView.findViewById(R.id.company_btn_sure);
             sureBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    dismissConstructNoticeWindow();
+                    dismissChooseCompanyWindow();
                     doSeatFilter();
                 }
             });
@@ -405,23 +408,23 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
             company.mAirlineName = "不限";
             companies.add(company);
             Company company1 = new Company();
-            company1.mIsSel = true;
+            company1.mIsSel = false;
             company1.mAirlineName = "深航";
             companies.add(company1);
             Company company2 = new Company();
-            company2.mIsSel = true;
-            company2.mAirlineName = "南航";
+            company2.mIsSel = false;
+            company2.mAirlineName = "国航";
             companies.add(company2);
             Company company3 = new Company();
-            company3.mIsSel = true;
-            company3.mAirlineName = "海航";
+            company3.mIsSel = false;
+            company3.mAirlineName = "东航";
             companies.add(company3);
             mSelCompanyAdapter = new ChooseCompanyAdapter(getActivity(),companies);
             listView.setAdapter(mSelCompanyAdapter);
             contentView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    dismissConstructNoticeWindow();
+                    dismissChooseCompanyWindow();
                 }
             });
             popupWindow = new PopupWindow(contentView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, false);
@@ -461,7 +464,17 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
             pickUpPopWindow.dismiss();
         }
     }
-
+    /**
+     * 取消工程消息弹出框
+     *
+     * @return
+     */
+    private void dismissChooseCompanyWindow() {
+        PopupWindow pickUpPopWindow = mPickUpPopCompanyWindow;
+        if (null != pickUpPopWindow && pickUpPopWindow.isShowing()) {
+            pickUpPopWindow.dismiss();
+        }
+    }
     //=============================================================adapter
     class ListPopupAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
@@ -535,49 +548,58 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
     private void doSeatFilter() {
         if (Util.isListEmpty(mOriFlightInfoList))
             return;
-        int len = mOriFlightInfoList.size();
         List<FlightInfo> flightInfos = new ArrayList<>();
         if (mSelCompanyAdapter != null) {
             List<Company> companies = mSelCompanyAdapter.getmCompanyList();
+            int len = mOriFlightInfoList.size();
             if(!companies.get(0).mIsSel) {
-                for (int i = 1; i < len; i++) {
+                for (int i = 0; i < len; i++) {
                     FlightInfo flightInfo = mOriFlightInfoList.get(i);
                     for (Company company : companies) {
                         if (company.mIsSel && company.mAirlineName.equals(flightInfo.getAirlineName())) {
                             flightInfos.add(flightInfo);
+                            break;
                         }
                     }
                 }
             } else {
-                flightInfos = mOriFlightInfoList;
+                flightInfos.addAll(mOriFlightInfoList);
             }
         } else {
-            flightInfos = mOriFlightInfoList;
+            flightInfos.addAll(mOriFlightInfoList);
         }
         if (mSeatIndex != 0) {
             List<FlightInfo> infos = new ArrayList<>();
-            for (int i=0; i<len; i++) {
+            int size = flightInfos.size();
+            for (int i= 0; i < size; i++) {
                 FlightInfo flightInfo = flightInfos.get(i);
                 List<FlightInfo.BunksBean> bunksBeen = flightInfo.getBunks();
                 List<FlightInfo.BunksBean> bunksBeenTemp = new ArrayList<>();
                 for (FlightInfo.BunksBean bean :bunksBeen) {
-
-                    if(!mItemList.get(mSeatIndex).mCode.equals(bean.getBunkCode())) {
-                        continue;
+                    String code = mItemList.get(mSeatIndex).mCode;
+                    if(code.equals("Y")) {
+                        if(code.equals(bean.getBunkType())) {
+                            bunksBeenTemp.add(bean);
+                        }
+                    } else {
+                        if(code.equals(bean.getBunkType())|| bean.getBunkType().equals("C")) {
+                            bunksBeenTemp.add(bean);
+                        }
                     }
-                    bunksBeenTemp.add(bean);
+
                 }
-                flightInfo.setBunks(bunksBeenTemp);
                 if(bunksBeenTemp.size() > 0) {
+                    flightInfo.setBunks(bunksBeenTemp);
                     infos.add(flightInfo);
                 }
             }
             flightInfos = infos;
         } else {
-            flightInfos = mOriFlightInfoList;
+            if (flightInfos.size() == 0)
+            flightInfos.addAll(mOriFlightInfoList);
         }
         mFlightInfoList = flightInfos;
-        mAdapter.setData(flightInfos);
+        mAdapter.setData(mFlightInfoList);
 
 
     }
@@ -673,7 +695,8 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                                 mListView.onRefreshComplete();
                                 if (!Util.isListEmpty(flightInfoList.mFlightInfoList)) {
                                     mFlightInfoList = flightInfoList.mFlightInfoList;
-                                    mOriFlightInfoList = flightInfoList.mFlightInfoList;
+                                    mOriFlightInfoList = new ArrayList<FlightInfo>();
+                                    mOriFlightInfoList.addAll(flightInfoList.mFlightInfoList);
                                     int len = mFlightInfoList.size();
 //                                    List<FlightInfo> flightInfos = new ArrayList<FlightInfo>();
                                     List<FlightInfo> flightInfos = new ArrayList<>();

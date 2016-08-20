@@ -50,7 +50,7 @@ public class ChooseCompanyAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder vh = null;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.choose_company_list_item, parent, false);
@@ -67,7 +67,29 @@ public class ChooseCompanyAdapter extends BaseAdapter {
         }
         vh.companyName.setText(company.mAirlineName);
         vh.checkIcon.setTag(position);
+        vh.checkIcon.setOnCheckedChangeListener(null);
         vh.checkIcon.setChecked(company.mIsSel);
+        vh.checkIcon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (position == 0 && b) {
+                    int len = mCompanyList.size();
+                    for (int i = 0; i<len;i++){
+                        Company company = mCompanyList.get(i);
+                        if(i==0){
+                            company.mIsSel  = b;
+                        } else {
+                            company.mIsSel = false;
+                        }
+                    }
+
+                } else {
+                    mCompanyList.get(position).mIsSel = b;
+                    mCompanyList.get(0).mIsSel = false;
+                }
+                notifyDataSetChanged();
+            }
+        });
         return convertView;
     }
 
@@ -79,26 +101,7 @@ public class ChooseCompanyAdapter extends BaseAdapter {
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
-            checkIcon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    int pos = (int) checkIcon.getTag();
-                    if (pos == 0 && b) {
-                        int len = mCompanyList.size();
-                        for (int i = 0; i<len;i++){
-                            Company company = mCompanyList.get(i);
-                            if(i==0){
-                                company.mIsSel  = b;
-                            }
-                            company.mIsSel = false;
-                        }
 
-                    } else {
-                        mCompanyList.get(pos).mIsSel = b;
-                    }
-                    notifyDataSetChanged();
-                }
-            });
         }
     }
 }

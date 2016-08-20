@@ -15,7 +15,7 @@
             android:background="@color/activity_bg_gray"
             android:layout_height="40dp">
             <Button
-                android:id="@+id/btn_cancel"
+                android:id="@+id/company_btn_cancel"
                 android:layout_width="50dp"
                 android:layout_height="25dp"
                 android:layout_centerVertical="true"
@@ -26,13 +26,13 @@
                 android:textSize="@dimen/textsize_13sp"
                 android:layout_marginLeft="@dimen/margin_30p"/>
             <Button
-                android:id="@+id/btn_sure"
+                android:id="@+id/company_btn_sure"
                 android:layout_width="50dp"
                 android:layout_height="25dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/circle_rect_blue"
-                android:text="@string/dialog_default_cancel_title"
+                android:text="@string/dialog_default_confirm_title"
                 android:textColor="@color/white"
                 android:textSize="@dimen/textsize_13sp"
                 android:layout_marginRight="@dimen/margin_30p"/>

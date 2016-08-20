@@ -1,5 +1,6 @@
 package com.ccy.chuchaiyi.flight;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.text.SpannableString;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
+import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.widget.PolicyDialog;
 import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
@@ -293,6 +295,12 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onClick(View view) {
                     dismissConfirmDialog();
+                }
+            });
+            policyDialog.setConfirmClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PageSwitcher.switchToTopNavPage((Activity) mContext,FlightPolicyFragment.class,null,mContext.getString(R.string.policy),null);
                 }
             });
             policyDialog.show();
