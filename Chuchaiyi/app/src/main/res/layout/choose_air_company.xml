@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/effect_tm_black"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:background="@color/activity_bg_gray"
+            android:layout_height="40dp">
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/choose_air_company_cancle_btn"
+                android:text="@string/dialog_default_cancel_title"
+                android:textColor="@color/color_0071c4"
+                android:textSize="@dimen/textsize_13sp"
+                android:layout_marginLeft="@dimen/margin_30p"/>
+            <Button
+                android:id="@+id/btn_sure"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/circle_rect_blue"
+                android:text="@string/dialog_default_cancel_title"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textsize_13sp"
+                android:layout_marginRight="@dimen/margin_30p"/>
+        </RelativeLayout>
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:divider="@color/line_color_gray"
+            android:dividerHeight="@dimen/line_height"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</RelativeLayout>

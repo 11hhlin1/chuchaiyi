@@ -85,5 +85,9 @@
     <string name="price">价格</string>
     <string name="plane_company">航空公司</string>
     <string name="all_seat">全部舱位</string>
+    <string name="flight_fund_detail">机建￥%1$s 燃油￥%2$s</string>
+    <string name="returnPolicy">退票</string>
+    <string name="changePolicy">改签</string>
+    <string name="signPolicy">备注</string>
 
 </resources>

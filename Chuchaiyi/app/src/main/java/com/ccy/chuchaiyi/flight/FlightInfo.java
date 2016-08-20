@@ -1,4 +1,4 @@
-package com.ccy.chuchaiyi.index;
+package com.ccy.chuchaiyi.flight;
 
 import java.io.Serializable;
 import java.util.List;

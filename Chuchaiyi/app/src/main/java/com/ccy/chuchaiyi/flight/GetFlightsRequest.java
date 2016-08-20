@@ -1,4 +1,4 @@
-package com.ccy.chuchaiyi.index;
+package com.ccy.chuchaiyi.flight;
 
 /**
  * Created by Chuck on 2016/8/17.

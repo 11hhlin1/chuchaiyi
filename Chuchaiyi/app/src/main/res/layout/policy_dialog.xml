@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/margin_20p"
+    android:background="@drawable/corner_white_bg">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:id="@+id/seat_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_16sp"
+            android:text="经济舱"
+            android:layout_alignParentLeft="true"/>
+        <ImageView
+            android:id="@+id/dialog_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_close"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/seat_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/orange"
+        android:textSize="@dimen/textsize_16sp"
+        android:gravity="left"
+        android:text="2400"
+        android:layout_marginTop="2dp"/>
+    <TextView
+        android:id="@+id/seat_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_aaaaaa"
+        android:textSize="@dimen/textsize_12sp"
+        android:gravity="left"
+        android:text="@string/flight_fund_detail"
+        android:layout_marginTop="2dp"/>
+    <ImageView
+        style="@style/horizontal_line"
+        android:layout_marginTop="18dp"/>
+    <TextView
+        android:id="@+id/returnPolicy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:textColor="@color/color_222222"
+        android:textSize="@dimen/textsize_14sp"
+        android:gravity="left"
+        android:text="@string/returnPolicy" />
+    <TextView
+        android:id="@+id/returnPolicyDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/color_222222"
+        android:textSize="@dimen/textsize_13sp"
+        android:gravity="left"
+        android:text="都是大大" />
+    <TextView
+        android:id="@+id/changePolicy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/color_222222"
+        android:textSize="@dimen/textsize_14sp"
+        android:gravity="left"
+        android:text="@string/changePolicy" />
+    <TextView
+        android:id="@+id/changePolicyDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/color_222222"
+        android:textSize="@dimen/textsize_13sp"
+        android:gravity="left"
+        android:text="都是大大" />
+    <TextView
+        android:id="@+id/signPolicy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/color_222222"
+        android:textSize="@dimen/textsize_14sp"
+        android:gravity="left"
+        android:text="@string/signPolicy" />
+    <TextView
+        android:id="@+id/signPolicyDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/color_222222"
+        android:textSize="@dimen/textsize_13sp"
+        android:gravity="left"
+        android:text="都是大大" />
+    <Button
+        android:id="@+id/book_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/single_line_height_132px"
+        android:layout_marginTop="@dimen/margin_40p"
+        android:textSize="@dimen/textsize_18sp"
+        android:textColor="@color/white"
+        android:text="@string/book"
+        android:background="@drawable/selector_common_btn"/>
+</LinearLayout>

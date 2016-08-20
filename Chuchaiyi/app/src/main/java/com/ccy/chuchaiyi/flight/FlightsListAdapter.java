@@ -1,4 +1,4 @@
-package com.ccy.chuchaiyi.index;
+package com.ccy.chuchaiyi.flight;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -16,13 +16,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
+import com.ccy.chuchaiyi.widget.PolicyDialog;
+import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Chuck on 2016/8/17.
@@ -39,6 +41,7 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private SparseArray<SpannableString> mAmountCache = new SparseArray<>();
     public static final int VIEW_HEAD = 1;
+    private PolicyDialog mConfirmDialog;
 //    public static final int VIEW_CONTENT = 2;
 
 
@@ -61,12 +64,12 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
      * @param list
      */
     public void setData(List<FlightInfo> list) {
-        if (list != mDataList) {
-            if (mDataList != null) {
-                mDataList.clear();
-            }
+//        if (list != mDataList) {
+//            if (mDataList != null) {
+//                mDataList.clear();
+//            }
             mDataList = list;
-        }
+//        }
         notifyDataSetChanged();
         mAmountCache.clear();
     }
@@ -219,6 +222,8 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
             }
             FlightInfo.BunksBean bunksBean = getChild(groupPosition, childPosition);
             childHolder.planeType.setText(bunksBean.getBunkName());
+            childHolder.changeMsg.setTag(R.id.left_ll,groupPosition);
+            childHolder.changeMsg.setTag(R.id.change_msg,childPosition);
             childHolder.discount.setText(mContext.getString(R.string.discount, bunksBean.getBunkPrice().getDiscount()));
             childHolder.detailMoney.setText((mContext.getString(R.string.money_no_end, bunksBean.getBunkPrice().getBunkPrice())));
             if (bunksBean.getRemainNum() < 5) {
@@ -260,6 +265,8 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
     class ViewHolderChild {
         @Bind(R.id.plane_type)
         TextView planeType;
+        @Bind(R.id.change_msg)
+        TextView changeMsg;
         @Bind(R.id.discount)
         TextView discount;
         @Bind(R.id.remainNum)
@@ -269,17 +276,47 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
         @Bind(R.id.detail_money)
         TextView detailMoney;
 
+        @OnClick(R.id.book_btn)
+        void setBookBtn() {
+            ToastUtil.shortToast(R.string.app_name);
+        }
+        @OnClick(R.id.left_ll)
+        void showDialog() {
+            int groupPos = (int) changeMsg.getTag(R.id.left_ll);
+            int childPos = (int) changeMsg.getTag(R.id.change_msg);
+            FlightInfo flight = getGroup(groupPos);
+            FlightInfo.BunksBean bunks = getChild(groupPos,childPos);
+            PolicyDialog policyDialog = new PolicyDialog(mContext);
+            mConfirmDialog = policyDialog;
+            policyDialog.setCanceledOnTouchOutside(true);
+            policyDialog.setCancelClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismissConfirmDialog();
+                }
+            });
+            policyDialog.show();
+            policyDialog.setContent(flight,bunks);
+        }
         ViewHolderChild(View view) {
             ButterKnife.bind(this, view);
         }
     }
-
+    /**
+     * dismiss确认对话框
+     */
+    private void dismissConfirmDialog() {
+        PolicyDialog confirmDialog = mConfirmDialog;
+        if (null != confirmDialog && confirmDialog.isShowing()) {
+            confirmDialog.dismiss();
+            mConfirmDialog = null;
+        }
+    }
     class ViewHolderChildHead {
         @Bind(R.id.hide_tv)
         TextView hideTv;
         @Bind(R.id.hide_iv)
         ImageView hideIv;
-
         ViewHolderChildHead(View view) {
             ButterKnife.bind(this, view);
         }

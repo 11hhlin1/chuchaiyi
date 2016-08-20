@@ -1,11 +1,10 @@
-package com.ccy.chuchaiyi.index;
+package com.ccy.chuchaiyi.flight;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -27,8 +27,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
+import com.ccy.chuchaiyi.index.SeatType;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.widget.NestRadioGroup;
+import com.ccy.chuchaiyi.widget.PolicyDialog;
 import com.gjj.applibrary.event.EventOfTokenError;
 import com.gjj.applibrary.http.callback.CommonCallback;
 import com.gjj.applibrary.log.L;
@@ -46,7 +48,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -112,7 +113,9 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
      * 弹出框
      */
     private PopupWindow mPickUpPopWindow;
+    private PopupWindow mPickUpPopCompanyWindow;
     private ListPopupAdapter mSelectorAdapter;
+    private ChooseCompanyAdapter mSelCompanyAdapter;
     private int mSeatIndex = 0;
     private List<SeatType> mItemList;
 
@@ -137,6 +140,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
     NestRadioGroup mRadioGroup;
 
     private List<FlightInfo> mFlightInfoList;
+    private List<FlightInfo> mOriFlightInfoList;
 
     private EmptyErrorViewController mEmptyErrorViewController;
     private FlightsListAdapter mAdapter;
@@ -241,7 +245,38 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
         });
         ExpandableListView expandableListView = listView.getRefreshableView();
         expandableListView.setAdapter(mAdapter);
-//        expandableListView.setOnChildClickListener(this);
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+            @Override
+            public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+                if(i1 == 0) {
+                   expandableListView.collapseGroup(i);
+                } else {
+//                    FlightInfo flight = mAdapter.getGroup(i);
+//                    FlightInfo.BunksBean bunks = mAdapter.getChild(i,i1);
+//
+//                    PolicyDialog policyDialog = new PolicyDialog(getContext());
+//                    policyDialog.setContent(flight,bunks);
+//                    policyDialog.show();
+//                    HashMap<String, String> params = new HashMap<>();
+//                    params.put("airlineCode", flight.getAirline());
+//                    params.put("bunkCode", bunks.getBunkCode());
+//                    params.put("departureDate", flight.getDeparture().getDateTime().split(" ")[0]);
+//                    params.put("departureAirportCode", flight.getDeparture().getAirportCode());
+//                    params.put("arrivalAirportCode", flight.getArrival().getAirportCode());
+//                    OkHttpUtils.get(ApiConstants.GET_FLIGHT_LIST).tag(this)
+//                            .cacheMode(CacheMode.IF_NONE_CACHE_REQUEST)
+//                            .params(params)
+//                            .execute(new JsonCallback<FlightPolicy>(FlightPolicy.class) {
+//                                @Override
+//                                public void onResponse(boolean isFromCache, FlightPolicy flightPolicy, Request request, @Nullable Response response) {
+//
+//                                }
+//                            });
+                }
+                return false;
+            }
+        });
         expandableListView.setOnGroupClickListener(this);
         listView.setRefreshPrepareLayoutListener(new PrepareRelativeLayout.RefreshPrepareLayoutListener() {
             @Override
@@ -336,7 +371,79 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
         popupWindow.showAtLocation(contentView, Gravity.BOTTOM, 0, 0);
         // mPopWindow.showAsDropDown(view, 0, 0);
     }
+    /**
+     * 显示选择框
+     */
+    @SuppressWarnings("unused")
+    private void showPickupCompanyWindow() {
+        // dismissConstructNoticeWindow();
+        View contentView;
+        PopupWindow popupWindow = mPickUpPopCompanyWindow;
+        ListView listView;
+        if (popupWindow == null) {
+            contentView = LayoutInflater.from(getActivity()).inflate(
+                    R.layout.choose_air_company, null);
+            listView = (ListView) contentView.findViewById(R.id.listView);
+            Button cancelBtn = (Button) contentView.findViewById(R.id.btn_cancel);
+            cancelBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismissConstructNoticeWindow();
+                }
+            });
+            Button sureBtn = (Button) contentView.findViewById(R.id.btn_sure);
+            sureBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismissConstructNoticeWindow();
+                    doSeatFilter();
+                }
+            });
+            List<Company> companies = new ArrayList<>();
+            Company company = new Company();
+            company.mIsSel = true;
+            company.mAirlineName = "不限";
+            companies.add(company);
+            Company company1 = new Company();
+            company1.mIsSel = true;
+            company1.mAirlineName = "深航";
+            companies.add(company1);
+            Company company2 = new Company();
+            company2.mIsSel = true;
+            company2.mAirlineName = "南航";
+            companies.add(company2);
+            Company company3 = new Company();
+            company3.mIsSel = true;
+            company3.mAirlineName = "海航";
+            companies.add(company3);
+            mSelCompanyAdapter = new ChooseCompanyAdapter(getActivity(),companies);
+            listView.setAdapter(mSelCompanyAdapter);
+            contentView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismissConstructNoticeWindow();
+                }
+            });
+            popupWindow = new PopupWindow(contentView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, false);
+            mPickUpPopCompanyWindow = popupWindow;
+            popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            popupWindow.setAnimationStyle(R.style.popwin_anim_style);
+            mPickUpPopCompanyWindow.setOutsideTouchable(true);
+            popupWindow.setFocusable(true);
 
+        } else {
+            contentView = popupWindow.getContentView();
+        }
+        //判读window是否显示，消失了就执行动画
+        if (!popupWindow.isShowing()) {
+            Animation animation2 = AnimationUtils.loadAnimation(getActivity(), R.anim.effect_bg_show);
+            contentView.startAnimation(animation2);
+        }
+
+        setAdapterData();
+        popupWindow.showAtLocation(contentView, Gravity.BOTTOM, 0, 0);
+        // mPopWindow.showAsDropDown(view, 0, 0);
+    }
     /**
      * 为适配器设置数据
      */
@@ -419,35 +526,82 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                     public void onClick(View v) {
                         mSeatIndex = (int) typeName.getTag();
                         dismissConstructNoticeWindow();
-                        int len = mFlightInfoList.size();
-                        List<FlightInfo> flightInfos = new ArrayList<FlightInfo>();
-                        for (int i=0;i<len;i++){
-                            FlightInfo flightInfo = mFlightInfoList.get(i);
-                            List<FlightInfo.BunksBean> bunksBeen = flightInfo.getBunks();
-                            List<FlightInfo.BunksBean> bunksBeenTemp = new ArrayList<FlightInfo.BunksBean>();
-
-                            int size = bunksBeen.size();
-                            for (FlightInfo.BunksBean bean :bunksBeen){
-
-                                if(!mItemList.get(mSeatIndex).mCode.equals(bean.getBunkCode())) {
-                                    continue;
-                                }
-                                bunksBeenTemp.add(bean);
-                            }
-//                            bunksBeen = bunksBeenTemp;
-                            flightInfo.setBunks(bunksBeenTemp);
-                            if(bunksBeenTemp.size() > 0) {
-                                flightInfos.add(flightInfo);
-                            }
-
-                        }
-                        mFlightInfoList = flightInfos;
-                        mAdapter.setData(mFlightInfoList);
+                        doSeatFilter();
                     }
                 });
             }
         }
     }
+    private void doSeatFilter() {
+        if (Util.isListEmpty(mOriFlightInfoList))
+            return;
+        int len = mOriFlightInfoList.size();
+        List<FlightInfo> flightInfos = new ArrayList<>();
+        if (mSelCompanyAdapter != null) {
+            List<Company> companies = mSelCompanyAdapter.getmCompanyList();
+            if(!companies.get(0).mIsSel) {
+                for (int i = 1; i < len; i++) {
+                    FlightInfo flightInfo = mOriFlightInfoList.get(i);
+                    for (Company company : companies) {
+                        if (company.mIsSel && company.mAirlineName.equals(flightInfo.getAirlineName())) {
+                            flightInfos.add(flightInfo);
+                        }
+                    }
+                }
+            } else {
+                flightInfos = mOriFlightInfoList;
+            }
+        } else {
+            flightInfos = mOriFlightInfoList;
+        }
+        if (mSeatIndex != 0) {
+            List<FlightInfo> infos = new ArrayList<>();
+            for (int i=0; i<len; i++) {
+                FlightInfo flightInfo = flightInfos.get(i);
+                List<FlightInfo.BunksBean> bunksBeen = flightInfo.getBunks();
+                List<FlightInfo.BunksBean> bunksBeenTemp = new ArrayList<>();
+                for (FlightInfo.BunksBean bean :bunksBeen) {
+
+                    if(!mItemList.get(mSeatIndex).mCode.equals(bean.getBunkCode())) {
+                        continue;
+                    }
+                    bunksBeenTemp.add(bean);
+                }
+                flightInfo.setBunks(bunksBeenTemp);
+                if(bunksBeenTemp.size() > 0) {
+                    infos.add(flightInfo);
+                }
+            }
+            flightInfos = infos;
+        } else {
+            flightInfos = mOriFlightInfoList;
+        }
+        mFlightInfoList = flightInfos;
+        mAdapter.setData(flightInfos);
+
+
+    }
+//    private void doCompanyFilter() {
+//        if (Util.isListEmpty(mFlightInfoList) || mSelCompanyAdapter == null)
+//            return;
+//        int len = mFlightInfoList.size();
+//        List<Company> companies = mSelCompanyAdapter.getmCompanyList();
+//        if(companies.get(0).mIsSel) {
+//            return;
+//        }
+//        List<FlightInfo> flightInfos = new ArrayList<>();
+//        for (int i=0; i<len; i++){
+//            FlightInfo flightInfo = mFlightInfoList.get(i);
+//            for (Company company: companies) {
+//                if (company.mIsSel && company.mAirlineName.equals(flightInfo.getAirlineName())) {
+//                    flightInfos.add(flightInfo);
+//                }
+//            }
+//        }
+////        mFlightInfoList = flightInfos;
+//        mAdapter.setData(flightInfos);
+//    }
+
     void setTodayTv() {
         mCurrentDate = calendar.getTime();
         StringBuilder dateTitle = Util.getThreadSafeStringBuilder();
@@ -519,28 +673,75 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                                 mListView.onRefreshComplete();
                                 if (!Util.isListEmpty(flightInfoList.mFlightInfoList)) {
                                     mFlightInfoList = flightInfoList.mFlightInfoList;
+                                    mOriFlightInfoList = flightInfoList.mFlightInfoList;
+                                    int len = mFlightInfoList.size();
+//                                    List<FlightInfo> flightInfos = new ArrayList<FlightInfo>();
+                                    List<FlightInfo> flightInfos = new ArrayList<>();
+
+//                                    doCompanyFilter();
+                                    if (mSelCompanyAdapter != null) {
+                                        List<Company> companies = mSelCompanyAdapter.getmCompanyList();
+                                        if(!companies.get(0).mIsSel) {
+                                            for (int i = 1; i < len; i++) {
+                                                FlightInfo flightInfo = mFlightInfoList.get(i);
+                                                for (Company company : companies) {
+                                                    if (company.mIsSel && company.mAirlineName.equals(flightInfo.getAirlineName())) {
+                                                        flightInfos.add(flightInfo);
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            flightInfos = mFlightInfoList;
+                                        }
+                                    } else {
+                                        flightInfos = mFlightInfoList;
+                                    }
+                                    if (mSeatIndex != 0) {
+                                        List<FlightInfo> infos = new ArrayList<>();
+                                        for (int i=0; i<len; i++) {
+                                            FlightInfo flightInfo = flightInfos.get(i);
+                                            List<FlightInfo.BunksBean> bunksBeen = flightInfo.getBunks();
+                                            List<FlightInfo.BunksBean> bunksBeenTemp = new ArrayList<>();
+                                            for (FlightInfo.BunksBean bean :bunksBeen) {
+
+                                                if(!mItemList.get(mSeatIndex).mCode.equals(bean.getBunkCode())) {
+                                                    continue;
+                                                }
+                                                bunksBeenTemp.add(bean);
+                                            }
+                                            flightInfo.setBunks(bunksBeenTemp);
+                                            if(bunksBeenTemp.size() > 0) {
+                                                infos.add(flightInfo);
+                                            }
+                                        }
+                                        flightInfos = infos;
+                                    } else {
+                                        flightInfos = mFlightInfoList;
+                                    }
+
+
                                     if(mTimeType == 0 && mPriceType == 0) {
-                                        mAdapter.setData(flightInfoList.mFlightInfoList);
+                                        mAdapter.setData(flightInfos);
                                     } else if(mPriceType == 0){
                                         if(mTimeType == EARLY_TO_LATE) {
 //                                            Collections.sort(flightInfoList.mFlightInfoList,new TimeComparator());
 //                                            Collections.reverse(flightInfoList.mFlightInfoList);
-                                            mAdapter.setData(flightInfoList.mFlightInfoList);
+                                            mAdapter.setData(flightInfos);
                                         } else {
-                                            Collections.sort(flightInfoList.mFlightInfoList,new TimeComparator());
-                                            Collections.reverse(flightInfoList.mFlightInfoList);
-                                            mAdapter.setData(flightInfoList.mFlightInfoList);
+                                            Collections.sort(flightInfos,new TimeComparator());
+                                            Collections.reverse(flightInfos);
+                                            mAdapter.setData(flightInfos);
                                         }
 
                                     } else if(mTimeType == 0) {
                                         if(mPriceType == mLowToHigh) {
-                                            Collections.sort(flightInfoList.mFlightInfoList,new PriceComparator());
+                                            Collections.sort(flightInfos,new PriceComparator());
 //                                            Collections.reverse(flightInfoList.mFlightInfoList);
-                                            mAdapter.setData(flightInfoList.mFlightInfoList);
+                                            mAdapter.setData(flightInfos);
                                         } else {
-                                            Collections.sort(flightInfoList.mFlightInfoList,new PriceComparator());
-                                            Collections.reverse(flightInfoList.mFlightInfoList);
-                                            mAdapter.setData(flightInfoList.mFlightInfoList);
+                                            Collections.sort(flightInfos,new PriceComparator());
+                                            Collections.reverse(flightInfos);
+                                            mAdapter.setData(flightInfos);
                                         }
 
                                     }

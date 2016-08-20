@@ -1,9 +1,6 @@
-package com.ccy.chuchaiyi.index;
+package com.ccy.chuchaiyi.flight;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Comparator;
-import java.util.Date;
 
 /**
  * Created by user on 16/8/18.

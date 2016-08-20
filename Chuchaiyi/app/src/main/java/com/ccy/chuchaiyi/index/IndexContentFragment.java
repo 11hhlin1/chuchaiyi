@@ -28,6 +28,7 @@ import com.ccy.chuchaiyi.city.CitySort;
 import com.ccy.chuchaiyi.city.SaveObjUtil;
 import com.ccy.chuchaiyi.event.EventOfSelCity;
 import com.ccy.chuchaiyi.event.EventOfSelDate;
+import com.ccy.chuchaiyi.flight.FlightsListFragment;
 import com.gjj.applibrary.log.L;
 import com.gjj.applibrary.util.PreferencesManager;
 import com.gjj.applibrary.util.Util;
