@@ -420,8 +420,10 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                         mSeatIndex = (int) typeName.getTag();
                         dismissConstructNoticeWindow();
                         int len = mFlightInfoList.size();
+                        List<FlightInfo> flightInfos = new ArrayList<FlightInfo>();
                         for (int i=0;i<len;i++){
-                            List<FlightInfo.BunksBean> bunksBeen = mFlightInfoList.get(i).getBunks();
+                            FlightInfo flightInfo = mFlightInfoList.get(i);
+                            List<FlightInfo.BunksBean> bunksBeen = flightInfo.getBunks();
                             List<FlightInfo.BunksBean> bunksBeenTemp = new ArrayList<FlightInfo.BunksBean>();
 
                             int size = bunksBeen.size();
@@ -433,8 +435,13 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                                 bunksBeenTemp.add(bean);
                             }
 //                            bunksBeen = bunksBeenTemp;
-                            mFlightInfoList.get(i).setBunks(bunksBeenTemp);
+                            flightInfo.setBunks(bunksBeenTemp);
+                            if(bunksBeenTemp.size() > 0) {
+                                flightInfos.add(flightInfo);
+                            }
+
                         }
+                        mFlightInfoList = flightInfos;
                         mAdapter.setData(mFlightInfoList);
                     }
                 });
