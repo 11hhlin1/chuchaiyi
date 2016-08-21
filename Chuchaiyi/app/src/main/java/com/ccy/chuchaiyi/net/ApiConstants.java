@@ -8,5 +8,6 @@ public class ApiConstants {
     public static final String LOGIN = host + "Account/Login";
     public static final String GET_FLIGHT_LOCATION = host+ "Flight/GetFlightLocations";
     public static final String GET_FLIGHT_LIST = host+ "Flight/GetFlights";
+    public static final String GET_BOOK_VALIDATE= host+ "Flight/BookingValidate";
 
 }

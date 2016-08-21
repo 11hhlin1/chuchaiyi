@@ -776,6 +776,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                mListView.onRefreshComplete();
                                 ToastUtil.shortToast(R.string.load_fail);
                             }
                         });

@@ -3,6 +3,8 @@ package com.ccy.chuchaiyi.flight;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
@@ -16,17 +18,27 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.PageSwitcher;
+import com.ccy.chuchaiyi.login.ForgetPswFragment;
+import com.ccy.chuchaiyi.net.ApiConstants;
+import com.ccy.chuchaiyi.order.EditOrderFragment;
 import com.ccy.chuchaiyi.widget.PolicyDialog;
+import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
+import com.lzy.okhttputils.OkHttpUtils;
+import com.lzy.okhttputils.cache.CacheMode;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by Chuck on 2016/8/17.
@@ -188,7 +200,7 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
         for (int i = 0; i < size; i++) {
             FlightInfo.BunksBean bunksBean = bunksBeen.get(i);
             FlightInfo.BunksBean.BunkPriceBean bunkPriceBean = bunksBean.getBunkPrice();
-            int temp = bunkPriceBean.getBunkPrice();
+            int temp = bunkPriceBean.getFactBunkPrice();
             if (i == 0) {
                 price = temp;
             } else if (price > temp) {
@@ -226,8 +238,10 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
             childHolder.planeType.setText(bunksBean.getBunkName());
             childHolder.changeMsg.setTag(R.id.left_ll,groupPosition);
             childHolder.changeMsg.setTag(R.id.change_msg,childPosition);
+            childHolder.bookBtn.setTag(R.id.left_ll,groupPosition);
+            childHolder.bookBtn.setTag(R.id.book_btn,childPosition);
             childHolder.discount.setText(mContext.getString(R.string.discount, bunksBean.getBunkPrice().getDiscount()));
-            childHolder.detailMoney.setText((mContext.getString(R.string.money_no_end, bunksBean.getBunkPrice().getBunkPrice())));
+            childHolder.detailMoney.setText((mContext.getString(R.string.money_no_end, bunksBean.getBunkPrice().getFactBunkPrice())));
             if (bunksBean.getRemainNum() < 5) {
                 childHolder.remainNum.setVisibility(View.VISIBLE);
                 childHolder.remainNum.setText(mContext.getString(R.string.num, bunksBean.getRemainNum()));
@@ -280,7 +294,50 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
 
         @OnClick(R.id.book_btn)
         void setBookBtn() {
-            ToastUtil.shortToast(R.string.app_name);
+            int groupPos = (int) bookBtn.getTag(R.id.left_ll);
+            int childPos = (int) bookBtn.getTag(R.id.book_btn);
+            final FlightInfo flight = getGroup(groupPos);
+            FlightInfo.BunksBean bunks = getChild(groupPos,childPos);
+            GetBookValidateRequest bookValidateRequest = new GetBookValidateRequest();
+            bookValidateRequest.setArrivalCode(flight.getArrival().getCityCode());
+            bookValidateRequest.setDepartureCode(flight.getDeparture().getCityCode());
+            bookValidateRequest.setBunkCode(bunks.getBunkCode());
+            bookValidateRequest.setFlightDate(flight.getDeparture().getDateTime().split(" ")[0]);
+            bookValidateRequest.setFlightNo(flight.getFlightNo());
+            bookValidateRequest.setFactBunkPrice(bunks.getBunkPrice().getFactBunkPrice());
+            OkHttpUtils.post(ApiConstants.GET_BOOK_VALIDATE)
+                    .tag(mContext)
+                    .cacheMode(CacheMode.NO_CACHE)
+                    .postJson(JSON.toJSONString(bookValidateRequest))
+                    .execute(new JsonCallback<BookValidateInfo>(BookValidateInfo.class) {
+                        @Override
+                        public void onResponse(boolean isFromCache, BookValidateInfo bookValidateInfo, Request request, @Nullable Response response) {
+                            BookValidateInfo.WarningInfoBean warningInfoBean = bookValidateInfo.getWarningInfo();
+                            if(warningInfoBean == null) {
+                                    StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+                                    stringBuilder.append(flight.getDeparture().getCityName()).append("-").append(flight.getArrival().getCityName());
+                                    PageSwitcher.switchToTopNavPage((Activity) mContext,EditOrderFragment.class,null,stringBuilder.toString(),null);
+
+                                } else {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("warningInfoBean", warningInfoBean);
+                                    PageSwitcher.switchToTopNavPage((Activity) mContext,FlightPolicyFragment.class,bundle,mContext.getString(R.string.policy),null);
+
+                                }
+                        }
+
+                        @Override
+                        public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                            super.onError(isFromCache, call, response, e);
+                            switch (response.code()) {
+                                case 2:
+                                    ToastUtil.shortToast(R.string.price_fail);
+                                    break;
+                            }
+                            ToastUtil.shortToast(R.string.load_fail);
+                        }
+                    });
+
         }
         @OnClick(R.id.left_ll)
         void showDialog() {

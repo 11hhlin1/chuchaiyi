@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="44dp">
+
+        <TextView
+            android:id="@+id/passenger_tv"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_13sp"
+            android:text="乘机人    "/>
+        <TextView
+            android:id="@+id/passenger_value"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_60p"
+            android:layout_toRightOf="@+id/passenger_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_13sp"
+            android:text="30 * 1"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_30p"
+            android:src="@mipmap/gerenzhongxin_icon_4" />
+    </RelativeLayout>
+    <View
+        style="@style/horizontal_line"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="44dp">
+
+        <TextView
+            android:id="@+id/card_type_tv"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_13sp"
+            android:text="@string/card_type"/>
+        <TextView
+            android:id="@+id/card_type_value"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_60p"
+            android:layout_toRightOf="@+id/card_type_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_13sp"
+            android:text="@string/id_card"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_30p"
+            android:src="@mipmap/gerenzhongxin_icon_4" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="44dp">
+
+        <TextView
+            android:id="@+id/card_num"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_13sp"
+            android:text="@string/card_type"/>
+        <EditText
+            android:id="@+id/et_card"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_60p"
+            android:layout_toRightOf="@+id/card_num"
+            android:hint="必填"
+            android:textColorHint="@color/color_aaaaaa"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_13sp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/choose_check_num"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:text="@string/order_num_no_end"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:drawablePadding="8dp"
+            android:text="@string/must_choose"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_12sp"
+            android:drawableRight="@mipmap/gerenzhongxin_icon_4" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/choose_project_rl"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/white">
+
+        <View
+            style="@style/personal_page_top_line"
+            android:layout_marginLeft="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:text="@string/project_num_no_end"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:drawablePadding="8dp"
+            android:text="@string/must_choose"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_12sp"
+            android:drawableRight="@mipmap/gerenzhongxin_icon_4" />
+    </RelativeLayout>
+</LinearLayout>

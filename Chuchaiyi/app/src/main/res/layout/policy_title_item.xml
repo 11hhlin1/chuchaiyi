@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/reason_title"
+    android:layout_width="match_parent"
+    android:paddingLeft="@dimen/margin_30p"
+    android:gravity="left|center_vertical"
+    android:textColor="@color/color_222222"
+    android:textSize="@dimen/textsize_12sp"
+    android:text="@string/low_price_title"
+    android:layout_height="30dp">
+
+</TextView>

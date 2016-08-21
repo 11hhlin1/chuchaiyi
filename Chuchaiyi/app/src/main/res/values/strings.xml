@@ -70,6 +70,7 @@
     <string name="empty_no_data">这里什么都木有</string>
     <string name="load_fail_click_reload">网络错误，请重试</string>
     <string name="load_fail">网络错误</string>
+    <string name="price_fail">价格已过期需重新查询</string>
     <string name="pre_day">前一天</string>
     <string name="book">预订</string>
     <string name="policy">差旅政策</string>
@@ -89,5 +90,33 @@
     <string name="returnPolicy">退票</string>
     <string name="changePolicy">改签</string>
     <string name="signPolicy">备注</string>
+    <string name="low_price_title">因你未选择最低价格航班，请您选择原因：</string>
+    <string name="pre_day_title">因你未提前预订航班，请您选择原因：</string>
+    <string name="commit">提交</string>
+    <string name="detail">明细</string>
+    <string name="return_change">退改签</string>
+    <string name="flight_price">机票</string>
+    <string name="passenger">乘机人</string>
+    <string name="add">添加</string>
+    <string name="safe_fee">航意险</string>
+    <string name="contact">联系人</string>
+    <string name="contact_phone">联系电话</string>
+    <string name="all_pay">统一支付</string>
+    <string name="pay_way">支付方式</string>
+    <string name="ticket_tip">只支持直接出票</string>
+    <string name="order_num">审批单号 %1$s</string>
+    <string name="order_num_no_end">审批单号</string>
+    <string name="project_num">所属项目 %1$s</string>
+    <string name="project_num_no_end">所属项目</string>
+    <string name="pay_sure">支付确认</string>
+    <string name="travel">行程</string>
+    <string name="set_out_detail_time">出发时间</string>
+    <string name="should_pay">应付金额</string>
+    <string name="pay_money_tip">将从贵公司账户中直接扣款</string>
+    <string name="sure_pay">确定支付</string>
+    <string name="dai_ban_zhi_ji">代办值机</string>
+    <string name="card_type">证件类型</string>
+    <string name="id_card">身份证</string>
+    <string name="must_choose">必选</string>
 
 </resources>
