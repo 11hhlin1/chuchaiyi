@@ -52,6 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/top_date"
+        android:layout_above="@+id/group_tab"
         android:background="@null"
         android:cacheColorHint="@android:color/transparent"
         android:childIndicator="@null"

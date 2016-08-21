@@ -118,6 +118,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
     private ChooseCompanyAdapter mSelCompanyAdapter;
     private int mSeatIndex = 0;
     private List<SeatType> mItemList;
+    private List<Company> companies;
 
     /**
      * 重新加载
@@ -370,7 +371,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
             contentView.startAnimation(animation2);
         }
 
-        setAdapterData();
+//        setAdapterData();
         popupWindow.showAtLocation(contentView, Gravity.BOTTOM, 0, 0);
         // mPopWindow.showAsDropDown(view, 0, 0);
     }
@@ -402,23 +403,10 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                     doSeatFilter();
                 }
             });
-            List<Company> companies = new ArrayList<>();
-            Company company = new Company();
-            company.mIsSel = true;
-            company.mAirlineName = "不限";
-            companies.add(company);
-            Company company1 = new Company();
-            company1.mIsSel = false;
-            company1.mAirlineName = "深航";
-            companies.add(company1);
-            Company company2 = new Company();
-            company2.mIsSel = false;
-            company2.mAirlineName = "国航";
-            companies.add(company2);
-            Company company3 = new Company();
-            company3.mIsSel = false;
-            company3.mAirlineName = "东航";
-            companies.add(company3);
+
+            if(Util.isListEmpty(companies)) {
+                return;
+            }
             mSelCompanyAdapter = new ChooseCompanyAdapter(getActivity(),companies);
             listView.setAdapter(mSelCompanyAdapter);
             contentView.setOnClickListener(new View.OnClickListener() {
@@ -443,15 +431,9 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
             contentView.startAnimation(animation2);
         }
 
-        setAdapterData();
+        mSelCompanyAdapter.setData(companies);
         popupWindow.showAtLocation(contentView, Gravity.BOTTOM, 0, 0);
         // mPopWindow.showAsDropDown(view, 0, 0);
-    }
-    /**
-     * 为适配器设置数据
-     */
-    private void setAdapterData() {
-
     }
     /**
      * 取消工程消息弹出框
@@ -648,6 +630,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
         todayTv.setText(dateTitle.toString());
     }
 
+
     void doRequest() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         mCurrentDateString = dateFormat.format(mCurrentDate);
@@ -698,10 +681,24 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                                     mOriFlightInfoList = new ArrayList<FlightInfo>();
                                     mOriFlightInfoList.addAll(flightInfoList.mFlightInfoList);
                                     int len = mFlightInfoList.size();
-//                                    List<FlightInfo> flightInfos = new ArrayList<FlightInfo>();
-                                    List<FlightInfo> flightInfos = new ArrayList<>();
 
-//                                    doCompanyFilter();
+                                    //setCompanyData
+                                    companies = new ArrayList<>();
+                                    Company companyNo = new Company();
+                                    companyNo.mIsSel = true;
+                                    companyNo.mAirlineName = "不限";
+                                    companies.add(companyNo);
+                                    for (int i = 0; i < len; i++) {
+                                        Company company = new Company();
+                                        FlightInfo flightInfo = mFlightInfoList.get(i);
+                                        company.mAirlineName = flightInfo.getAirlineName();
+                                        if(!companies.contains(company)) {
+                                            companies.add(company);
+                                        }
+                                    }
+
+
+                                    List<FlightInfo> flightInfos = new ArrayList<>();
                                     if (mSelCompanyAdapter != null) {
                                         List<Company> companies = mSelCompanyAdapter.getmCompanyList();
                                         if(!companies.get(0).mIsSel) {

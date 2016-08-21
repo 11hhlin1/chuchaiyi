@@ -31,6 +31,9 @@ public class ChooseCompanyAdapter extends BaseAdapter {
         mCompanyList = companies;
     }
 
+    public void setData(List<Company> companies) {
+        mCompanyList = companies;
+    }
     @Override
     public int getCount() {
         return mCompanyList.size();
