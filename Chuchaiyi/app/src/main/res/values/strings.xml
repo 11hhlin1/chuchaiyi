@@ -118,5 +118,7 @@
     <string name="card_type">证件类型</string>
     <string name="id_card">身份证</string>
     <string name="must_choose">必选</string>
+    <string name="reason_common">(因公)</string>
+    <string name="reason_private">因私</string>
 
 </resources>

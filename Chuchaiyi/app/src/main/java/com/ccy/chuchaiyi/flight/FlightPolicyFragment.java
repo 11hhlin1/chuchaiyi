@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
+import com.ccy.chuchaiyi.base.PageSwitcher;
+import com.ccy.chuchaiyi.order.EditOrderFragment;
 import com.gjj.applibrary.util.Util;
 
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by user on 16/8/20.
@@ -34,6 +37,25 @@ public class FlightPolicyFragment extends BaseFragment {
     @Bind(R.id.recyclerView)
     RecyclerView mRecyclerView;
     private FlightPolicyAdapter mAdapter;
+    private BookValidateInfo.WarningInfoBean warningInfo;
+    private FlightInfo mFlightInfo;
+    private FlightInfo.BunksBean mBunksBean;
+    private int dividePos;
+    @OnClick(R.id.policy_btn_sure)
+    void goBook() {
+        if(mAdapter.getFirstReasonPos() == 0 || mAdapter.getSecondReasonPos() == 0)
+            return;
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("DiscountLimitWarningMsg",warningInfo.getDiscountLimitWarningMsg());
+        bundle.putSerializable("LowPriceWarningMsg",warningInfo.getLowPriceWarningMsg());
+        bundle.putSerializable("PreNDaysWarningMsg",warningInfo.getPreNDaysWarningMsg());
+        bundle.putSerializable("TwoCabinWarningMsg",warningInfo.getTwoCabinWarningMsg());
+        bundle.putSerializable("NotLowPriceReason",warningInfo.getLowPriceReasons().get(mAdapter.getFirstReasonPos()));
+        bundle.putSerializable("NotPreNDaysReason",warningInfo.getPreNDaysReasons().get(mAdapter.getSecondReasonPos() - dividePos - 1));
+        StringBuilder title = Util.getThreadSafeStringBuilder();
+        title.append(mFlightInfo.getDeparture().getCityName()).append("-").append(mFlightInfo.getArrival().getCityName()).append(getString(R.string.reason_common));
+        PageSwitcher.switchToTopNavPage(getActivity(), EditOrderFragment.class, bundle, title.toString(),getString(R.string.reason_private));
+    }
 
     @Override
     public int getContentViewLayout() {
@@ -42,7 +64,10 @@ public class FlightPolicyFragment extends BaseFragment {
 
     @Override
     public void initView() {
-        BookValidateInfo.WarningInfoBean warningInfo = (BookValidateInfo.WarningInfoBean) getArguments().getSerializable("warningInfoBean");
+        Bundle bundle = getArguments();
+        warningInfo = (BookValidateInfo.WarningInfoBean) bundle.getSerializable("warningInfoBean");
+        mFlightInfo = (FlightInfo) bundle.getSerializable("FlightInfo");
+        mBunksBean = (FlightInfo.BunksBean) bundle.getSerializable("BunksBean");
         if (warningInfo == null) {
             return;
         }
@@ -84,6 +109,7 @@ public class FlightPolicyFragment extends BaseFragment {
                 reasonList.add(reason1);
             }
         }
+        dividePos = reasonList.size();
         if(!Util.isListEmpty(warningInfo.getLowPriceReasons())) {
             PolicyReason reason2 = new PolicyReason();
             reason2.mViewType = FlightPolicyAdapter.VIEW_TITLE;
@@ -100,7 +126,7 @@ public class FlightPolicyFragment extends BaseFragment {
 
         // 设置布局管理器
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mAdapter = new FlightPolicyAdapter(getActivity(), reasonList);
+        mAdapter = new FlightPolicyAdapter(getActivity(), reasonList,dividePos);
         mRecyclerView.setAdapter(mAdapter);
     }
 

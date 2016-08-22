@@ -297,7 +297,7 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
             int groupPos = (int) bookBtn.getTag(R.id.left_ll);
             int childPos = (int) bookBtn.getTag(R.id.book_btn);
             final FlightInfo flight = getGroup(groupPos);
-            FlightInfo.BunksBean bunks = getChild(groupPos,childPos);
+            final FlightInfo.BunksBean bunks = getChild(groupPos,childPos);
             GetBookValidateRequest bookValidateRequest = new GetBookValidateRequest();
             bookValidateRequest.setArrivalCode(flight.getArrival().getCityCode());
             bookValidateRequest.setDepartureCode(flight.getDeparture().getCityCode());
@@ -321,6 +321,8 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
                                 } else {
                                     Bundle bundle = new Bundle();
                                     bundle.putSerializable("warningInfoBean", warningInfoBean);
+                                    bundle.putSerializable("FlightInfo", flight);
+                                    bundle.putSerializable("BunksBean", bunks);
                                     PageSwitcher.switchToTopNavPage((Activity) mContext,FlightPolicyFragment.class,bundle,mContext.getString(R.string.policy),null);
 
                                 }

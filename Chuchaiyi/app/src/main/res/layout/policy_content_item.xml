@@ -23,4 +23,6 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/margin_30p"
         android:button="@null" />
+    <View
+        style="@style/personal_page_bottom_line"/>
 </RelativeLayout>

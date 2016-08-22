@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class UserInfo implements Serializable {
 
     private static final long serialVersionUID = 8542504145409921635L;
+
     /**
      * Code : 0
      * Message : string
@@ -15,6 +16,7 @@ public class UserInfo implements Serializable {
      * EmployeeId : 0
      * EmployeeName : string
      * Mobile : string
+     * Email : string
      * IsAdmin : true
      * IsGreenChannel : true
      * CanBookingForOthers : true
@@ -24,6 +26,7 @@ public class UserInfo implements Serializable {
      * CorpPayMode : string
      * ApprovalRequired : true
      * OverrunOption : string
+     * IsProjectRequired : true
      */
 
     private int Code;
@@ -32,6 +35,7 @@ public class UserInfo implements Serializable {
     private int EmployeeId;
     private String EmployeeName;
     private String Mobile;
+    private String Email;
     private boolean IsAdmin;
     private boolean IsGreenChannel;
     private boolean CanBookingForOthers;
@@ -41,6 +45,7 @@ public class UserInfo implements Serializable {
     private String CorpPayMode;
     private boolean ApprovalRequired;
     private String OverrunOption;
+    private boolean IsProjectRequired;
 
     public int getCode() {
         return Code;
@@ -88,6 +93,14 @@ public class UserInfo implements Serializable {
 
     public void setMobile(String Mobile) {
         this.Mobile = Mobile;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String Email) {
+        this.Email = Email;
     }
 
     public boolean isIsAdmin() {
@@ -160,5 +173,13 @@ public class UserInfo implements Serializable {
 
     public void setOverrunOption(String OverrunOption) {
         this.OverrunOption = OverrunOption;
+    }
+
+    public boolean isIsProjectRequired() {
+        return IsProjectRequired;
+    }
+
+    public void setIsProjectRequired(boolean IsProjectRequired) {
+        this.IsProjectRequired = IsProjectRequired;
     }
 }

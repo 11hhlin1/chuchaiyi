@@ -224,7 +224,8 @@ public class FlightInfo implements Serializable{
         this.Bunks = Bunks;
     }
 
-    public static class DepartureBean {
+    public static class DepartureBean implements Serializable{
+        private static final long serialVersionUID = 8023209235073792869L;
         private String CityCode;
         private String CityName;
         private String AirportCode;
@@ -281,7 +282,8 @@ public class FlightInfo implements Serializable{
         }
     }
 
-    public static class ArrivalBean {
+    public static class ArrivalBean implements Serializable{
+        private static final long serialVersionUID = -1849808488489033991L;
         private String CityCode;
         private String CityName;
         private String AirportCode;
@@ -338,7 +340,8 @@ public class FlightInfo implements Serializable{
         }
     }
 
-    public static class StopInfoBean {
+    public static class StopInfoBean implements Serializable{
+        private static final long serialVersionUID = -2284046148845847424L;
         /**
          * City : string
          * Arrival : string
@@ -355,7 +358,8 @@ public class FlightInfo implements Serializable{
             this.StopLocations = StopLocations;
         }
 
-        public static class StopLocationsBean {
+        public static class StopLocationsBean implements Serializable{
+            private static final long serialVersionUID = -7624628475778458747L;
             private String City;
             private String Arrival;
             private String Departure;
@@ -386,7 +390,8 @@ public class FlightInfo implements Serializable{
         }
     }
 
-    public static class BunksBean {
+    public static class BunksBean implements Serializable{
+        private static final long serialVersionUID = -754042264710376380L;
         private String BunkType;
         private String BunkCode;
         private String BunkName;
@@ -504,7 +509,8 @@ public class FlightInfo implements Serializable{
             this.PriceSource = PriceSource;
         }
 
-        public static class ReturnPolicyBean {
+        public static class ReturnPolicyBean implements Serializable{
+            private static final long serialVersionUID = -9087965310571148848L;
             private String ReturnPolicyDesc;
             private int ReturnPolicyReturnFee;
 
@@ -525,7 +531,8 @@ public class FlightInfo implements Serializable{
             }
         }
 
-        public static class ChangePolicyBean {
+        public static class ChangePolicyBean implements Serializable{
+            private static final long serialVersionUID = -8069194939779250161L;
             private String ChangePolicyDesc;
             private boolean ChangeAllowed;
             private int ChangePolicyChangeFee;
@@ -555,7 +562,8 @@ public class FlightInfo implements Serializable{
             }
         }
 
-        public static class SignPolicyBean {
+        public static class SignPolicyBean implements Serializable{
+            private static final long serialVersionUID = -822108898744170469L;
             private String SignPolicyDesc;
             private boolean SignAllowed;
 
@@ -576,7 +584,8 @@ public class FlightInfo implements Serializable{
             }
         }
 
-        public static class BunkPriceBean {
+        public static class BunkPriceBean implements Serializable{
+            private static final long serialVersionUID = 7006205294911881707L;
             private int Discount;
             private int BunkPrice;
             private String ProtocolCode;

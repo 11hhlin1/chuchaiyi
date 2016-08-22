@@ -239,6 +239,8 @@ public class ChooseCityFragment extends BaseFragment {
             mSortList = filterCitySorts;
         } else {
             mSortList.clear();
+            if(Util.isListEmpty(filterCitySorts))
+                return;
             for (CitySort sortModel : filterCitySorts) {
                 String name = sortModel.getPinyin();
                 String shortPin = sortModel.getPinyinShort();
