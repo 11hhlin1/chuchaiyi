@@ -12,7 +12,9 @@ import android.widget.TextView;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.PageSwitcher;
+import com.ccy.chuchaiyi.city.SaveObjUtil;
 import com.ccy.chuchaiyi.order.EditOrderFragment;
+import com.gjj.applibrary.util.PreferencesManager;
 import com.gjj.applibrary.util.Util;
 
 import java.util.ArrayList;
@@ -40,21 +42,72 @@ public class FlightPolicyFragment extends BaseFragment {
     private BookValidateInfo.WarningInfoBean warningInfo;
     private FlightInfo mFlightInfo;
     private FlightInfo.BunksBean mBunksBean;
+    private String mReturnDateString;
+    private String mDepartureCode;
+    private String mArrivalCode;
+    private String mBunkType;
+    private String mTitle;
+
     private int dividePos;
     @OnClick(R.id.policy_btn_sure)
     void goBook() {
         if(mAdapter.getFirstReasonPos() == 0 || mAdapter.getSecondReasonPos() == 0)
             return;
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("DiscountLimitWarningMsg",warningInfo.getDiscountLimitWarningMsg());
-        bundle.putSerializable("LowPriceWarningMsg",warningInfo.getLowPriceWarningMsg());
-        bundle.putSerializable("PreNDaysWarningMsg",warningInfo.getPreNDaysWarningMsg());
-        bundle.putSerializable("TwoCabinWarningMsg",warningInfo.getTwoCabinWarningMsg());
-        bundle.putSerializable("NotLowPriceReason",warningInfo.getLowPriceReasons().get(mAdapter.getFirstReasonPos()));
-        bundle.putSerializable("NotPreNDaysReason",warningInfo.getPreNDaysReasons().get(mAdapter.getSecondReasonPos() - dividePos - 1));
-        StringBuilder title = Util.getThreadSafeStringBuilder();
-        title.append(mFlightInfo.getDeparture().getCityName()).append("-").append(mFlightInfo.getArrival().getCityName()).append(getString(R.string.reason_common));
-        PageSwitcher.switchToTopNavPage(getActivity(), EditOrderFragment.class, bundle, title.toString(),getString(R.string.reason_private));
+        if(TextUtils.isEmpty(mReturnDateString)) {
+            Bundle bundle = new Bundle();
+//            bundle.putSerializable("DiscountLimitWarningMsg",warningInfo.getDiscountLimitWarningMsg());
+//            bundle.putSerializable("LowPriceWarningMsg",warningInfo.getLowPriceWarningMsg());
+//            bundle.putSerializable("PreNDaysWarningMsg",warningInfo.getPreNDaysWarningMsg());
+//            bundle.putSerializable("TwoCabinWarningMsg",warningInfo.getTwoCabinWarningMsg());
+//            bundle.putSerializable("NotLowPriceReason",warningInfo.getLowPriceReasons().get(mAdapter.getFirstReasonPos()));
+//            bundle.putSerializable("NotPreNDaysReason",warningInfo.getPreNDaysReasons().get(mAdapter.getSecondReasonPos() - dividePos - 1));
+            if(PreferencesManager.getInstance().get("SetOutWarningInfoBean") == null) {
+                PolicyResultInfo resultInfo = new PolicyResultInfo();
+                resultInfo.setDiscountLimitWarningMsg(warningInfo.getDiscountLimitWarningMsg());
+                resultInfo.setLowPriceWarningMsg(warningInfo.getLowPriceWarningMsg());
+                resultInfo.setNotLowPriceReason(warningInfo.getLowPriceReasons().get(mAdapter.getFirstReasonPos()));
+                resultInfo.setPreNDaysWarningMsg(warningInfo.getPreNDaysWarningMsg());
+                resultInfo.setTwoCabinWarningMsg(warningInfo.getTwoCabinWarningMsg());
+                resultInfo.setNotPreNDaysReason(warningInfo.getPreNDaysReasons().get(mAdapter.getSecondReasonPos() - dividePos - 1));
+                bundle.putSerializable("SetOutWarningInfoBean", resultInfo);
+                StringBuilder title = Util.getThreadSafeStringBuilder();
+                title.append(mFlightInfo.getDeparture().getCityName()).append("-").append(mFlightInfo.getArrival().getCityName()).append(getString(R.string.reason_common));
+                PageSwitcher.switchToTopNavPage(getActivity(), EditOrderFragment.class, bundle, title.toString(),getString(R.string.reason_private));
+            } else {
+                PolicyResultInfo resultInfo = (PolicyResultInfo) SaveObjUtil.unSerialize(PreferencesManager.getInstance().get("SetOutWarningInfoBean"));
+                bundle.putSerializable("SetOutWarningInfoBean", resultInfo);
+                PolicyResultInfo resultInfoLast = new PolicyResultInfo();
+                resultInfoLast.setDiscountLimitWarningMsg(warningInfo.getDiscountLimitWarningMsg());
+                resultInfoLast.setLowPriceWarningMsg(warningInfo.getLowPriceWarningMsg());
+                resultInfoLast.setNotLowPriceReason(warningInfo.getLowPriceReasons().get(mAdapter.getFirstReasonPos()));
+                resultInfoLast.setPreNDaysWarningMsg(warningInfo.getPreNDaysWarningMsg());
+                resultInfoLast.setTwoCabinWarningMsg(warningInfo.getTwoCabinWarningMsg());
+                resultInfoLast.setNotPreNDaysReason(warningInfo.getPreNDaysReasons().get(mAdapter.getSecondReasonPos() - dividePos - 1));
+                bundle.putSerializable("ReturnWarningInfoBean", resultInfoLast);
+                StringBuilder title = Util.getThreadSafeStringBuilder();
+                title.append(mFlightInfo.getDeparture().getCityName()).append("-").append(mFlightInfo.getArrival().getCityName()).append(getString(R.string.reason_common));
+                PageSwitcher.switchToTopNavPage(getActivity(), EditOrderFragment.class, bundle, title.toString(),getString(R.string.reason_private));
+            }
+
+        } else {
+            Bundle bundle = new Bundle();
+            PreferencesManager.getInstance().put("SetOutFlightInfo", SaveObjUtil.serialize(mFlightInfo));
+            PreferencesManager.getInstance().put("SetOutBunksBean", SaveObjUtil.serialize(mBunksBean));
+            PolicyResultInfo resultInfo = new PolicyResultInfo();
+            resultInfo.setDiscountLimitWarningMsg(warningInfo.getDiscountLimitWarningMsg());
+            resultInfo.setLowPriceWarningMsg(warningInfo.getLowPriceWarningMsg());
+            resultInfo.setNotLowPriceReason(warningInfo.getLowPriceReasons().get(mAdapter.getFirstReasonPos()));
+            resultInfo.setPreNDaysWarningMsg(warningInfo.getPreNDaysWarningMsg());
+            resultInfo.setTwoCabinWarningMsg(warningInfo.getTwoCabinWarningMsg());
+            resultInfo.setNotPreNDaysReason(warningInfo.getPreNDaysReasons().get(mAdapter.getSecondReasonPos() - dividePos - 1));
+            PreferencesManager.getInstance().put("SetOutWarningInfoBean", SaveObjUtil.serialize(resultInfo));
+            bundle.putString("DepartureCode", mDepartureCode);
+            bundle.putString("ArrivalCode", mArrivalCode);
+            bundle.putString("SetOutDate", mReturnDateString);
+            bundle.putString("BunkType",mBunkType);
+            PageSwitcher.switchToTopNavPage(getActivity(), FlightsListFragment.class, bundle, mTitle ,getString(R.string.policy));
+        }
+
     }
 
     @Override
@@ -68,6 +121,11 @@ public class FlightPolicyFragment extends BaseFragment {
         warningInfo = (BookValidateInfo.WarningInfoBean) bundle.getSerializable("warningInfoBean");
         mFlightInfo = (FlightInfo) bundle.getSerializable("FlightInfo");
         mBunksBean = (FlightInfo.BunksBean) bundle.getSerializable("BunksBean");
+        mReturnDateString = bundle.getString("returnDate","");
+        mDepartureCode = bundle.getString("mDepartureCode");
+        mArrivalCode = bundle.getString("mArrivalCode");
+        mBunkType = bundle.getString("mBunkType");
+        mTitle = bundle.getString("mTitle");
         if (warningInfo == null) {
             return;
         }

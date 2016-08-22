@@ -57,9 +57,12 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
     public static final int VIEW_HEAD = 1;
     private PolicyDialog mConfirmDialog;
 //    public static final int VIEW_CONTENT = 2;
-
-
-    public FlightsListAdapter(Context context, List<FlightInfo> dataList) {
+    private String mReturnDateString;
+    private String mDepartureCode;
+    private String mArrivalCode;
+    private String mBunkType;
+    private String mTitle;
+    public FlightsListAdapter(Context context, List<FlightInfo> dataList, String returnDateString, String departureCode, String arrivalCode, String bunkType, String title) {
         super();
         mContext = context;
         mRes = context.getResources();
@@ -70,6 +73,11 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
         mColorGray = mRes.getColor(R.color.color_222222);
         mGraySpan = new ForegroundColorSpan(mColorGray);
         mSmallSpan = new AbsoluteSizeSpan(Util.px2dip(mContext, Util.sp2px(11)), true);
+        mReturnDateString = returnDateString;
+        mDepartureCode = departureCode;
+        mArrivalCode = arrivalCode;
+        mBunkType = bunkType;
+        mTitle = title;
     }
 
     /**
@@ -323,6 +331,11 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
                                     bundle.putSerializable("warningInfoBean", warningInfoBean);
                                     bundle.putSerializable("FlightInfo", flight);
                                     bundle.putSerializable("BunksBean", bunks);
+                                    bundle.putString("returnDate", mReturnDateString);
+                                    bundle.putString("mDepartureCode", mDepartureCode);
+                                    bundle.putString("mArrivalCode", mArrivalCode);
+                                    bundle.putString("mBunkType", mBunkType);
+                                    bundle.putString("mTitle", mTitle);
                                     PageSwitcher.switchToTopNavPage((Activity) mContext,FlightPolicyFragment.class,bundle,mContext.getString(R.string.policy),null);
 
                                 }

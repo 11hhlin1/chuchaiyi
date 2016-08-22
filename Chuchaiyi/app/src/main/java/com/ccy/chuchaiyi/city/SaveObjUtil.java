@@ -20,7 +20,7 @@ public class SaveObjUtil {
      * @param object
      * @return
      */
-    public static String serialize(CitySort object) {
+    public static String serialize(Object object) {
         ObjectOutputStream objectOutputStream = null;
         ByteArrayOutputStream byteArrayOutputStream = null;
         try {
@@ -45,14 +45,14 @@ public class SaveObjUtil {
      * @param str
      * @return
      */
-    public static CitySort unSerialize(String str) {
+    public static Object unSerialize(String str) {
         ByteArrayInputStream byteArrayInputStream = null;
         try {
             // 反序列化
             if (str != null) {
                 byteArrayInputStream = new ByteArrayInputStream(str.getBytes("ISO-8859-1"));
                 ObjectInputStream ois = new ObjectInputStream(byteArrayInputStream);
-                return (CitySort)ois.readObject();
+                return ois.readObject();
             }
         } catch (Exception e) {
             e.printStackTrace();

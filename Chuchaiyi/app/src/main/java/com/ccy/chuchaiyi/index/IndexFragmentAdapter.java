@@ -22,11 +22,11 @@ public class IndexFragmentAdapter extends FragmentPagerAdapter {
         if (fragment != null) {
             return fragment;
         }
-        if (position == 0) {
-            fragment = new IndexContentFragment();
-        } else if (position == 1) {
-            fragment = new IndexContentFragment();
-        }
+//        if (position == 0) {
+            fragment = new IndexContentFragment(position);
+//        } else if (position == 1) {
+//            fragment = new IndexContentFragment();
+//        }
         mCache[position] = fragment;
         return fragment;
     }

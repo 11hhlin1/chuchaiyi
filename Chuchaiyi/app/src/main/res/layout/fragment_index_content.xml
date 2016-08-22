@@ -72,9 +72,9 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/set_out_date"
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_140p"
-        android:id="@+id/set_out_date"
         android:background="@drawable/personal_item">
 
 
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margin_30p"
+            android:paddingLeft="@dimen/margin_30p"
             android:layout_alignParentLeft="true">
 
             <TextView
@@ -95,6 +95,38 @@
 
             <TextView
                 android:id="@+id/set_out_date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_222222"
+                android:textSize="@dimen/textsize_18sp"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+        <View
+            style="@style/personal_page_bottom_line"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/return_date"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_140p"
+        android:background="@drawable/personal_item">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/margin_30p"
+            android:layout_alignParentLeft="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_aaaaaa"
+                android:textSize="@dimen/textsize_12sp"
+                android:text="@string/return_date"/>
+
+            <TextView
+                android:id="@+id/return_date_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_222222"

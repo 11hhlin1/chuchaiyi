@@ -50,6 +50,7 @@ import butterknife.OnClick;
  * Created by Chuck on 2016/8/9.
  */
 public class IndexContentFragment extends BaseFragment {
+    public int mIndex = 0;
     @Bind(R.id.chufa_city)
     TextView chufaCity;
     @Bind(R.id.chufa_city_ll)
@@ -62,8 +63,12 @@ public class IndexContentFragment extends BaseFragment {
     LinearLayout arriveCityLl;
     @Bind(R.id.set_out_date_tv)
     TextView setOutDateTv;
+    @Bind(R.id.return_date_tv)
+    TextView returnDateTv;
     @Bind(R.id.set_out_date)
     RelativeLayout setOutDate;
+    @Bind(R.id.return_date)
+    RelativeLayout returnDate;
     @Bind(R.id.seat_tv)
     TextView seatTv;
     @Bind(R.id.seat_wei)
@@ -78,11 +83,15 @@ public class IndexContentFragment extends BaseFragment {
     private int mSeatIndex = 0;
     private List<SeatType> mItemList;
     private String mSeatCode;
-    private String mSelDate;
+    private String mSelSetOutDate;
+    private String mSelReturnDate;
     private int mSelMax = 30;
     private CitySort mArriveCity;
     private CitySort mSetOutCity;
 
+    public IndexContentFragment(int index) {
+        this.mIndex = index;
+    }
 
     @Override
     public int getContentViewLayout() {
@@ -101,6 +110,11 @@ public class IndexContentFragment extends BaseFragment {
             seatType.mName = names[i];
             mItemList.add(seatType);
         }
+        if(mIndex == 0) {
+            returnDate.setVisibility(View.GONE);
+        } else {
+            returnDate.setVisibility(View.VISIBLE);
+        }
 //        mItemList.add("不限机舱");
 //        mItemList.add("经济舱");
 //        mItemList.add("公务舱/头等舱");
@@ -110,11 +124,11 @@ public class IndexContentFragment extends BaseFragment {
         setOutDateTv.setText(simpleDateFormat.format(calendar.getTime()));
 
         SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy#MM#dd");
-        mSelDate = simpleDateFormat1.format(calendar.getTime());
+        mSelSetOutDate = simpleDateFormat1.format(calendar.getTime());
         EventBus.getDefault().register(this);
 
-        mSetOutCity = SaveObjUtil.unSerialize(PreferencesManager.getInstance().get(SaveObjUtil.SET_OUT_CITY));
-        mArriveCity = SaveObjUtil.unSerialize(PreferencesManager.getInstance().get(SaveObjUtil.ARRIVE_CITY));
+        mSetOutCity = (CitySort) SaveObjUtil.unSerialize(PreferencesManager.getInstance().get(SaveObjUtil.SET_OUT_CITY));
+        mArriveCity = (CitySort) SaveObjUtil.unSerialize(PreferencesManager.getInstance().get(SaveObjUtil.ARRIVE_CITY));
         if(mArriveCity != null) {
             arriveCity.setText(mArriveCity.getName());
         }
@@ -124,7 +138,7 @@ public class IndexContentFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.chufa_city_ll, R.id.exchange, R.id.arrive_city_ll, R.id.set_out_date, R.id.seat_wei, R.id.search_btn})
+    @OnClick({R.id.chufa_city_ll, R.id.exchange, R.id.arrive_city_ll, R.id.set_out_date,R.id.return_date, R.id.seat_wei, R.id.search_btn})
     public void onClick(View view) {
         Bundle bundle = new Bundle();
         switch (view.getId()) {
@@ -153,8 +167,18 @@ public class IndexContentFragment extends BaseFragment {
                 break;
             case R.id.set_out_date:
                 bundle.putInt(CalendarSelectorFragment.DAYS_OF_SELECT, mSelMax);
-                L.d("@@@@@@" + mSelDate);
-                bundle.putString(CalendarSelectorFragment.ORDER_DAY, mSelDate);
+                L.d("@@@@@@" + mSelSetOutDate);
+//                bundle.putInt("index", mIndex);
+                bundle.putInt("dateType", EventOfSelDate.SET_OUT_DATE);
+                bundle.putString(CalendarSelectorFragment.ORDER_DAY, mSelSetOutDate);
+                PageSwitcher.switchToTopNavPage(getActivity(), CalendarSelectorFragment.class, bundle, getString(R.string.choose_set_out_date),null);
+                break;
+            case R.id.return_date:
+                bundle.putInt(CalendarSelectorFragment.DAYS_OF_SELECT, mSelMax);
+//                bundle.putInt("index", mIndex);
+                bundle.putInt("dateType", EventOfSelDate.RETURN_DATE);
+                L.d("@@@@@@" + mSelReturnDate);
+                bundle.putString(CalendarSelectorFragment.ORDER_DAY, mSelReturnDate);
                 PageSwitcher.switchToTopNavPage(getActivity(), CalendarSelectorFragment.class, bundle, getString(R.string.choose_set_out_date),null);
                 break;
             case R.id.seat_wei:
@@ -165,7 +189,12 @@ public class IndexContentFragment extends BaseFragment {
                     return;
                 bundle.putString("DepartureCode", mSetOutCity.getCode());
                 bundle.putString("ArrivalCode", mArriveCity.getCode());
-                bundle.putString("FlightDate",mSelDate.replace("#","-"));
+                if(mIndex == 0) {
+                    bundle.putString("SetOutDate", mSelSetOutDate.replace("#","-"));
+                } else {
+                    bundle.putString("SetOutDate", mSelSetOutDate.replace("#","-"));
+                    bundle.putString("ReturnDate", mSelReturnDate.replace("#","-"));
+                }
                 bundle.putString("BunkType",mItemList.get(mSeatIndex).mCode);
                 StringBuilder title = Util.getThreadSafeStringBuilder();
                 title.append(mSetOutCity.getName()).append("-").append(mArriveCity.getName());
@@ -177,11 +206,22 @@ public class IndexContentFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void setDate(EventOfSelDate event) {
-        String [] dates = event.mDate.split("#");
-        StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
-        stringBuilder.append(dates[1]).append(getString(R.string.month)).append(dates[2]).append(getString(R.string.sunday));
-        setOutDateTv.setText(stringBuilder.toString());
-        mSelDate = event.mDate;
+            if(event.mDateType == EventOfSelDate.SET_OUT_DATE) {
+                String [] dates = event.mDate.split("#");
+                StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+                stringBuilder.append(dates[1]).append(getString(R.string.month)).append(dates[2]).append(getString(R.string.sunday));
+                setOutDateTv.setText(stringBuilder.toString());
+                mSelSetOutDate = event.mDate;
+            } else {
+                if(1 == mIndex) {
+                    String[] dates = event.mDate.split("#");
+                    StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+                    stringBuilder.append(dates[1]).append(getString(R.string.month)).append(dates[2]).append(getString(R.string.sunday));
+                    returnDateTv.setText(stringBuilder.toString());
+                    mSelReturnDate = event.mDate;
+                }
+            }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

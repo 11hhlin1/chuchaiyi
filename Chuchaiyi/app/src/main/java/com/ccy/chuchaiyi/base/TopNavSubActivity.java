@@ -74,7 +74,9 @@ public class TopNavSubActivity extends BaseSubActivity {
         }
     }
 
-
+   public String getTitleText() {
+       return mTopTitleTV.getText().toString();
+   }
     public void setTopTitleTV(String text) {
         if (!TextUtils.isEmpty(text)) {
             mTopTitleTV.setText(text);

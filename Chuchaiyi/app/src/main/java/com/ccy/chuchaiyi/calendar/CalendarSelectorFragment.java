@@ -31,7 +31,8 @@ public class CalendarSelectorFragment extends BaseFragment {
 
     private int daysOfSelect;
     private String orderDay;
-
+//    private int mIndex;
+    private int mDateType;
     private ListView listView;
 
 //	@Override
@@ -68,6 +69,8 @@ public class CalendarSelectorFragment extends BaseFragment {
         Bundle bundle = getArguments();
         daysOfSelect = bundle.getInt(DAYS_OF_SELECT);
         orderDay = bundle.getString(ORDER_DAY);
+//        mIndex = bundle.getInt("index");
+        mDateType = bundle.getInt("dateType");
         CalendarListAdapter adapter = new CalendarListAdapter(getActivity(), daysOfSelect, orderDay);
         lvCalendar.setAdapter(adapter);
 
@@ -78,6 +81,8 @@ public class CalendarSelectorFragment extends BaseFragment {
             public void onOrder(String orderInfo) {
                 EventOfSelDate eventofSelDate = new EventOfSelDate();
                 eventofSelDate.mDate = orderInfo;
+                eventofSelDate.mDateType = mDateType;
+//                eventofSelDate.mPage = mIndex;
                 EventBus.getDefault().post(eventofSelDate);
                 onBackPressed();
             }

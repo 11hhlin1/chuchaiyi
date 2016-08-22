@@ -27,6 +27,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
+import com.ccy.chuchaiyi.base.TopNavSubActivity;
 import com.ccy.chuchaiyi.index.SeatType;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.widget.NestRadioGroup;
@@ -146,7 +147,9 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
     private EmptyErrorViewController mEmptyErrorViewController;
     private FlightsListAdapter mAdapter;
     private String mCurrentDateString;
+    private String mReturnDateString;
     private Date mCurrentDate;
+    private Date mReturnDate;
 
     @OnClick({R.id.pre_day, R.id.next_day, R.id.time_tab,R.id.price_tab, R.id.seat_tab, R.id.company_tab})
     public void onClick(View view) {
@@ -232,8 +235,15 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
     public void initView() {
         mPriceType = 0;
         mTimeType = EARLY_TO_LATE;
+        Bundle bundle = getArguments();
+        mDepartureCode = bundle.getString("DepartureCode");
+        mArrivalCode = bundle.getString("ArrivalCode");
+        mCurrentDateString = bundle.getString("SetOutDate");
+        mReturnDateString = bundle.getString("ReturnDate","");
+        mBunkType = bundle.getString("BunkType");
         final PullToRefreshExpandableListView listView = mListView;
-        mAdapter = new FlightsListAdapter(getActivity(), new ArrayList<FlightInfo>());
+        TopNavSubActivity act = (TopNavSubActivity) getActivity();
+        mAdapter = new FlightsListAdapter(getActivity(), new ArrayList<FlightInfo>(), mReturnDateString, mDepartureCode,mArrivalCode,mBunkType,act.getTitleText());
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ExpandableListView>() {
             @Override
             public void onRefresh(PullToRefreshBase<ExpandableListView> refreshView) {
@@ -256,27 +266,6 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                 if(i1 == 0) {
                    expandableListView.collapseGroup(i);
                 } else {
-//                    FlightInfo flight = mAdapter.getGroup(i);
-//                    FlightInfo.BunksBean bunks = mAdapter.getChild(i,i1);
-//
-//                    PolicyDialog policyDialog = new PolicyDialog(getContext());
-//                    policyDialog.setContent(flight,bunks);
-//                    policyDialog.show();
-//                    HashMap<String, String> params = new HashMap<>();
-//                    params.put("airlineCode", flight.getAirline());
-//                    params.put("bunkCode", bunks.getBunkCode());
-//                    params.put("departureDate", flight.getDeparture().getDateTime().split(" ")[0]);
-//                    params.put("departureAirportCode", flight.getDeparture().getAirportCode());
-//                    params.put("arrivalAirportCode", flight.getArrival().getAirportCode());
-//                    OkHttpUtils.get(ApiConstants.GET_FLIGHT_LIST).tag(this)
-//                            .cacheMode(CacheMode.IF_NONE_CACHE_REQUEST)
-//                            .params(params)
-//                            .execute(new JsonCallback<FlightPolicy>(FlightPolicy.class) {
-//                                @Override
-//                                public void onResponse(boolean isFromCache, FlightPolicy flightPolicy, Request request, @Nullable Response response) {
-//
-//                                }
-//                            });
                 }
                 return false;
             }
@@ -289,11 +278,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                 mListView.setRefreshing();
             }
         });
-        Bundle bundle = getArguments();
-        mDepartureCode = bundle.getString("DepartureCode");
-        mArrivalCode = bundle.getString("ArrivalCode");
-        mCurrentDateString = bundle.getString("FlightDate");
-        mBunkType = bundle.getString("BunkType");
+
         String[] dates = mCurrentDateString.split("-");
         L.d("@@@@" + mCurrentDateString);
         calendar.set(Integer.valueOf(dates[0]), Integer.valueOf(dates[1]) - 1, Integer.valueOf(dates[2]));
