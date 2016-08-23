@@ -1,4 +1,4 @@
-package com.ccy.chuchaiyi.city;
+package com.gjj.applibrary.util;
 
 import com.gjj.applibrary.util.Util;
 
@@ -11,8 +11,7 @@ import java.io.ObjectOutputStream;
  * Created by Chuck on 2016/8/16.
  */
 public class SaveObjUtil {
-    public static final String ARRIVE_CITY = "mArriveCity";
-    public static final String SET_OUT_CITY = "mSetOutCity";
+
 
     /**
      * 序列化

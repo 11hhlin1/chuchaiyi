@@ -1,4 +1,4 @@
-package com.ccy.chuchaiyi.login;
+package com.ccy.chuchaiyi.user;
 
 import java.io.Serializable;
 

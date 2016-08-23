@@ -25,7 +25,8 @@ import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.calendar.CalendarSelectorFragment;
 import com.ccy.chuchaiyi.city.ChooseCityFragment;
 import com.ccy.chuchaiyi.city.CitySort;
-import com.ccy.chuchaiyi.city.SaveObjUtil;
+import com.gjj.applibrary.util.SaveObjUtil;
+import com.ccy.chuchaiyi.constant.Constants;
 import com.ccy.chuchaiyi.event.EventOfSelCity;
 import com.ccy.chuchaiyi.event.EventOfSelDate;
 import com.ccy.chuchaiyi.flight.FlightsListFragment;
@@ -120,15 +121,15 @@ public class IndexContentFragment extends BaseFragment {
 //        mItemList.add("公务舱/头等舱");
         seatTv.setText(mItemList.get(mSeatIndex).mName);
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M月d日");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM月dd日");
         setOutDateTv.setText(simpleDateFormat.format(calendar.getTime()));
 
         SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy#MM#dd");
         mSelSetOutDate = simpleDateFormat1.format(calendar.getTime());
         EventBus.getDefault().register(this);
 
-        mSetOutCity = (CitySort) SaveObjUtil.unSerialize(PreferencesManager.getInstance().get(SaveObjUtil.SET_OUT_CITY));
-        mArriveCity = (CitySort) SaveObjUtil.unSerialize(PreferencesManager.getInstance().get(SaveObjUtil.ARRIVE_CITY));
+        mSetOutCity = (CitySort) SaveObjUtil.unSerialize(PreferencesManager.getInstance().get(Constants.SET_OUT_CITY));
+        mArriveCity = (CitySort) SaveObjUtil.unSerialize(PreferencesManager.getInstance().get(Constants.ARRIVE_CITY));
         if(mArriveCity != null) {
             arriveCity.setText(mArriveCity.getName());
         }
@@ -155,8 +156,8 @@ public class IndexContentFragment extends BaseFragment {
                     mSetOutCity = temp;
                     arriveCity.setText(mArriveCity.getName());
                     chufaCity.setText(mSetOutCity.getName());
-                    PreferencesManager.getInstance().put(SaveObjUtil.ARRIVE_CITY, SaveObjUtil.serialize(mArriveCity));
-                    PreferencesManager.getInstance().put(SaveObjUtil.SET_OUT_CITY, SaveObjUtil.serialize(mSetOutCity));
+                    PreferencesManager.getInstance().put(Constants.ARRIVE_CITY, SaveObjUtil.serialize(mArriveCity));
+                    PreferencesManager.getInstance().put(Constants.SET_OUT_CITY, SaveObjUtil.serialize(mSetOutCity));
                 }
                 break;
             case R.id.arrive_city_ll:
@@ -229,11 +230,11 @@ public class IndexContentFragment extends BaseFragment {
         if(event.mType == ChooseCityFragment.ARRIVE) {
             arriveCity.setText(event.mCity.getName());
             mArriveCity = event.mCity;
-            PreferencesManager.getInstance().put(SaveObjUtil.ARRIVE_CITY, SaveObjUtil.serialize(mArriveCity));
+            PreferencesManager.getInstance().put(Constants.ARRIVE_CITY, SaveObjUtil.serialize(mArriveCity));
         } else {
             chufaCity.setText(event.mCity.getName());
             mSetOutCity = event.mCity;
-            PreferencesManager.getInstance().put(SaveObjUtil.SET_OUT_CITY, SaveObjUtil.serialize(mSetOutCity));
+            PreferencesManager.getInstance().put(Constants.SET_OUT_CITY, SaveObjUtil.serialize(mSetOutCity));
         }
     }
     /**

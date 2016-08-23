@@ -12,6 +12,7 @@ public class AppLib {
 
     private static AppLib mAppLib;
     private Application mApplication;
+    private boolean mIsInitialized = false;
 
     public AppLib(Application app) {
         mApplication = app;
@@ -44,4 +45,14 @@ public class AppLib {
     public static String getPackageName() {
         return getContext().getPackageName();
     }
+
+    public static boolean isInitialized() {
+        return mAppLib.mIsInitialized;
+    }
+
+    public static void setInitialized(boolean value) {
+        mAppLib.mIsInitialized = value;
+    }
+
+
 }

@@ -4,9 +4,11 @@ import android.app.Application;
 import android.content.Intent;
 
 import com.ccy.chuchaiyi.login.LoginActivity;
+import com.ccy.chuchaiyi.user.UserMgr;
 import com.gjj.applibrary.app.AppLib;
 import com.gjj.applibrary.event.EventOfTokenError;
 import com.gjj.applibrary.http.model.BundleKey;
+import com.gjj.applibrary.task.ForegroundTaskExecutor;
 import com.gjj.applibrary.util.PreferencesManager;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.model.HttpHeaders;
@@ -21,7 +23,7 @@ import org.greenrobot.eventbus.ThreadMode;
 public class BaseApplication extends Application {
     private static BaseApplication mApp;
     private AppLib mAppLib;
-
+    private UserMgr mUserMgr;
     public static BaseApplication getInstance() {
         return mApp;
     }
@@ -38,8 +40,19 @@ public class BaseApplication extends Application {
         headers.put(HttpHeaders.HEAD_KEY_CONTENT_TYPE, "application/json");
         OkHttpUtils.getInstance().addCommonHeaders(headers);
         EventBus.getDefault().register(this);
+
+        ForegroundTaskExecutor.executeTask(new Runnable() {
+            @Override
+            public void run() {
+                mUserMgr = new UserMgr();
+                AppLib.setInitialized(true);
+            }
+        });
     }
 
+    public static UserMgr getUserMgr() {
+        return mApp.mUserMgr;
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void goLogin(EventOfTokenError event) {

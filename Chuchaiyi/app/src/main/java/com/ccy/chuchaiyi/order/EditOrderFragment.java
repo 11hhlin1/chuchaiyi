@@ -11,7 +11,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
+import com.ccy.chuchaiyi.app.BaseApplication;
 import com.ccy.chuchaiyi.base.BaseFragment;
+import com.ccy.chuchaiyi.flight.FlightInfo;
+import com.ccy.chuchaiyi.flight.PolicyResultInfo;
+import com.ccy.chuchaiyi.user.UserInfo;
+import com.ccy.chuchaiyi.user.UserMgr;
+import com.gjj.applibrary.util.DateUtil;
+import com.gjj.applibrary.util.Util;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -73,7 +85,12 @@ public class EditOrderFragment extends BaseFragment {
     TextView orderMoneyDetail;
     @Bind(R.id.commit_order)
     Button commitOrder;
-
+    private FlightInfo mFlightInfo;
+    private FlightInfo.BunksBean mBunksBean;
+    private FlightInfo mReturnFlightInfo;
+    private FlightInfo.BunksBean mReturnBunksBean;
+    private PolicyResultInfo mSetoutResonInfo;
+    private PolicyResultInfo mReturnResonInfo;
     @Override
     public int getContentViewLayout() {
         return R.layout.fragment_edit_order;
@@ -81,9 +98,71 @@ public class EditOrderFragment extends BaseFragment {
 
     @Override
     public void initView() {
-
+        Bundle bundle = getArguments();
+        mFlightInfo = (FlightInfo) bundle.getSerializable("SetOutFlightInfo");
+        mBunksBean = (FlightInfo.BunksBean) bundle.getSerializable("SetOutBunksBean");
+        mReturnFlightInfo = (FlightInfo) bundle.getSerializable("ReturnFlightInfo");
+        mReturnBunksBean = (FlightInfo.BunksBean) bundle.getSerializable("ReturnBunksBean");
+        mSetoutResonInfo = (PolicyResultInfo) bundle.getSerializable("SetOutWarningInfoBean");
+        mReturnResonInfo = (PolicyResultInfo) bundle.getSerializable("ReturnWarningInfoBean");
+        if(mReturnFlightInfo == null) {
+            arriveTime.setVisibility(View.GONE);
+            arriveAirport.setVisibility(View.GONE);
+            setDepartureTv();
+            int planePrice = mBunksBean.getBunkPrice().getFactBunkPrice();
+            int airportFee = mFlightInfo.getAirportFee();
+            int oilFee = mFlightInfo.getOilFee();
+            priceValue.setText(getString(R.string.money_no_end,String.valueOf(planePrice)));
+            jiJianValue.setText(getString(R.string.money_no_end,String.valueOf(airportFee)));
+            oilFeeValue.setText(getString(R.string.money_no_end,String.valueOf(oilFee)));
+            StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+            stringBuilder.append(getString(R.string.money_no_end, mFlightInfo.getInsuranceFeeUnitPrice())).append(" * ").append("1份");
+            safeFeeValue.setText(stringBuilder.toString());
+            delayFee.setText(stringBuilder.toString());
+            int amount = planePrice + airportFee + oilFee;
+            orderMoney.setText(getString(R.string.money_no_end, amount));
+        } else {
+            setDepartureTv();
+            setReturnTv();
+            int planePrice = mBunksBean.getBunkPrice().getFactBunkPrice() + mReturnBunksBean.getBunkPrice().getFactBunkPrice();
+            priceValue.setText(getString(R.string.money_no_end,String.valueOf(planePrice)));
+            int airportFee = mFlightInfo.getAirportFee()+ mReturnFlightInfo.getAirportFee();
+            jiJianValue.setText(getString(R.string.money_no_end,String.valueOf(airportFee)));
+            int oilFee = mFlightInfo.getOilFee()+ mReturnFlightInfo.getOilFee();
+            oilFeeValue.setText(getString(R.string.money_no_end,String.valueOf(oilFee)));
+            StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+            stringBuilder.append(getString(R.string.money_no_end, mFlightInfo.getInsuranceFeeUnitPrice())).append(" * ").append("2份");
+            safeFeeValue.setText(stringBuilder.toString());
+            delayFee.setText(stringBuilder.toString());
+            int amount = planePrice + airportFee + oilFee;
+            orderMoney.setText(getString(R.string.money_no_end, amount));
+        }
+        UserInfo user = BaseApplication.getUserMgr().getUser();
+        contactName.setText(user.getEmployeeName());
+        contactPhone.setText(user.getMobile());
     }
 
+    private void setDepartureTv() {
+        FlightInfo.DepartureBean departureBean = mFlightInfo.getDeparture();
+        String date = departureBean.getDateTime().split(" ")[1];
+        StringBuilder dateRes = Util.getThreadSafeStringBuilder();
+        dateRes.append(DateUtil.getDateTitle(date)).append("  ").append(mBunksBean.getBunkName());
+        setOutTime.setText(DateUtil.getDateTitle(date));
+        StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+        stringBuilder.append(departureBean.getAirportName()).append("-").append(mFlightInfo.getArrival().getAirportName());
+        setOutAirport.setText(stringBuilder.toString());
+    }
+
+    private void setReturnTv() {
+        FlightInfo.DepartureBean departureBean = mReturnFlightInfo.getDeparture();
+        String date = departureBean.getDateTime().split(" ")[1];
+        StringBuilder dateRes = Util.getThreadSafeStringBuilder();
+        dateRes.append(DateUtil.getDateTitle(date)).append("  ").append(mReturnBunksBean.getBunkName());
+        arriveTime.setText(DateUtil.getDateTitle(date));
+        StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+        stringBuilder.append(departureBean.getAirportName()).append("-").append(mReturnFlightInfo.getArrival().getAirportName());
+        arriveAirport.setText(stringBuilder.toString());
+    }
     @OnClick({R.id.plane_detail_rl, R.id.return_change_tv, R.id.add_passenger, R.id.order_money_detail, R.id.commit_order})
     public void onClick(View view) {
         switch (view.getId()) {

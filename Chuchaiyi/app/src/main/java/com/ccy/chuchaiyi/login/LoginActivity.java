@@ -8,31 +8,34 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
+import com.ccy.chuchaiyi.app.BaseApplication;
 import com.ccy.chuchaiyi.base.PageSwitcher;
+import com.ccy.chuchaiyi.constant.Constants;
 import com.ccy.chuchaiyi.main.MainActivity;
 import com.ccy.chuchaiyi.net.ApiConstants;
+import com.ccy.chuchaiyi.user.UserInfo;
+import com.ccy.chuchaiyi.user.UserMgr;
 import com.ccy.chuchaiyi.widget.CustomProgressDialog;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.http.model.BundleKey;
 import com.gjj.applibrary.log.L;
+import com.gjj.applibrary.task.BackgroundTaskExecutor;
 import com.gjj.applibrary.util.AndroidBug5497Workaround;
 import com.gjj.applibrary.util.AndroidUtil;
-import com.gjj.applibrary.util.MD5Util;
 import com.gjj.applibrary.util.PreferencesManager;
+import com.gjj.applibrary.util.SaveObjUtil;
 import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 import com.gjj.applibrary.widget.YScrollLinearLayout;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.cache.CacheMode;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -116,11 +119,17 @@ public class LoginActivity extends Activity implements AndroidBug5497Workaround.
                 .postJson(jsonObject.toString())
                 .execute(new JsonCallback<UserInfo>(UserInfo.class) {
                     @Override
-                    public void onResponse(boolean isFromCache, UserInfo rspInfo, Request request, @Nullable Response response) {
+                    public void onResponse(boolean isFromCache, final UserInfo rspInfo, Request request, @Nullable Response response) {
                         dismissProgressDialog();
                         if(rspInfo != null) {
                             L.d("LoginActivity [%s]" , rspInfo);
-                            PreferencesManager.getInstance().put(BundleKey.TOKEN, rspInfo.getToken());
+                            BackgroundTaskExecutor.executeTask(new Runnable() {
+                                @Override
+                                public void run() {
+                                    UserMgr userMgr = BaseApplication.getUserMgr();
+                                    userMgr.saveUserInfo(rspInfo);
+                                }
+                            });
                             Intent intent = new Intent();
                             intent.setClass(LoginActivity.this, MainActivity.class);
                             startActivity(intent);

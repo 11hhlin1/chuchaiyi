@@ -377,7 +377,7 @@
             android:id="@+id/commit_order"
             android:layout_width="130dp"
             android:layout_height="match_parent"
-            android:background="@drawable/selector_common_btn"
+            android:background="@drawable/selector_rect_btn"
             android:textSize="@dimen/textsize_18sp"
             android:textColor="@color/white"
             android:layout_alignParentRight="true"

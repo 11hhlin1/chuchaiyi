@@ -4,15 +4,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.PageSwitcher;
-import com.ccy.chuchaiyi.city.SaveObjUtil;
+import com.gjj.applibrary.util.SaveObjUtil;
 import com.ccy.chuchaiyi.order.EditOrderFragment;
 import com.gjj.applibrary.util.PreferencesManager;
 import com.gjj.applibrary.util.Util;
@@ -21,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -70,6 +67,8 @@ public class FlightPolicyFragment extends BaseFragment {
                 resultInfo.setTwoCabinWarningMsg(warningInfo.getTwoCabinWarningMsg());
                 resultInfo.setNotPreNDaysReason(warningInfo.getPreNDaysReasons().get(mAdapter.getSecondReasonPos() - dividePos - 1));
                 bundle.putSerializable("SetOutWarningInfoBean", resultInfo);
+                bundle.putSerializable("SetOutFlightInfo", mFlightInfo);
+                bundle.putSerializable("SetOutBunksBean", mBunksBean);
                 StringBuilder title = Util.getThreadSafeStringBuilder();
                 title.append(mFlightInfo.getDeparture().getCityName()).append("-").append(mFlightInfo.getArrival().getCityName()).append(getString(R.string.reason_common));
                 PageSwitcher.switchToTopNavPage(getActivity(), EditOrderFragment.class, bundle, title.toString(),getString(R.string.reason_private));
@@ -84,6 +83,10 @@ public class FlightPolicyFragment extends BaseFragment {
                 resultInfoLast.setTwoCabinWarningMsg(warningInfo.getTwoCabinWarningMsg());
                 resultInfoLast.setNotPreNDaysReason(warningInfo.getPreNDaysReasons().get(mAdapter.getSecondReasonPos() - dividePos - 1));
                 bundle.putSerializable("ReturnWarningInfoBean", resultInfoLast);
+                bundle.putSerializable("SetOutFlightInfo", (FlightInfo)SaveObjUtil.unSerialize(PreferencesManager.getInstance().get("SetOutFlightInfo")));
+                bundle.putSerializable("SetOutBunksBean", (FlightInfo.BunksBean)SaveObjUtil.unSerialize(PreferencesManager.getInstance().get("SetOutBunksBean")));
+                bundle.putSerializable("ReturnFlightInfo", mFlightInfo);
+                bundle.putSerializable("ReturnBunksBean", mBunksBean);
                 StringBuilder title = Util.getThreadSafeStringBuilder();
                 title.append(mFlightInfo.getDeparture().getCityName()).append("-").append(mFlightInfo.getArrival().getCityName()).append(getString(R.string.reason_common));
                 PageSwitcher.switchToTopNavPage(getActivity(), EditOrderFragment.class, bundle, title.toString(),getString(R.string.reason_private));
