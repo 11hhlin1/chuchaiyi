@@ -1,8 +1,11 @@
 package com.ccy.chuchaiyi.app;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 
+import com.ccy.chuchaiyi.db.DaoMaster;
+import com.ccy.chuchaiyi.db.DaoSession;
 import com.ccy.chuchaiyi.login.LoginActivity;
 import com.ccy.chuchaiyi.user.UserMgr;
 import com.gjj.applibrary.app.AppLib;
@@ -21,9 +24,12 @@ import org.greenrobot.eventbus.ThreadMode;
  * Created by Administrator on 2016/7/10.
  */
 public class BaseApplication extends Application {
+    private static final String DATABASE_NAME = "notes-db";
     private static BaseApplication mApp;
     private AppLib mAppLib;
     private UserMgr mUserMgr;
+    private static DaoMaster daoMaster;
+    private static DaoSession daoSession;
     public static BaseApplication getInstance() {
         return mApp;
     }
@@ -44,6 +50,7 @@ public class BaseApplication extends Application {
         ForegroundTaskExecutor.executeTask(new Runnable() {
             @Override
             public void run() {
+                initDB();
                 mUserMgr = new UserMgr();
                 AppLib.setInitialized(true);
             }
@@ -53,7 +60,37 @@ public class BaseApplication extends Application {
     public static UserMgr getUserMgr() {
         return mApp.mUserMgr;
     }
+    public void initDB() {
+        getDaoSession(this);
+    }
 
+    public static DaoMaster getDaoMaster(Context context)
+    {
+        if (daoMaster == null)
+        {
+            DaoMaster.OpenHelper helper = new DaoMaster.DevOpenHelper(context, DATABASE_NAME, null);
+            daoMaster = new DaoMaster(helper.getWritableDatabase());
+        }
+        return daoMaster;
+    }
+
+    /**
+     * 取得DaoSession
+     *
+     * @param context
+     * @return
+     */
+    public static DaoSession getDaoSession(Context context)
+    {
+        if (daoSession == null) {
+            if (daoMaster == null)
+            {
+                daoMaster = getDaoMaster(context);
+            }
+            daoSession = daoMaster.newSession();
+        }
+        return daoSession;
+    }
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void goLogin(EventOfTokenError event) {
         Intent intent = new Intent(this, LoginActivity.class);

@@ -231,7 +231,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_222222"
                     android:textSize="@dimen/textsize_13sp"
-                    android:text="@string/safe_fee"/>
+                    android:text="@string/delay_fee"/>
                 <TextView
                     android:id="@+id/delay_fee_value"
                     android:layout_centerVertical="true"

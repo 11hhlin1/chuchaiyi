@@ -100,6 +100,7 @@
     <string name="passenger">乘机人</string>
     <string name="add">添加</string>
     <string name="safe_fee">航意险</string>
+    <string name="delay_fee">航延险</string>
     <string name="contact">联系人</string>
     <string name="contact_phone">联系电话</string>
     <string name="all_pay">统一支付</string>
@@ -121,5 +122,7 @@
     <string name="must_choose">必选</string>
     <string name="reason_common">(因公)</string>
     <string name="reason_private">因私</string>
+    <string name="call">呼叫</string>
+    <string name="common_name">常用姓名</string>
 
 </resources>

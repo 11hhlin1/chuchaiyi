@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.SparseArray;
@@ -25,11 +26,17 @@ import com.ccy.chuchaiyi.login.ForgetPswFragment;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.order.EditOrderFragment;
 import com.ccy.chuchaiyi.widget.PolicyDialog;
+import com.gjj.applibrary.event.EventOfTokenError;
+import com.gjj.applibrary.http.callback.CommonCallback;
 import com.gjj.applibrary.http.callback.JsonCallback;
+import com.gjj.applibrary.log.L;
 import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.cache.CacheMode;
+
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -317,7 +324,47 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
                     .tag(mContext)
                     .cacheMode(CacheMode.NO_CACHE)
                     .postJson(JSON.toJSONString(bookValidateRequest))
-                    .execute(new JsonCallback<BookValidateInfo>(BookValidateInfo.class) {
+                    .execute(new CommonCallback<BookValidateInfo>() {
+                        @Override
+                        public BookValidateInfo parseNetworkResponse(Response response) throws Exception {
+                            String responseData = response.body().string();
+                            if (TextUtils.isEmpty(responseData)) return null;
+
+                            /**
+                             * 一般来说，服务器返回的响应码都包含 code，msg，data 三部分，在此根据自己的业务需要完成相应的逻辑判断
+                             * 以下只是一个示例，具体业务具体实现
+                             */
+                            JSONObject jsonObject = new JSONObject(responseData);
+                            final String msg = jsonObject.optString("Message", "");
+                            final int code = jsonObject.optInt("Code", 0);
+                            String data = responseData;
+                            switch (code) {
+                                case 0:
+                                    BookValidateInfo object = JSON.parseObject(data, BookValidateInfo.class);
+                                    L.d("@@@@", object);
+                                    return object;
+                                case 1:
+                                    BookValidateInfo object1 = JSON.parseObject(data, BookValidateInfo.class);
+                                    L.d("@@@@", object1);
+                                    return object1;
+                                case 401:
+                                    //比如：用户授权信息无效，在此实现相应的逻辑，弹出对话或者跳转到其他页面等,该抛出错误，会在onError中回调。
+                                    EventBus.getDefault().post(new EventOfTokenError());
+                                    throw new IllegalStateException("用户授权信息无效");
+                                case 105:
+                                    //比如：用户收取信息已过期，在此实现相应的逻辑，弹出对话或者跳转到其他页面等,该抛出错误，会在onError中回调。
+                                    throw new IllegalStateException("用户收取信息已过期");
+                                case 106:
+                                    //比如：用户账户被禁用，在此实现相应的逻辑，弹出对话或者跳转到其他页面等,该抛出错误，会在onError中回调。
+                                    throw new IllegalStateException("用户账户被禁用");
+                                case 300:
+                                    //比如：其他乱七八糟的等，在此实现相应的逻辑，弹出对话或者跳转到其他页面等,该抛出错误，会在onError中回调。
+                                    throw new IllegalStateException("其他乱七八糟的等");
+                                default:
+                                    throw new IllegalStateException("错误代码：" + code + "，错误信息：" + msg);
+                            }
+                        }
+
                         @Override
                         public void onResponse(boolean isFromCache, BookValidateInfo bookValidateInfo, Request request, @Nullable Response response) {
                             BookValidateInfo.WarningInfoBean warningInfoBean = bookValidateInfo.getWarningInfo();
@@ -344,6 +391,8 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
                         @Override
                         public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
                             super.onError(isFromCache, call, response, e);
+                            if(response == null)
+                                return;
                             switch (response.code()) {
                                 case 2:
                                     ToastUtil.shortToast(R.string.price_fail);

@@ -16,20 +16,16 @@ import android.widget.TextView;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.app.BaseApplication;
 import com.ccy.chuchaiyi.base.PageSwitcher;
-import com.ccy.chuchaiyi.constant.Constants;
+import com.ccy.chuchaiyi.db.UserInfo;
 import com.ccy.chuchaiyi.main.MainActivity;
 import com.ccy.chuchaiyi.net.ApiConstants;
-import com.ccy.chuchaiyi.user.UserInfo;
 import com.ccy.chuchaiyi.user.UserMgr;
 import com.ccy.chuchaiyi.widget.CustomProgressDialog;
 import com.gjj.applibrary.http.callback.JsonCallback;
-import com.gjj.applibrary.http.model.BundleKey;
 import com.gjj.applibrary.log.L;
 import com.gjj.applibrary.task.BackgroundTaskExecutor;
 import com.gjj.applibrary.util.AndroidBug5497Workaround;
 import com.gjj.applibrary.util.AndroidUtil;
-import com.gjj.applibrary.util.PreferencesManager;
-import com.gjj.applibrary.util.SaveObjUtil;
 import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 import com.gjj.applibrary.widget.YScrollLinearLayout;
@@ -139,8 +135,10 @@ public class LoginActivity extends Activity implements AndroidBug5497Workaround.
                     @Override
                     public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
                         dismissProgressDialog();
-                        if(response != null)
-                            L.d("LoginActivity[%s]", response);
+                        if(response != null) {
+                            L.d("LoginActivity[%s]", response.message());
+                            ToastUtil.shortToast(LoginActivity.this, response.message());
+                        }
                     }
                 });
     }

@@ -62,20 +62,6 @@ public abstract class JsonCallback<T> extends CommonCallback<T> {
                 }
                 if (type != null) return JSON.parseObject(data, type);
                 break;
-            case 1:
-                /**
-                 * code = 1 代表成功，默认实现了Gson解析成相应的实体Bean返回，可以自己替换成fastjson等
-                 * 对于返回参数，先支持 String，然后优先支持class类型的字节码，最后支持type类型的参数
-                 */
-                if (clazz == String.class) return (T) data;
-                if (clazz != null) {
-                    T object = JSON.parseObject(data, clazz);
-                    L.d("@@@@", object);
-                    return object;
-
-                }
-                if (type != null) return JSON.parseObject(data, type);
-                break;
             case 401:
                 //比如：用户授权信息无效，在此实现相应的逻辑，弹出对话或者跳转到其他页面等,该抛出错误，会在onError中回调。
                 EventBus.getDefault().post(new EventOfTokenError());

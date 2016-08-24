@@ -1,9 +1,7 @@
 package com.ccy.chuchaiyi.order;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -13,20 +11,14 @@ import android.widget.TextView;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.app.BaseApplication;
 import com.ccy.chuchaiyi.base.BaseFragment;
+import com.ccy.chuchaiyi.db.UserInfo;
 import com.ccy.chuchaiyi.flight.FlightInfo;
 import com.ccy.chuchaiyi.flight.PolicyResultInfo;
-import com.ccy.chuchaiyi.user.UserInfo;
-import com.ccy.chuchaiyi.user.UserMgr;
+import com.ccy.chuchaiyi.util.CallUtil;
 import com.gjj.applibrary.util.DateUtil;
 import com.gjj.applibrary.util.Util;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -91,6 +83,13 @@ public class EditOrderFragment extends BaseFragment {
     private FlightInfo.BunksBean mReturnBunksBean;
     private PolicyResultInfo mSetoutResonInfo;
     private PolicyResultInfo mReturnResonInfo;
+
+    @Override
+    public void onRightBtnClick() {
+        super.onRightBtnClick();
+        CallUtil.askForMakeCall(getActivity(),"", "400-600-2084");
+    }
+
     @Override
     public int getContentViewLayout() {
         return R.layout.fragment_edit_order;
@@ -118,7 +117,7 @@ public class EditOrderFragment extends BaseFragment {
             StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
             stringBuilder.append(getString(R.string.money_no_end, mFlightInfo.getInsuranceFeeUnitPrice())).append(" * ").append("1份");
             safeFeeValue.setText(stringBuilder.toString());
-            delayFee.setText(stringBuilder.toString());
+            delayFeeValue.setText(stringBuilder.toString());
             int amount = planePrice + airportFee + oilFee;
             orderMoney.setText(getString(R.string.money_no_end, amount));
         } else {
@@ -133,7 +132,7 @@ public class EditOrderFragment extends BaseFragment {
             StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
             stringBuilder.append(getString(R.string.money_no_end, mFlightInfo.getInsuranceFeeUnitPrice())).append(" * ").append("2份");
             safeFeeValue.setText(stringBuilder.toString());
-            delayFee.setText(stringBuilder.toString());
+            delayFeeValue.setText(stringBuilder.toString());
             int amount = planePrice + airportFee + oilFee;
             orderMoney.setText(getString(R.string.money_no_end, amount));
         }
@@ -144,7 +143,7 @@ public class EditOrderFragment extends BaseFragment {
 
     private void setDepartureTv() {
         FlightInfo.DepartureBean departureBean = mFlightInfo.getDeparture();
-        String date = departureBean.getDateTime().split(" ")[1];
+        String date = departureBean.getDateTime().split(" ")[0];
         StringBuilder dateRes = Util.getThreadSafeStringBuilder();
         dateRes.append(DateUtil.getDateTitle(date)).append("  ").append(mBunksBean.getBunkName());
         setOutTime.setText(DateUtil.getDateTitle(date));
@@ -155,7 +154,7 @@ public class EditOrderFragment extends BaseFragment {
 
     private void setReturnTv() {
         FlightInfo.DepartureBean departureBean = mReturnFlightInfo.getDeparture();
-        String date = departureBean.getDateTime().split(" ")[1];
+        String date = departureBean.getDateTime().split(" ")[0];
         StringBuilder dateRes = Util.getThreadSafeStringBuilder();
         dateRes.append(DateUtil.getDateTitle(date)).append("  ").append(mReturnBunksBean.getBunkName());
         arriveTime.setText(DateUtil.getDateTitle(date));

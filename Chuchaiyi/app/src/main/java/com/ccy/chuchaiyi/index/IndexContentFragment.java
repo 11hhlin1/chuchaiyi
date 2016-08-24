@@ -86,7 +86,7 @@ public class IndexContentFragment extends BaseFragment {
     private String mSeatCode;
     private String mSelSetOutDate;
     private String mSelReturnDate;
-    private int mSelMax = 30;
+    private int mSelMax = 130;
     private CitySort mArriveCity;
     private CitySort mSetOutCity;
 

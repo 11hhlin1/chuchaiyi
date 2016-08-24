@@ -58,11 +58,11 @@ public class FlightPolicyFragment extends BaseFragment {
 //            bundle.putSerializable("TwoCabinWarningMsg",warningInfo.getTwoCabinWarningMsg());
 //            bundle.putSerializable("NotLowPriceReason",warningInfo.getLowPriceReasons().get(mAdapter.getFirstReasonPos()));
 //            bundle.putSerializable("NotPreNDaysReason",warningInfo.getPreNDaysReasons().get(mAdapter.getSecondReasonPos() - dividePos - 1));
-            if(PreferencesManager.getInstance().get("SetOutWarningInfoBean") == null) {
+            if(TextUtils.isEmpty(PreferencesManager.getInstance().get("SetOutWarningInfoBean"))) {
                 PolicyResultInfo resultInfo = new PolicyResultInfo();
                 resultInfo.setDiscountLimitWarningMsg(warningInfo.getDiscountLimitWarningMsg());
                 resultInfo.setLowPriceWarningMsg(warningInfo.getLowPriceWarningMsg());
-                resultInfo.setNotLowPriceReason(warningInfo.getLowPriceReasons().get(mAdapter.getFirstReasonPos()));
+                resultInfo.setNotLowPriceReason(warningInfo.getLowPriceReasons().get(mAdapter.getFirstReasonPos() - 1));
                 resultInfo.setPreNDaysWarningMsg(warningInfo.getPreNDaysWarningMsg());
                 resultInfo.setTwoCabinWarningMsg(warningInfo.getTwoCabinWarningMsg());
                 resultInfo.setNotPreNDaysReason(warningInfo.getPreNDaysReasons().get(mAdapter.getSecondReasonPos() - dividePos - 1));

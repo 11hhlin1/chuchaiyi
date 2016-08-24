@@ -14,6 +14,7 @@ import com.ccy.chuchaiyi.user.UserMgr;
 import com.gjj.applibrary.app.AppLib;
 import com.gjj.applibrary.http.model.BundleKey;
 import com.gjj.applibrary.log.L;
+import com.gjj.applibrary.task.BackgroundTaskExecutor;
 import com.gjj.applibrary.task.ForegroundTaskExecutor;
 import com.gjj.applibrary.task.MainTaskExecutor;
 import com.gjj.applibrary.util.PreferencesManager;
@@ -26,7 +27,7 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        ForegroundTaskExecutor.executeTask(new Runnable() {
+        BackgroundTaskExecutor.scheduleTask(1000, new Runnable() {
             @Override
             public void run() {
                 while (!AppLib.isInitialized()) {

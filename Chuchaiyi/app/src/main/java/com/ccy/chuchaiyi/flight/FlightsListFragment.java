@@ -560,7 +560,8 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                     infos.add(flightInfo);
                 }
             }
-            flightInfos = infos;
+            flightInfos.clear();
+            flightInfos.addAll(infos);
         } else {
             if (flightInfos.size() == 0)
             flightInfos.addAll(mOriFlightInfoList);
@@ -663,7 +664,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                                 mListView.onRefreshComplete();
                                 if (!Util.isListEmpty(flightInfoList.mFlightInfoList)) {
                                     mFlightInfoList = flightInfoList.mFlightInfoList;
-                                    mOriFlightInfoList = new ArrayList<FlightInfo>();
+                                    mOriFlightInfoList = new ArrayList<>();
                                     mOriFlightInfoList.addAll(flightInfoList.mFlightInfoList);
                                     int len = mFlightInfoList.size();
 
