@@ -46,5 +46,5 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/margin_30p"
-        android:src="@mipmap/gerenzhongxin_icon_4" />
+        android:src="@mipmap/icon_enter" />
 </RelativeLayout>

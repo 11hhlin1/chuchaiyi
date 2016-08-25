@@ -265,7 +265,6 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
                 if(i1 == 0) {
                    expandableListView.collapseGroup(i);
-                } else {
                 }
                 return false;
             }
@@ -285,27 +284,6 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
 
         setTodayTv();
         mEmptyErrorViewController = new EmptyErrorViewController(mEmptyTextView, mErrorTextView, listView, new EmptyErrorViewController.AdapterWrapper(mAdapter));
-//        mRadioGroup.setOnCheckedChangeListener(new NestRadioGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(NestRadioGroup group, int checkedId) {
-//                switch (group.getCheckedRadioButtonId()) {
-//                    case R.id.time_tab:
-//
-////                        showIndexTab();
-//                        break;
-//                    case R.id.price_tab:
-//                          isPriceLowToHigh = !isPriceLowToHigh;
-////                        showOrderTab();
-//                        break;
-//                    case R.id.seat_tab:
-////                        showCheckTab();
-//                        break;
-//                    case R.id.company_tab:
-////                        showPersonTab();
-//                        break;
-//                }
-//            }
-//        });
         mRadioGroup.check(R.id.time_tab);
         mItemList = new ArrayList<>();
         String[] names = getResources().getStringArray(R.array.seatName);
@@ -556,8 +534,26 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
 
                 }
                 if(bunksBeenTemp.size() > 0) {
-                    flightInfo.setBunks(bunksBeenTemp);
-                    infos.add(flightInfo);
+                    FlightInfo flightInfoTemp = new FlightInfo();
+                    flightInfoTemp.setShareFlight(flightInfo.getShareFlight());
+                    flightInfoTemp.setOilFee(flightInfo.getOilFee());
+                    flightInfoTemp.setStopInfo(flightInfo.getStopInfo());
+                    flightInfoTemp.setTicketServiceFee(flightInfo.getTicketServiceFee());
+                    flightInfoTemp.setYBunkPrice(flightInfo.getYBunkPrice());
+                    flightInfoTemp.setFBunkPrice(flightInfo.getFBunkPrice());
+                    flightInfoTemp.setAirline(flightInfo.getAirline());
+                    flightInfoTemp.setAirlineName(flightInfo.getAirlineName());
+                    flightInfoTemp.setAirportFee(flightInfo.getAirportFee());
+                    flightInfoTemp.setArrival(flightInfo.getArrival());
+                    flightInfoTemp.setCBunkPrice(flightInfo.getCBunkPrice());
+                    flightInfoTemp.setDeparture(flightInfo.getDeparture());
+                    flightInfoTemp.setDistance(flightInfo.getDistance());
+                    flightInfoTemp.setFlightNo(flightInfo.getFlightNo());
+                    flightInfoTemp.setInsuranceFeeUnitPrice(flightInfo.getInsuranceFeeUnitPrice());
+                    flightInfoTemp.setMeal(flightInfo.getMeal());
+                    flightInfoTemp.setPlanType(flightInfo.getMeal());
+                    flightInfoTemp.setBunks(bunksBeenTemp);
+                    infos.add(flightInfoTemp);
                 }
             }
             flightInfos.clear();

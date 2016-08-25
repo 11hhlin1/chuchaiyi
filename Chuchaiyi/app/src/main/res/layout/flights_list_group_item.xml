@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/time_rl"
-        android:paddingTop="@dimen/margin_30p"
         android:paddingLeft="@dimen/margin_30p"
         android:paddingRight="@dimen/margin_30p"
         >
@@ -18,13 +17,41 @@
            android:layout_height="wrap_content"
            android:id="@+id/set_out_time"
            android:text="12:00"
+           android:paddingTop="@dimen/margin_30p"
            android:textColor="@color/color_222222"
            android:layout_alignParentLeft="true"
            android:textSize="@dimen/textsize_18sp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/set_out_time"
+            android:layout_toLeftOf="@+id/arrive_time"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="3dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/stop_info_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/stop_tip"
+                android:textColor="@color/color_aaaaaa"
+                android:textSize="@dimen/textsize_12sp"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/icon_flight_ston"/>
+        </LinearLayout>
+
         <TextView
             android:id="@+id/arrive_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_30p"
             android:layout_centerHorizontal="true"
             android:textColor="@color/color_222222"
             android:text="18:00"
@@ -32,6 +59,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/margin_30p"
             android:id="@+id/money"
             android:text="2400"
             android:textColor="@color/orange"

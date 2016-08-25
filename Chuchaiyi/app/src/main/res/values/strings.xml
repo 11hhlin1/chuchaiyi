@@ -124,5 +124,8 @@
     <string name="reason_private">因私</string>
     <string name="call">呼叫</string>
     <string name="common_name">常用姓名</string>
+    <string name="airport_fee">机建</string>
+    <string name="oil_fee">燃油</string>
+    <string name="stop_tip">经停</string>
 
 </resources>

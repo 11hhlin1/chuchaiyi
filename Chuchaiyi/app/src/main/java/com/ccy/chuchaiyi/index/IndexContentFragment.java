@@ -25,6 +25,7 @@ import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.calendar.CalendarSelectorFragment;
 import com.ccy.chuchaiyi.city.ChooseCityFragment;
 import com.ccy.chuchaiyi.city.CitySort;
+import com.ccy.chuchaiyi.flight.FlightInfo;
 import com.gjj.applibrary.util.SaveObjUtil;
 import com.ccy.chuchaiyi.constant.Constants;
 import com.ccy.chuchaiyi.event.EventOfSelCity;
@@ -197,6 +198,9 @@ public class IndexContentFragment extends BaseFragment {
                     bundle.putString("ReturnDate", mSelReturnDate.replace("#","-"));
                 }
                 bundle.putString("BunkType",mItemList.get(mSeatIndex).mCode);
+                PreferencesManager.getInstance().put("SetOutFlightInfo", "");
+                PreferencesManager.getInstance().put("SetOutBunksBean", "");
+                PreferencesManager.getInstance().put("SetOutWarningInfoBean","");
                 StringBuilder title = Util.getThreadSafeStringBuilder();
                 title.append(mSetOutCity.getName()).append("-").append(mArriveCity.getName());
                 PageSwitcher.switchToTopNavPage(getActivity(), FlightsListFragment.class, bundle, title.toString() ,getString(R.string.policy));

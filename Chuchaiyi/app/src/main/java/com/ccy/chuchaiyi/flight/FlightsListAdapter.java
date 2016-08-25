@@ -30,6 +30,8 @@ import com.gjj.applibrary.event.EventOfTokenError;
 import com.gjj.applibrary.http.callback.CommonCallback;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.log.L;
+import com.gjj.applibrary.util.PreferencesManager;
+import com.gjj.applibrary.util.SaveObjUtil;
 import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 import com.lzy.okhttputils.OkHttpUtils;
@@ -192,6 +194,11 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
         holder.setOutTime.setText(setOutTime.substring(len1 - 5, len1));
         holder.setOutAirport.setText(flightInfo.getDeparture().getAirportName());
         holder.arriveAirport.setText(flightInfo.getArrival().getAirportName());
+        if(flightInfo.getStopInfo() == null) {
+            holder.stopTip.setVisibility(View.INVISIBLE);
+        } else {
+            holder.stopTip.setVisibility(View.VISIBLE);
+        }
         SpannableString spannableAmount = mAmountCache.get(groupPosition);
         if (spannableAmount == null) {
             int price = getMinPrice(flightInfo.getBunks());
@@ -279,6 +286,8 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
         TextView setOutTime;
         @Bind(R.id.arrive_time)
         TextView arriveTime;
+        @Bind(R.id.stop_info_tv)
+        TextView stopTip;
         @Bind(R.id.money)
         TextView money;
         @Bind(R.id.set_out_airport)
@@ -311,104 +320,16 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
         void setBookBtn() {
             int groupPos = (int) bookBtn.getTag(R.id.left_ll);
             int childPos = (int) bookBtn.getTag(R.id.book_btn);
-            final FlightInfo flight = getGroup(groupPos);
-            final FlightInfo.BunksBean bunks = getChild(groupPos,childPos);
-            GetBookValidateRequest bookValidateRequest = new GetBookValidateRequest();
-            bookValidateRequest.setArrivalCode(flight.getArrival().getCityCode());
-            bookValidateRequest.setDepartureCode(flight.getDeparture().getCityCode());
-            bookValidateRequest.setBunkCode(bunks.getBunkCode());
-            bookValidateRequest.setFlightDate(flight.getDeparture().getDateTime().split(" ")[0]);
-            bookValidateRequest.setFlightNo(flight.getFlightNo());
-            bookValidateRequest.setFactBunkPrice(bunks.getBunkPrice().getFactBunkPrice());
-            OkHttpUtils.post(ApiConstants.GET_BOOK_VALIDATE)
-                    .tag(mContext)
-                    .cacheMode(CacheMode.NO_CACHE)
-                    .postJson(JSON.toJSONString(bookValidateRequest))
-                    .execute(new CommonCallback<BookValidateInfo>() {
-                        @Override
-                        public BookValidateInfo parseNetworkResponse(Response response) throws Exception {
-                            String responseData = response.body().string();
-                            if (TextUtils.isEmpty(responseData)) return null;
-
-                            /**
-                             * 一般来说，服务器返回的响应码都包含 code，msg，data 三部分，在此根据自己的业务需要完成相应的逻辑判断
-                             * 以下只是一个示例，具体业务具体实现
-                             */
-                            JSONObject jsonObject = new JSONObject(responseData);
-                            final String msg = jsonObject.optString("Message", "");
-                            final int code = jsonObject.optInt("Code", 0);
-                            String data = responseData;
-                            switch (code) {
-                                case 0:
-                                    BookValidateInfo object = JSON.parseObject(data, BookValidateInfo.class);
-                                    L.d("@@@@", object);
-                                    return object;
-                                case 1:
-                                    BookValidateInfo object1 = JSON.parseObject(data, BookValidateInfo.class);
-                                    L.d("@@@@", object1);
-                                    return object1;
-                                case 401:
-                                    //比如：用户授权信息无效，在此实现相应的逻辑，弹出对话或者跳转到其他页面等,该抛出错误，会在onError中回调。
-                                    EventBus.getDefault().post(new EventOfTokenError());
-                                    throw new IllegalStateException("用户授权信息无效");
-                                case 105:
-                                    //比如：用户收取信息已过期，在此实现相应的逻辑，弹出对话或者跳转到其他页面等,该抛出错误，会在onError中回调。
-                                    throw new IllegalStateException("用户收取信息已过期");
-                                case 106:
-                                    //比如：用户账户被禁用，在此实现相应的逻辑，弹出对话或者跳转到其他页面等,该抛出错误，会在onError中回调。
-                                    throw new IllegalStateException("用户账户被禁用");
-                                case 300:
-                                    //比如：其他乱七八糟的等，在此实现相应的逻辑，弹出对话或者跳转到其他页面等,该抛出错误，会在onError中回调。
-                                    throw new IllegalStateException("其他乱七八糟的等");
-                                default:
-                                    throw new IllegalStateException("错误代码：" + code + "，错误信息：" + msg);
-                            }
-                        }
-
-                        @Override
-                        public void onResponse(boolean isFromCache, BookValidateInfo bookValidateInfo, Request request, @Nullable Response response) {
-                            BookValidateInfo.WarningInfoBean warningInfoBean = bookValidateInfo.getWarningInfo();
-                            if(warningInfoBean == null) {
-                                    StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
-                                    stringBuilder.append(flight.getDeparture().getCityName()).append("-").append(flight.getArrival().getCityName());
-                                    PageSwitcher.switchToTopNavPage((Activity) mContext,EditOrderFragment.class,null,stringBuilder.toString(),null);
-
-                                } else {
-                                    Bundle bundle = new Bundle();
-                                    bundle.putSerializable("warningInfoBean", warningInfoBean);
-                                    bundle.putSerializable("FlightInfo", flight);
-                                    bundle.putSerializable("BunksBean", bunks);
-                                    bundle.putString("returnDate", mReturnDateString);
-                                    bundle.putString("mDepartureCode", mDepartureCode);
-                                    bundle.putString("mArrivalCode", mArrivalCode);
-                                    bundle.putString("mBunkType", mBunkType);
-                                    bundle.putString("mTitle", mTitle);
-                                    PageSwitcher.switchToTopNavPage((Activity) mContext,FlightPolicyFragment.class,bundle,mContext.getString(R.string.policy),null);
-
-                                }
-                        }
-
-                        @Override
-                        public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
-                            super.onError(isFromCache, call, response, e);
-                            if(response == null)
-                                return;
-                            switch (response.code()) {
-                                case 2:
-                                    ToastUtil.shortToast(R.string.price_fail);
-                                    break;
-                            }
-                            ToastUtil.shortToast(R.string.load_fail);
-                        }
-                    });
-
+            FlightInfo flight = getGroup(groupPos);
+            FlightInfo.BunksBean bunks = getChild(groupPos,childPos);
+            book(flight,bunks);
         }
         @OnClick(R.id.left_ll)
         void showDialog() {
             int groupPos = (int) changeMsg.getTag(R.id.left_ll);
             int childPos = (int) changeMsg.getTag(R.id.change_msg);
-            FlightInfo flight = getGroup(groupPos);
-            FlightInfo.BunksBean bunks = getChild(groupPos,childPos);
+            final FlightInfo flight = getGroup(groupPos);
+            final FlightInfo.BunksBean bunks = getChild(groupPos,childPos);
             PolicyDialog policyDialog = new PolicyDialog(mContext);
             mConfirmDialog = policyDialog;
             policyDialog.setCanceledOnTouchOutside(true);
@@ -421,7 +342,7 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
             policyDialog.setConfirmClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    PageSwitcher.switchToTopNavPage((Activity) mContext,FlightPolicyFragment.class,null,mContext.getString(R.string.policy),null);
+                    book(flight,bunks);
                 }
             });
             policyDialog.show();
@@ -430,6 +351,109 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
         ViewHolderChild(View view) {
             ButterKnife.bind(this, view);
         }
+    }
+
+
+    private void book(final FlightInfo flight, final FlightInfo.BunksBean bunks) {
+        GetBookValidateRequest bookValidateRequest = new GetBookValidateRequest();
+        bookValidateRequest.setArrivalCode(flight.getArrival().getCityCode());
+        bookValidateRequest.setDepartureCode(flight.getDeparture().getCityCode());
+        bookValidateRequest.setBunkCode(bunks.getBunkCode());
+        bookValidateRequest.setFlightDate(flight.getDeparture().getDateTime().split(" ")[0]);
+        bookValidateRequest.setFlightNo(flight.getFlightNo());
+        bookValidateRequest.setFactBunkPrice(bunks.getBunkPrice().getFactBunkPrice());
+        OkHttpUtils.post(ApiConstants.GET_BOOK_VALIDATE)
+                .tag(mContext)
+                .cacheMode(CacheMode.NO_CACHE)
+                .postJson(JSON.toJSONString(bookValidateRequest))
+                .execute(new CommonCallback<BookValidateInfo>() {
+                    @Override
+                    public BookValidateInfo parseNetworkResponse(Response response) throws Exception {
+                        String responseData = response.body().string();
+                        if (TextUtils.isEmpty(responseData)) return null;
+
+                        /**
+                         * 一般来说，服务器返回的响应码都包含 code，msg，data 三部分，在此根据自己的业务需要完成相应的逻辑判断
+                         * 以下只是一个示例，具体业务具体实现
+                         */
+                        JSONObject jsonObject = new JSONObject(responseData);
+                        final String msg = jsonObject.optString("Message", "");
+                        final int code = jsonObject.optInt("Code", 0);
+                        String data = responseData;
+                        switch (code) {
+                            case 0:
+                                BookValidateInfo object = JSON.parseObject(data, BookValidateInfo.class);
+                                L.d("@@@@", object);
+                                return object;
+                            case 1:
+                                BookValidateInfo object1 = JSON.parseObject(data, BookValidateInfo.class);
+                                L.d("@@@@", object1);
+                                return object1;
+                            case 401:
+                                //比如：用户授权信息无效，在此实现相应的逻辑，弹出对话或者跳转到其他页面等,该抛出错误，会在onError中回调。
+                                EventBus.getDefault().post(new EventOfTokenError());
+                                throw new IllegalStateException("用户授权信息无效");
+                            case 105:
+                                //比如：用户收取信息已过期，在此实现相应的逻辑，弹出对话或者跳转到其他页面等,该抛出错误，会在onError中回调。
+                                throw new IllegalStateException("用户收取信息已过期");
+                            case 106:
+                                //比如：用户账户被禁用，在此实现相应的逻辑，弹出对话或者跳转到其他页面等,该抛出错误，会在onError中回调。
+                                throw new IllegalStateException("用户账户被禁用");
+                            case 300:
+                                //比如：其他乱七八糟的等，在此实现相应的逻辑，弹出对话或者跳转到其他页面等,该抛出错误，会在onError中回调。
+                                throw new IllegalStateException("其他乱七八糟的等");
+                            default:
+                                throw new IllegalStateException("错误代码：" + code + "，错误信息：" + msg);
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(boolean isFromCache, BookValidateInfo bookValidateInfo, Request request, @Nullable Response response) {
+                        BookValidateInfo.WarningInfoBean warningInfoBean = bookValidateInfo.getWarningInfo();
+                        if(warningInfoBean == null) {
+                            String  SetOutWarningInfoBean = PreferencesManager.getInstance().get("SetOutWarningInfoBean");
+                            Bundle bundle = new Bundle();
+                            if(!TextUtils.isEmpty(SetOutWarningInfoBean)) {
+                                PolicyResultInfo resultInfo = (PolicyResultInfo) SaveObjUtil.unSerialize(SetOutWarningInfoBean);
+                                bundle.putSerializable("SetOutWarningInfoBean", resultInfo);
+                            }
+                            bundle.putSerializable("SetOutFlightInfo", (FlightInfo)SaveObjUtil.unSerialize(PreferencesManager.getInstance().get("SetOutFlightInfo")));
+                            bundle.putSerializable("SetOutBunksBean", (FlightInfo.BunksBean)SaveObjUtil.unSerialize(PreferencesManager.getInstance().get("SetOutBunksBean")));
+                            bundle.putSerializable("ReturnFlightInfo", flight);
+                            bundle.putSerializable("ReturnBunksBean", bunks);
+                            StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+                            StringBuilder title = Util.getThreadSafeStringBuilder();
+                            title.append(flight.getDeparture().getCityName()).append("-").append(flight.getArrival().getCityName()).append(mContext.getString(R.string.reason_common));
+                            PageSwitcher.switchToTopNavPage((Activity) mContext,EditOrderFragment.class,bundle,stringBuilder.toString(),mContext.getString(R.string.reason_private));
+
+                        } else {
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("warningInfoBean", warningInfoBean);
+                            bundle.putSerializable("FlightInfo", flight);
+                            bundle.putSerializable("BunksBean", bunks);
+                            bundle.putString("returnDate", mReturnDateString);
+                            bundle.putString("mDepartureCode", mDepartureCode);
+                            bundle.putString("mArrivalCode", mArrivalCode);
+                            bundle.putString("mBunkType", mBunkType);
+                            bundle.putString("mTitle", mTitle);
+                            PageSwitcher.switchToTopNavPage((Activity) mContext,FlightPolicyFragment.class,bundle,mContext.getString(R.string.policy),null);
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                        super.onError(isFromCache, call, response, e);
+                        if(response == null)
+                            return;
+                        switch (response.code()) {
+                            case 2:
+                                ToastUtil.shortToast(R.string.price_fail);
+                                break;
+                        }
+                        ToastUtil.shortToast(R.string.load_fail);
+                    }
+                });
     }
     /**
      * dismiss确认对话框

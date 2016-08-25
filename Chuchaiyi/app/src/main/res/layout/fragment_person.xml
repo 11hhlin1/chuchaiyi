@@ -114,7 +114,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
-            android:src="@mipmap/gerenzhongxin_icon_4" />
+            android:src="@mipmap/icon_enter" />
     </RelativeLayout>
 
 
@@ -145,7 +145,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
-            android:src="@mipmap/gerenzhongxin_icon_4" />
+            android:src="@mipmap/icon_enter" />
     </RelativeLayout>
 
     <Button

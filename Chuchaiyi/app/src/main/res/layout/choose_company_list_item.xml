@@ -18,7 +18,7 @@
         android:id="@+id/check_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/selector_check_box"
+        android:background="@drawable/selector_muti_check_box"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/margin_30p"

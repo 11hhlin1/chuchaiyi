@@ -64,7 +64,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/margin_30p"
-                    android:src="@mipmap/gerenzhongxin_icon_4" />
+                    android:src="@mipmap/icon_enter" />
 
             </RelativeLayout>
             <View
@@ -113,7 +113,7 @@
                         android:layout_marginLeft="5dp"
                         android:textColor="@color/color_aaaaaa"
                         android:textSize="@dimen/textsize_12sp"
-                        android:text="@string/flight_price"/>
+                        android:text="@string/airport_fee"/>
                     <TextView
                         android:id="@+id/ji_jian_value"
                         android:layout_width="wrap_content"
@@ -129,7 +129,7 @@
                         android:layout_marginLeft="5dp"
                         android:textColor="@color/color_aaaaaa"
                         android:textSize="@dimen/textsize_12sp"
-                        android:text="@string/flight_price"/>
+                        android:text="@string/oil_fee"/>
                     <TextView
                         android:id="@+id/oil_fee_value"
                         android:layout_width="wrap_content"
@@ -209,7 +209,7 @@
                     android:id="@+id/safe_fee_check_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selector_check_box"
+                    android:background="@drawable/selector_muti_check_box"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/margin_30p"
@@ -246,7 +246,7 @@
                     android:id="@+id/delay_fee_check_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selector_check_box"
+                    android:background="@drawable/selector_muti_check_box"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/margin_30p"
@@ -349,7 +349,7 @@
         android:layout_width="match_parent"
         android:background="@color/white"
         android:layout_alignParentBottom="true"
-        android:layout_height="45dp">
+        android:layout_height="@dimen/margin_88p">
         <ImageView
             style="@style/personal_page_top_line"/>
         <TextView

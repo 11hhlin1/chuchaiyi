@@ -28,13 +28,14 @@ public abstract class BaseFragment extends Fragment {
      * 清除所有fragment回退栈
      */
     public static final String FLAT_CLEAR_TOP_FRAGMENT = "clear_top_fragment";
+    public View mRootView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(getContentViewLayout(), container, false);
-        ButterKnife.bind(this, view);
+        mRootView = inflater.inflate(getContentViewLayout(), container, false);
+        ButterKnife.bind(this, mRootView);
         initView();
-        return view;
+        return mRootView;
     }
 
     public abstract int getContentViewLayout();

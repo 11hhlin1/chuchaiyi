@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/effect_tm_black"
+    >
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/margin_30p"
+        >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_30p">
+
+        <TextView
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_13sp"
+            android:text="成人票"/>
+        <TextView
+            android:id="@+id/pop_ticket_value"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_30p"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/textsize_13sp"
+            android:text="30 * 1"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/margin_20p"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_13sp"
+            android:text="@string/airport_fee"/>
+        <TextView
+            android:id="@+id/pop_airport_fee"
+            android:layout_marginRight="@dimen/margin_30p"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/textsize_13sp"
+            android:text="30 * 1"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_marginTop="@dimen/margin_20p"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_13sp"
+            android:text="@string/oil_fee"/>
+        <TextView
+            android:id="@+id/pop_oil_fee"
+            android:layout_marginRight="@dimen/margin_30p"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/textsize_13sp"
+            android:text="30 * 1"/>
+    </RelativeLayout>
+    <ImageView
+        android:layout_marginTop="15dp"
+        style="@style/horizontal_line"/>
+    <RelativeLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_13sp"
+            android:text="@string/safe_fee"/>
+        <TextView
+            android:id="@+id/pop_safe_fee"
+            android:layout_marginRight="@dimen/margin_30p"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/textsize_13sp"
+            android:text="30 * 1"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_13sp"
+            android:text="@string/delay_fee"/>
+        <TextView
+            android:id="@+id/pop_delay_fee"
+            android:layout_marginRight="@dimen/margin_30p"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/textsize_13sp"
+            android:text="30 * 1"/>
+    </RelativeLayout>
+</LinearLayout>
+</RelativeLayout>
