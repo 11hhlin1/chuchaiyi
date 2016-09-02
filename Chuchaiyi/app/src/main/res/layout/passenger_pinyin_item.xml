@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:id="@+id/common_title"
+    android:id="@+id/pinyin_title"
     android:layout_width="match_parent"
     android:layout_height="30dp"
     android:textSize="@dimen/textsize_16sp"
     android:textColor="@color/color_222222"
     android:paddingLeft="@dimen/margin_30p"
-    android:text="@string/common_name"
+    android:text="A"
     android:gravity="left|center_vertical">
 
 </TextView>

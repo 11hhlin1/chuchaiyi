@@ -77,6 +77,7 @@
     <string name="policy">差旅政策</string>
     <string name="money">￥%1$s起</string>
     <string name="money_no_end">￥%1$s</string>
+    <string name="date_format">%1$s 至 %2$s</string>
     <string name="num">%1$s张</string>
     <string name="discount">%1$s折</string>
     <string name="next_day">后一天</string>
@@ -98,6 +99,7 @@
     <string name="return_change">退改签</string>
     <string name="flight_price">机票</string>
     <string name="passenger">乘机人</string>
+    <string name="choose_passenger">选择乘机人</string>
     <string name="add">添加</string>
     <string name="safe_fee">航意险</string>
     <string name="delay_fee">航延险</string>
@@ -127,5 +129,7 @@
     <string name="airport_fee">机建</string>
     <string name="oil_fee">燃油</string>
     <string name="stop_tip">经停</string>
+    <string name="edit">编辑</string>
+    <string name="choose_check_num">选择审批单号</string>
 
 </resources>

@@ -121,4 +121,10 @@ public class PolicyDialog extends AlertDialog {
         changePolicyDesc.setText(bunksBean.getChangePolicy().getChangePolicyDesc());
         signPolicyDesc.setText(bunksBean.getSignPolicy().getSignPolicyDesc());
     }
+
+    public void setContent(String returnPolicy, String changePolicy, String signPolicy) {
+        returnPolicyDesc.setText(returnPolicy);
+        changePolicyDesc.setText(changePolicy);
+        signPolicyDesc.setText(signPolicy);
+    }
 }

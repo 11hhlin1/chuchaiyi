@@ -25,7 +25,7 @@ public abstract class ListCallback<T> extends CommonCallback<BaseList<T>> {
         if (TextUtils.isEmpty(responseData)) return null;
         JSONObject jsonObject = new JSONObject(responseData);
         final String msg = jsonObject.optString("msg", "");
-        final int code = jsonObject.optInt("code", 0);
+        final int code = jsonObject.optInt("code", -1);
         String data = jsonObject.optString("data", "");
         switch (code) {
             case 0:

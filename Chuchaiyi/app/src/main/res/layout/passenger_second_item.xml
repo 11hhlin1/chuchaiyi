@@ -5,24 +5,23 @@
     android:layout_height="44dp"
     android:background="@color/white">
 
-    <CheckBox
-        android:id="@+id/check_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/selector_check_box"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="@dimen/margin_30p"
-        android:button="@null" />
     <TextView
         android:id="@+id/passenger_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/textsize_14sp"
         android:layout_centerVertical="true"
-        android:text="小妹"
+        android:layout_alignParentLeft="true"
         android:layout_marginLeft="@dimen/margin_30p"
-        android:layout_toRightOf="@+id/check_icon"
+        android:textSize="@dimen/textsize_14sp"
+        android:textColor="@color/color_222222" />
+    <TextView
+        android:id="@+id/passenger_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textsize_13sp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_20p"
+        android:layout_toRightOf="@+id/passenger_name"
         android:textColor="@color/color_222222"/>
 
     <View

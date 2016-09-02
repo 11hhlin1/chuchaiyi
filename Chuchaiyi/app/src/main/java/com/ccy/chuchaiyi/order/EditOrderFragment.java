@@ -19,6 +19,8 @@ import android.widget.TextView;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.app.BaseApplication;
 import com.ccy.chuchaiyi.base.BaseFragment;
+import com.ccy.chuchaiyi.base.PageSwitcher;
+import com.ccy.chuchaiyi.contact.ChoosePassengerFragment;
 import com.ccy.chuchaiyi.db.UserInfo;
 import com.ccy.chuchaiyi.flight.FlightInfo;
 import com.ccy.chuchaiyi.flight.PolicyResultInfo;
@@ -184,6 +186,10 @@ public class EditOrderFragment extends BaseFragment {
             case R.id.return_change_tv:
                 break;
             case R.id.add_passenger:
+                Bundle bundle = new Bundle();
+                bundle.putString("start", mFlightInfo.getDeparture().getDateTime());
+                bundle.putString("end", mFlightInfo.getArrival().getDateTime());
+                PageSwitcher.switchToTopNavPage(getActivity(), ChoosePassengerFragment.class, bundle, getString(R.string.choose_passenger),null);
                 break;
             case R.id.order_money_detail:
                 showPickupWindow();

@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_222222"
             android:textSize="@dimen/textsize_13sp"
-            android:text="30 * 1"/>
+            android:text=""/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

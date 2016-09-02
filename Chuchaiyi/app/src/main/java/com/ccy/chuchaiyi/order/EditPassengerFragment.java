@@ -1,5 +1,6 @@
 package com.ccy.chuchaiyi.order;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +11,13 @@ import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
+import com.ccy.chuchaiyi.base.PageSwitcher;
+import com.ccy.chuchaiyi.contact.ChooseCheckNumFragment;
+import com.ccy.chuchaiyi.contact.PassengerInfo;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016/8/21.
@@ -35,6 +40,20 @@ public class EditPassengerFragment extends BaseFragment {
     @Bind(R.id.choose_project_rl)
     RelativeLayout chooseProjectRl;
 
+    @OnClick(R.id.choose_check_num)
+    void chooseNum() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("passenger", mPassengerInfo);
+        PageSwitcher.switchToTopNavPage(getActivity(), ChooseCheckNumFragment.class, bundle, getString(R.string.choose_check_num),null);
+
+    }
+
+    @OnClick(R.id.choose_project_rl)
+    void chooseProject() {
+
+    }
+    private PassengerInfo mPassengerInfo;
+
     @Override
     public int getContentViewLayout() {
         return R.layout.fragment_edit_passenger;
@@ -43,5 +62,11 @@ public class EditPassengerFragment extends BaseFragment {
     @Override
     public void initView() {
 
+        Bundle bundle = getArguments();
+        mPassengerInfo = (PassengerInfo) bundle.getSerializable("passenger");
+        assert mPassengerInfo != null;
+        passengerValue.setText(mPassengerInfo.getEmployeeName());
+        cardTypeValue.setText(mPassengerInfo.getDefaultCertType());
+        etCard.setText(mPassengerInfo.getDefaultCertNo());
     }
 }

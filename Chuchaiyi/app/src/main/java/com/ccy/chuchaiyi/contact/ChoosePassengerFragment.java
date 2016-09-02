@@ -1,17 +1,38 @@
 package com.ccy.chuchaiyi.contact;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
+import com.ccy.chuchaiyi.city.PinyinComparator;
+import com.ccy.chuchaiyi.city.PinyinUtils;
+import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.widget.EditTextWithDel;
+import com.gjj.applibrary.http.callback.CommonCallback;
+import com.gjj.applibrary.http.callback.JsonCallback;
+import com.gjj.applibrary.http.callback.ListCallback;
+import com.gjj.applibrary.util.ToastUtil;
+import com.gjj.applibrary.util.Util;
+import com.lzy.okhttputils.OkHttpUtils;
+import com.lzy.okhttputils.cache.CacheMode;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import okhttp3.Call;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by Chuck on 2016/8/24.
@@ -22,6 +43,7 @@ public class ChoosePassengerFragment extends BaseFragment {
     EditTextWithDel etSearch;
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
+    ChoosePassengerAdapter mAdapter;
 
     @Override
     public int getContentViewLayout() {
@@ -30,7 +52,83 @@ public class ChoosePassengerFragment extends BaseFragment {
 
     @Override
     public void initView() {
+        Context context = getActivity();
 
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mAdapter = new ChoosePassengerAdapter(context, new ArrayList<PassengerData>(), getArguments());
+        recyclerView.setAdapter(mAdapter);
+        doRequest();
     }
 
+    private void doRequest() {
+        showLoadingDialog(R.string.submitting,false);
+        final List<PassengerData> dataList = new ArrayList<>();
+        OkHttpUtils.get(ApiConstants.GET_STORED_USER)
+                .tag(this)
+                .cacheMode(CacheMode.REQUEST_FAILED_READ_CACHE)
+                .execute(new JsonCallback<StoreUserList>(StoreUserList.class) {
+                    @Override
+                    public void onResponse(boolean isFromCache, StoreUserList list, Request request, @Nullable Response response) {
+                        if(list != null && !Util.isListEmpty(list.AppMyStoredUsers)) {
+                            PassengerData dataHeader = new PassengerData();
+                            dataHeader.mViewType = ChoosePassengerAdapter.VIEW_TYPE_COMMON_TITLE;
+                            dataList.add(dataHeader);
+                            for (StoreUser info : list.AppMyStoredUsers) {
+                                PassengerData data = new PassengerData();
+                                data.name = info.getName();
+                                data.mViewType = ChoosePassengerAdapter.VIEW_TYPE_ITEM;
+                                data.sortLetters = PinyinUtils.getPingYin(info.getName());
+                                data.mStoreUser = info;
+                                dataList.add(data);
+                            }
+                        }
+                        OkHttpUtils.get(ApiConstants.GET_EMPLOYEES)
+                                .tag(this)
+                                .cacheMode(CacheMode.REQUEST_FAILED_READ_CACHE)
+                                .execute(new JsonCallback<PassengerInfoList>(PassengerInfoList.class) {
+                                    @Override
+                                    public void onResponse(boolean isFromCache, PassengerInfoList passengerInfoList, Request request, @Nullable Response response) {
+                                        dismissLoadingDialog();
+                                        if(passengerInfoList != null && !Util.isListEmpty(passengerInfoList.Employees)) {
+                                            Collections.sort(passengerInfoList.Employees, new PassengerPinyinComparator());
+                                            String mLastChar = null;
+                                            for (PassengerInfo info : passengerInfoList.Employees) {
+                                                String firstChar = String.valueOf(PinyinUtils.getAlpha(info.getEmployeeName()).charAt(0));
+                                                if(TextUtils.isEmpty(mLastChar) || !firstChar.equals(mLastChar)) {
+                                                    PassengerData data = new PassengerData();
+                                                    data.mViewType = ChoosePassengerAdapter.VIEW_TYPE_PINYIN_ITEM;
+                                                    data.sortLetters = firstChar;
+                                                    dataList.add(data);
+                                                }
+                                                PassengerData data = new PassengerData();
+                                                data.name = info.getEmployeeName();
+                                                data.mViewType = ChoosePassengerAdapter.VIEW_TYPE_ITEM;
+                                                data.mPassengerInfo = info;
+                                                data.sortLetters = firstChar;
+                                                mLastChar = firstChar;
+                                                dataList.add(data);
+                                            }
+                                            mAdapter.setData(dataList);
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                                        super.onError(isFromCache, call, response, e);
+                                        dismissLoadingDialog();
+                                        ToastUtil.shortToast(R.string.load_fail);
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                        super.onError(isFromCache, call, response, e);
+                        dismissLoadingDialog();
+                        ToastUtil.shortToast(R.string.load_fail);
+                    }
+                });
+
+    }
 }

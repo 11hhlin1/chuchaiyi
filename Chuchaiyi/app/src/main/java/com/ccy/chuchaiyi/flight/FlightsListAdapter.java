@@ -330,23 +330,45 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
             int childPos = (int) changeMsg.getTag(R.id.change_msg);
             final FlightInfo flight = getGroup(groupPos);
             final FlightInfo.BunksBean bunks = getChild(groupPos,childPos);
-            PolicyDialog policyDialog = new PolicyDialog(mContext);
-            mConfirmDialog = policyDialog;
-            policyDialog.setCanceledOnTouchOutside(true);
-            policyDialog.setCancelClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dismissConfirmDialog();
-                }
-            });
-            policyDialog.setConfirmClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    book(flight,bunks);
-                }
-            });
-            policyDialog.show();
-            policyDialog.setContent(flight,bunks);
+            OkHttpUtils.get(ApiConstants.GET_FLIGHT_POLICY)
+                    .tag(mContext)
+                    .cacheMode(CacheMode.NO_CACHE)
+                    .params("airlineCode",flight.getAirline())
+                    .params("bunkCode",bunks.getBunkCode())
+                    .params("departureDate",flight.getDeparture().getDateTime().split(" ")[0])
+                    .params("departureAirportCode",flight.getDeparture().getAirportCode())
+                    .params("arrivalAirportCode",flight.getArrival().getAirportCode())
+                    .execute(new JsonCallback<ReturnFlightPolicy>(ReturnFlightPolicy.class) {
+                        @Override
+                        public void onResponse(boolean isFromCache, ReturnFlightPolicy returnFlightPolicy, Request request, @Nullable Response response) {
+                            PolicyDialog policyDialog = new PolicyDialog(mContext);
+                            mConfirmDialog = policyDialog;
+                            policyDialog.setCanceledOnTouchOutside(true);
+                            policyDialog.setCancelClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    dismissConfirmDialog();
+                                }
+                            });
+                            policyDialog.setConfirmClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    book(flight,bunks);
+                                }
+                            });
+                            policyDialog.show();
+                            policyDialog.setContent(flight,bunks);
+                            policyDialog.setContent(returnFlightPolicy.getReturnPolicyDesc(), returnFlightPolicy.getChangePolicyDesc(),returnFlightPolicy.getSignPolicyDesc());
+                        }
+
+                        @Override
+                        public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                            super.onError(isFromCache, call, response, e);
+                            ToastUtil.shortToast(R.string.load_fail);
+                        }
+                    });
+
+
         }
         ViewHolderChild(View view) {
             ButterKnife.bind(this, view);
@@ -378,7 +400,7 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
                          */
                         JSONObject jsonObject = new JSONObject(responseData);
                         final String msg = jsonObject.optString("Message", "");
-                        final int code = jsonObject.optInt("Code", 0);
+                        final int code = jsonObject.optInt("Code", -1);
                         String data = responseData;
                         switch (code) {
                             case 0:

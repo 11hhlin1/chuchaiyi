@@ -75,7 +75,7 @@ public class ChooseCityFragment extends BaseFragment {
         setAdapter();
         OkHttpUtils.get(ApiConstants.GET_FLIGHT_LOCATION)
                 .tag(this)
-                .cacheMode(CacheMode.FIRST_CACHE_THEN_REQUEST)
+                .cacheMode(CacheMode.REQUEST_FAILED_READ_CACHE)
                 .execute(new CommonCallback<CitySortList>() {
                     @Override
                     public CitySortList parseNetworkResponse(Response response) throws Exception {
