@@ -53,7 +53,6 @@ public class ChoosePassengerFragment extends BaseFragment {
     @Override
     public void initView() {
         Context context = getActivity();
-
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         mAdapter = new ChoosePassengerAdapter(context, new ArrayList<PassengerData>(), getArguments());
         recyclerView.setAdapter(mAdapter);

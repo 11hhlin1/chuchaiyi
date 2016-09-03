@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseRecyclerViewAdapter;
+import com.ccy.chuchaiyi.base.RecyclerItemOnclickListener;
 import com.gjj.applibrary.util.Util;
 
 import java.util.List;
@@ -21,6 +22,11 @@ import butterknife.ButterKnife;
  */
 public class ChooseCheckNumAdapter extends BaseRecyclerViewAdapter<Approval> {
 
+    public void setmItemOnclickListener(RecyclerItemOnclickListener mItemOnclickListener) {
+        this.mItemOnclickListener = mItemOnclickListener;
+    }
+
+    RecyclerItemOnclickListener mItemOnclickListener;
     public ChooseCheckNumAdapter(Context context, List<Approval> items) {
         super(context, items);
     }
@@ -60,9 +66,11 @@ public class ChooseCheckNumAdapter extends BaseRecyclerViewAdapter<Approval> {
                 @Override
                 public void onClick(View v) {
                     int pos = (int) checkNum.getTag();
-
+                    mItemOnclickListener.onItemClick(v,pos);
                 }
             });
         }
     }
+
+
 }

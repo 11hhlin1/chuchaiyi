@@ -191,9 +191,9 @@ public class ChoosePassengerAdapter extends BaseRecyclerViewAdapter<PassengerDat
     }
 
     void editPassenger(PassengerInfo passengerInfo) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("passenger", passengerInfo);
-        PageSwitcher.switchToTopNavPage((Activity) mContext, EditPassengerFragment.class, bundle, mContext.getString(R.string.edit),null);
+//        Bundle bundle = new Bundle();
+        mBundle.putSerializable("passenger", passengerInfo);
+        PageSwitcher.switchToTopNavPage((Activity) mContext, EditPassengerFragment.class, mBundle, mContext.getString(R.string.edit),null);
     }
     class PinYinViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.pinyin_title)

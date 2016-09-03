@@ -40,10 +40,14 @@ public class EditPassengerFragment extends BaseFragment {
     @Bind(R.id.choose_project_rl)
     RelativeLayout chooseProjectRl;
 
+    private String startTime;
+    private String endTime;
+
     @OnClick(R.id.choose_check_num)
     void chooseNum() {
         Bundle bundle = new Bundle();
         bundle.putSerializable("passenger", mPassengerInfo);
+        bundle.putString("start", startTime);
         PageSwitcher.switchToTopNavPage(getActivity(), ChooseCheckNumFragment.class, bundle, getString(R.string.choose_check_num),null);
 
     }
@@ -64,6 +68,8 @@ public class EditPassengerFragment extends BaseFragment {
 
         Bundle bundle = getArguments();
         mPassengerInfo = (PassengerInfo) bundle.getSerializable("passenger");
+        startTime = bundle.getString("start");
+        endTime = bundle.getString("end");
         assert mPassengerInfo != null;
         passengerValue.setText(mPassengerInfo.getEmployeeName());
         cardTypeValue.setText(mPassengerInfo.getDefaultCertType());
