@@ -78,7 +78,7 @@ public class FlightPolicyFragment extends BaseFragment {
                 PolicyResultInfo resultInfoLast = new PolicyResultInfo();
                 resultInfoLast.setDiscountLimitWarningMsg(warningInfo.getDiscountLimitWarningMsg());
                 resultInfoLast.setLowPriceWarningMsg(warningInfo.getLowPriceWarningMsg());
-                resultInfoLast.setNotLowPriceReason(warningInfo.getLowPriceReasons().get(mAdapter.getFirstReasonPos()));
+                resultInfoLast.setNotLowPriceReason(warningInfo.getLowPriceReasons().get(mAdapter.getFirstReasonPos()-1));
                 resultInfoLast.setPreNDaysWarningMsg(warningInfo.getPreNDaysWarningMsg());
                 resultInfoLast.setTwoCabinWarningMsg(warningInfo.getTwoCabinWarningMsg());
                 resultInfoLast.setNotPreNDaysReason(warningInfo.getPreNDaysReasons().get(mAdapter.getSecondReasonPos() - dividePos - 1));
@@ -99,7 +99,7 @@ public class FlightPolicyFragment extends BaseFragment {
             PolicyResultInfo resultInfo = new PolicyResultInfo();
             resultInfo.setDiscountLimitWarningMsg(warningInfo.getDiscountLimitWarningMsg());
             resultInfo.setLowPriceWarningMsg(warningInfo.getLowPriceWarningMsg());
-            resultInfo.setNotLowPriceReason(warningInfo.getLowPriceReasons().get(mAdapter.getFirstReasonPos()));
+            resultInfo.setNotLowPriceReason(warningInfo.getLowPriceReasons().get(mAdapter.getFirstReasonPos()-1));
             resultInfo.setPreNDaysWarningMsg(warningInfo.getPreNDaysWarningMsg());
             resultInfo.setTwoCabinWarningMsg(warningInfo.getTwoCabinWarningMsg());
             resultInfo.setNotPreNDaysReason(warningInfo.getPreNDaysReasons().get(mAdapter.getSecondReasonPos() - dividePos - 1));
