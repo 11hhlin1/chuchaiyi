@@ -22,8 +22,12 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.android.support:support-v4:23.3.0'
-    compile 'com.lzy.net:okhttputils:+'
-    compile 'com.lzy.net:okhttpserver:+'
+    compile files('libs/okhttp-3.2.0.jar')
+    compile files('libs/okhttpserver-0.1.7.jar')
+    compile files('libs/okhttputils-1.6.5.jar')
+    compile files('libs/okio-1.6.0.jar')
+//    compile 'com.lzy.net:okhttputils:+'
+//    compile 'com.lzy.net:okhttpserver:+'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.alibaba:fastjson:1.2.8'
     compile 'com.android.support:recyclerview-v7:23.3.0'

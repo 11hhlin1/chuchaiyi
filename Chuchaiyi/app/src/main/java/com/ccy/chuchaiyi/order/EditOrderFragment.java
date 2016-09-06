@@ -238,12 +238,11 @@ public class EditOrderFragment extends BaseFragment {
             final int[] location = new int[2];
             mRootView.getLocationOnScreen(location);
             int height = getResources().getDimensionPixelSize(R.dimen.margin_88p);
-            popupWindow = new PopupWindow(contentView, LinearLayout.LayoutParams.MATCH_PARENT, r.bottom
-                     - height, false);
+            popupWindow = new PopupWindow(contentView, LinearLayout.LayoutParams.MATCH_PARENT, r.bottom - height, false);
             mPickUpPopWindow = popupWindow;
             popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             popupWindow.setAnimationStyle(R.style.popwin_anim_style);
-            // mPickUpPopWindow.setOutsideTouchable(true);
+            popupWindow.setOutsideTouchable(true);
             popupWindow.setFocusable(true);
             popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
                 @Override
@@ -259,7 +258,7 @@ public class EditOrderFragment extends BaseFragment {
             Animation animation2 = AnimationUtils.loadAnimation(getActivity(), R.anim.effect_bg_show);
             contentView.startAnimation(animation2);
         }
-        popupWindow.showAtLocation(contentView, Gravity.TOP, 0, 0);
+        popupWindow.showAtLocation(mRootView, Gravity.TOP, 0, 0);
 
     }
 

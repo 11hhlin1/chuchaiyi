@@ -10,7 +10,7 @@ import android.view.View;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.PageSwitcher;
-import com.ccy.chuchaiyi.base.RecyclerItemOnclickListener;
+//import com.ccy.chuchaiyi.base.RecyclerItemOnclickListener;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.order.EditPassengerFragment;
 import com.gjj.applibrary.http.callback.JsonCallback;
@@ -31,7 +31,7 @@ import okhttp3.Response;
 /**
  * Created by Chuck on 2016/9/2.
  */
-public class ChooseCheckNumFragment extends BaseFragment implements RecyclerItemOnclickListener{
+public class ChooseCheckNumFragment extends BaseFragment {
     @Bind(R.id.ptr_recycler_view)
     PullToRefreshRecyclerView mRecyclerView;
     ChooseCheckNumAdapter mAdapter;
@@ -65,7 +65,7 @@ public class ChooseCheckNumFragment extends BaseFragment implements RecyclerItem
         OkHttpUtils.get(ApiConstants.GET_APPROVALS)
                 .tag(this)
                 .params("travelEmployeeId", String.valueOf(mPassengerInfo.getEmployeeId()))
-                .params("start",startTime)
+                .params("start",startTime.split(" ")[0])
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new JsonCallback<ApprovalList>(ApprovalList.class) {
                     @Override
@@ -98,9 +98,9 @@ public class ChooseCheckNumFragment extends BaseFragment implements RecyclerItem
                 });
     }
 
-    @Override
-    public void onItemClick(View view, int position) {
-        onBackPressed();
-
-    }
+//    @Override
+//    public void onItemClick(View view, int position) {
+//        onBackPressed();
+//
+//    }
 }
