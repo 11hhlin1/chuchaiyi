@@ -159,22 +159,24 @@ public class EditOrderFragment extends BaseFragment {
     private void setDepartureTv() {
         FlightInfo.DepartureBean departureBean = mFlightInfo.getDeparture();
         String date = departureBean.getDateTime().split(" ")[0];
+        String dates  = DateUtil.getDateTitle(date);
         StringBuilder dateRes = Util.getThreadSafeStringBuilder();
-        dateRes.append(DateUtil.getDateTitle(date)).append("  ").append(mBunksBean.getBunkName());
-        setOutTime.setText(DateUtil.getDateTitle(date));
+        dateRes.append(dates).append("  ").append(mBunksBean.getBunkName());
+        setOutTime.setText(dateRes.toString());
         StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
-        stringBuilder.append(departureBean.getAirportName()).append("-").append(mFlightInfo.getArrival().getAirportName());
+        stringBuilder.append(departureBean.getAirportName()).append(" - ").append(mFlightInfo.getArrival().getAirportName());
         setOutAirport.setText(stringBuilder.toString());
     }
 
     private void setReturnTv() {
         FlightInfo.DepartureBean departureBean = mReturnFlightInfo.getDeparture();
         String date = departureBean.getDateTime().split(" ")[0];
+        String dates  = DateUtil.getDateTitle(date);
         StringBuilder dateRes = Util.getThreadSafeStringBuilder();
-        dateRes.append(DateUtil.getDateTitle(date)).append("  ").append(mReturnBunksBean.getBunkName());
-        arriveTime.setText(DateUtil.getDateTitle(date));
+        dateRes.append(dates).append("  ").append(mReturnBunksBean.getBunkName());
+        arriveTime.setText(dateRes);
         StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
-        stringBuilder.append(departureBean.getAirportName()).append("-").append(mReturnFlightInfo.getArrival().getAirportName());
+        stringBuilder.append(departureBean.getAirportName()).append(" - ").append(mReturnFlightInfo.getArrival().getAirportName());
         arriveAirport.setText(stringBuilder.toString());
     }
 

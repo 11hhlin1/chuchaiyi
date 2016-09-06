@@ -438,15 +438,18 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
                             if(!TextUtils.isEmpty(SetOutWarningInfoBean)) {
                                 PolicyResultInfo resultInfo = (PolicyResultInfo) SaveObjUtil.unSerialize(SetOutWarningInfoBean);
                                 bundle.putSerializable("SetOutWarningInfoBean", resultInfo);
+                                bundle.putSerializable("SetOutFlightInfo", (FlightInfo)SaveObjUtil.unSerialize(PreferencesManager.getInstance().get("SetOutFlightInfo")));
+                                bundle.putSerializable("SetOutBunksBean", (FlightInfo.BunksBean)SaveObjUtil.unSerialize(PreferencesManager.getInstance().get("SetOutBunksBean")));
+                                bundle.putSerializable("ReturnFlightInfo", flight);
+                                bundle.putSerializable("ReturnBunksBean", bunks);
+                            } else {
+                                bundle.putSerializable("SetOutFlightInfo", flight);
+                                bundle.putSerializable("SetOutBunksBean", bunks);
                             }
-                            bundle.putSerializable("SetOutFlightInfo", (FlightInfo)SaveObjUtil.unSerialize(PreferencesManager.getInstance().get("SetOutFlightInfo")));
-                            bundle.putSerializable("SetOutBunksBean", (FlightInfo.BunksBean)SaveObjUtil.unSerialize(PreferencesManager.getInstance().get("SetOutBunksBean")));
-                            bundle.putSerializable("ReturnFlightInfo", flight);
-                            bundle.putSerializable("ReturnBunksBean", bunks);
-                            StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+
                             StringBuilder title = Util.getThreadSafeStringBuilder();
                             title.append(flight.getDeparture().getCityName()).append("-").append(flight.getArrival().getCityName()).append(mContext.getString(R.string.reason_common));
-                            PageSwitcher.switchToTopNavPage((Activity) mContext,EditOrderFragment.class,bundle,stringBuilder.toString(),mContext.getString(R.string.reason_private));
+                            PageSwitcher.switchToTopNavPage((Activity) mContext,EditOrderFragment.class,bundle,title.toString(),mContext.getString(R.string.reason_private));
 
                         } else {
                             Bundle bundle = new Bundle();

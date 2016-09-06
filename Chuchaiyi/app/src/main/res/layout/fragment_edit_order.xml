@@ -198,8 +198,7 @@
                 <TextView
                     android:id="@+id/safe_fee_value"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/margin_60p"
-                    android:layout_toRightOf="@+id/safe_fee"
+                    android:layout_marginLeft="100dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_222222"
@@ -235,8 +234,7 @@
                 <TextView
                     android:id="@+id/delay_fee_value"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/margin_60p"
-                    android:layout_toRightOf="@+id/delay_fee"
+                    android:layout_marginLeft="100dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_222222"
@@ -252,7 +250,7 @@
                     android:layout_marginRight="@dimen/margin_30p"
                     android:button="@null" />
             </RelativeLayout>
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:background="@color/white"
                 android:layout_marginTop="@dimen/margin_30p"
@@ -260,7 +258,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_gravity="center_vertical"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/margin_30p"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -269,24 +267,24 @@
                     android:text="@string/contact"/>
                 <TextView
                     android:id="@+id/contact_name"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/margin_60p"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="100dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_222222"
                     android:textSize="@dimen/textsize_13sp"
                     android:text="小明"/>
-            </LinearLayout>
+            </RelativeLayout>
             <View
                 style="@style/horizontal_line"/>
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:background="@color/white"
                 android:layout_height="44dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_gravity="center_vertical"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/margin_30p"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -295,15 +293,15 @@
                     android:text="@string/contact_phone"/>
                 <TextView
                     android:id="@+id/contact_phone"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/margin_60p"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="100dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_222222"
                     android:textSize="@dimen/textsize_13sp"
                     android:text="13255555"/>
-            </LinearLayout>
-            <LinearLayout
+            </RelativeLayout>
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:background="@color/white"
                 android:layout_marginTop="@dimen/margin_30p"
@@ -311,7 +309,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_gravity="center_vertical"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/margin_30p"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -320,14 +318,14 @@
                     android:text="@string/pay_way"/>
                 <TextView
                     android:id="@+id/pay_type"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/margin_60p"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="100dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_222222"
                     android:textSize="@dimen/textsize_13sp"
                     android:text="@string/all_pay"/>
-            </LinearLayout>
+            </RelativeLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="44dp"

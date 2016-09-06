@@ -41,6 +41,7 @@ public class UserMgr {
     }
 
     public void saveUserInfo(UserInfo userInfo) {
+        mUserInfo = userInfo;
         PreferencesManager.getInstance().put(BundleKey.TOKEN, userInfo.getToken());
         BaseApplication.getDaoSession(AppLib.getContext()).getUserInfoDao().deleteAll();
 //        PreferencesManager.getInstance().put(Constants.USER_INFO, SaveObjUtil.serialize(userInfo));
