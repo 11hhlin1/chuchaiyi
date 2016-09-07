@@ -14,7 +14,8 @@ public class DateUtil {
      * @return
      */
     public static String getDateTitle(String date) {
-        String[] dates = date.split("-");
+        String before = date.split(" ")[0];
+        String[] dates = before.split("-");
         Calendar calendar = Calendar.getInstance();
         calendar.set(Integer.valueOf(dates[0]), Integer.valueOf(dates[1]) - 1, Integer.valueOf(dates[2]));
         StringBuilder dateTitle = Util.getThreadSafeStringBuilder();

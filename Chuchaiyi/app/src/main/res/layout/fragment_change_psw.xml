@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:orientation="horizontal"
@@ -24,13 +24,14 @@
             android:id="@+id/old_psw"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_200p"
             style="@style/login_edittext"
             android:digits="\@-+._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ"
             android:hint="@string/hint_old_psw"
             android:imeOptions="actionNext"/>
-    </LinearLayout>
+    </FrameLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:orientation="horizontal"
@@ -50,15 +51,16 @@
             android:id="@+id/new_psw"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_200p"
             style="@style/login_edittext"
             android:digits="\@-+._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ"
             android:hint="@string/hint_new_psw"
             android:imeOptions="actionNext"/>
-    </LinearLayout>
+    </FrameLayout>
 
     <View
         style="@style/personal_page_top_line" />
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:orientation="horizontal"
@@ -74,14 +76,15 @@
             android:text="@string/check_psw"
             />
         <com.ccy.chuchaiyi.widget.EditTextWithDel
-            android:id="@+id/sms_code"
+            android:id="@+id/new_psw_again"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_200p"
             style="@style/login_edittext"
             android:digits="\@-+._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ"
             android:hint="@string/hint_check_psw"
             android:imeOptions="actionNext"/>
-    </LinearLayout>
+    </FrameLayout>
 
     <Button
         android:id="@+id/btn_sure"

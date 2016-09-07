@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,13 +25,23 @@ import com.ccy.chuchaiyi.contact.ChoosePassengerFragment;
 import com.ccy.chuchaiyi.db.UserInfo;
 import com.ccy.chuchaiyi.flight.FlightInfo;
 import com.ccy.chuchaiyi.flight.PolicyResultInfo;
+import com.ccy.chuchaiyi.flight.StopInfoRsp;
+import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.util.CallUtil;
+import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.util.DateUtil;
 import com.gjj.applibrary.util.Util;
+import com.lzy.okhttputils.OkHttpUtils;
+import com.lzy.okhttputils.cache.CacheMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by Administrator on 2016/8/21.
@@ -97,6 +108,8 @@ public class EditOrderFragment extends BaseFragment {
     private int oilFee;
     private int safeFeeMoney;
     private int delayFeeMoney;
+    private FlightInfoDialog mFlightInfoDialog;
+
     @Override
     public void onRightBtnClick() {
         super.onRightBtnClick();
@@ -117,6 +130,7 @@ public class EditOrderFragment extends BaseFragment {
         mReturnBunksBean = (FlightInfo.BunksBean) bundle.getSerializable("ReturnBunksBean");
         mSetoutResonInfo = (PolicyResultInfo) bundle.getSerializable("SetOutWarningInfoBean");
         mReturnResonInfo = (PolicyResultInfo) bundle.getSerializable("ReturnWarningInfoBean");
+        getStopInfo();
         if (mReturnFlightInfo == null) {
             arriveTime.setVisibility(View.GONE);
             arriveAirport.setVisibility(View.GONE);
@@ -156,10 +170,33 @@ public class EditOrderFragment extends BaseFragment {
         contactPhone.setText(user.getMobile());
     }
 
+    private void getStopInfo() {
+        if(mFlightInfo.getStopInfo() != null) {
+            requestStopInfo(mFlightInfo);
+        }
+        if(mReturnFlightInfo != null && mReturnFlightInfo.getStopInfo() != null) {
+            requestStopInfo(mReturnFlightInfo);
+        }
+    }
+
+    private void requestStopInfo(final FlightInfo flightInfo) {
+        OkHttpUtils.get(ApiConstants.GET_FLIGHT_STOPS)
+                .tag(this)
+                .cacheMode(CacheMode.NO_CACHE)
+                .params("flightNo", flightInfo.getFlightNo())
+                .params("flightDate", flightInfo.getDeparture().getDateTime().split(" ")[0])
+                .execute(new JsonCallback<StopInfoRsp>(StopInfoRsp.class) {
+                    @Override
+                    public void onResponse(boolean b, StopInfoRsp stopInfoRsp, Request request, @Nullable Response response) {
+                        flightInfo.getStopInfo().setStopLocations(stopInfoRsp.getStops());
+                    }
+                });
+    }
+
     private void setDepartureTv() {
         FlightInfo.DepartureBean departureBean = mFlightInfo.getDeparture();
-        String date = departureBean.getDateTime().split(" ")[0];
-        String dates  = DateUtil.getDateTitle(date);
+//        String date = departureBean.getDateTime().split(" ")[0];
+        String dates  = DateUtil.getDateTitle(departureBean.getDateTime());
         StringBuilder dateRes = Util.getThreadSafeStringBuilder();
         dateRes.append(dates).append("  ").append(mBunksBean.getBunkName());
         setOutTime.setText(dateRes.toString());
@@ -170,8 +207,8 @@ public class EditOrderFragment extends BaseFragment {
 
     private void setReturnTv() {
         FlightInfo.DepartureBean departureBean = mReturnFlightInfo.getDeparture();
-        String date = departureBean.getDateTime().split(" ")[0];
-        String dates  = DateUtil.getDateTitle(date);
+//        String date = departureBean.getDateTime().split(" ")[0];
+        String dates  = DateUtil.getDateTitle(departureBean.getDateTime());
         StringBuilder dateRes = Util.getThreadSafeStringBuilder();
         dateRes.append(dates).append("  ").append(mReturnBunksBean.getBunkName());
         arriveTime.setText(dateRes);
@@ -184,6 +221,7 @@ public class EditOrderFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.plane_detail_rl:
+                showPlanDetailDialog();
                 break;
             case R.id.return_change_tv:
                 break;
@@ -191,6 +229,7 @@ public class EditOrderFragment extends BaseFragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("start", mFlightInfo.getDeparture().getDateTime());
                 bundle.putString("end", mFlightInfo.getArrival().getDateTime());
+                bundle.putInt("flag", ChoosePassengerFragment.IS_FROM_ORDER);
                 PageSwitcher.switchToTopNavPage(getActivity(), ChoosePassengerFragment.class, bundle, getString(R.string.choose_passenger),null);
                 break;
             case R.id.order_money_detail:
@@ -201,6 +240,20 @@ public class EditOrderFragment extends BaseFragment {
         }
     }
 
+    private void showPlanDetailDialog() {
+        if(mFlightInfoDialog == null) {
+            List<FlightInfo> flightInfoList = new ArrayList<>();
+            flightInfoList.add(mFlightInfo);
+            if(mReturnFlightInfo != null) {
+                flightInfoList.add(mReturnFlightInfo);
+            }
+            FlightInfoDialog flightInfoDialog = new FlightInfoDialog(getActivity(), flightInfoList);
+            mFlightInfoDialog = flightInfoDialog;
+            flightInfoDialog.setCanceledOnTouchOutside(true);
+        }
+        mFlightInfoDialog.show();
+
+    }
 
     /**
      * 显示选择框

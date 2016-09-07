@@ -34,6 +34,7 @@ import com.ccy.chuchaiyi.widget.NestRadioGroup;
 import com.ccy.chuchaiyi.widget.PolicyDialog;
 import com.gjj.applibrary.event.EventOfTokenError;
 import com.gjj.applibrary.http.callback.CommonCallback;
+import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.log.L;
 import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
@@ -120,6 +121,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
     private int mSeatIndex = 0;
     private List<SeatType> mItemList;
     private List<Company> companies;
+    private EmployeePolicyDialog mConfirmDialog;
 
     /**
      * 重新加载
@@ -150,6 +152,31 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
     private String mReturnDateString;
     private Date mCurrentDate;
     private Date mReturnDate;
+
+    @Override
+    public void onRightBtnClick() {
+        super.onRightBtnClick();
+        OkHttpUtils.get(ApiConstants.GET_EMPLOYEE_POLICY)
+                .tag(this)
+                .cacheMode(CacheMode.REQUEST_FAILED_READ_CACHE)
+                .execute(new JsonCallback<EmployeePolicyInfoRsp>(EmployeePolicyInfoRsp.class) {
+                    @Override
+                    public void onResponse(boolean b, EmployeePolicyInfoRsp employeePolicyInfoRsp, Request request, @Nullable Response response) {
+                        if(mConfirmDialog == null) {
+                            List<String> PolicyItems = employeePolicyInfoRsp.getPolicyItems();
+                            StringBuilder detail = Util.getThreadSafeStringBuilder();
+                            for (String s :PolicyItems) {
+                                detail.append(s).append("\n");
+                            }
+                            EmployeePolicyDialog employeePolicyDialog = new EmployeePolicyDialog(getActivity(), detail.toString());
+                            mConfirmDialog = employeePolicyDialog;
+                            employeePolicyDialog.setCanceledOnTouchOutside(true);
+                        }
+                        mConfirmDialog.show();
+                    }
+                });
+    }
+
 
     @OnClick({R.id.pre_day, R.id.next_day, R.id.time_tab,R.id.price_tab, R.id.seat_tab, R.id.company_tab})
     public void onClick(View view) {

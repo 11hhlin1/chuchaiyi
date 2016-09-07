@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by Chuck on 2016/9/2.
  */
-public class Approval extends BaseRecyclerItemData implements Serializable{
+public class Approval  implements Serializable{
     private static final long serialVersionUID = -5631102723365111169L;
 
     /**

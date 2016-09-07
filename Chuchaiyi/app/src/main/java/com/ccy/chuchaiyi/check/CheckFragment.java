@@ -14,7 +14,10 @@ import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
+import com.ccy.chuchaiyi.base.PageSwitcher;
+import com.ccy.chuchaiyi.contact.ChoosePassengerFragment;
 import com.ccy.chuchaiyi.index.IndexFragmentAdapter;
+import com.ccy.chuchaiyi.order.EditPassengerFragment;
 import com.ccy.chuchaiyi.widget.NavLineView;
 
 import butterknife.Bind;
@@ -28,6 +31,8 @@ public class CheckFragment extends BaseFragment implements ViewPager.OnPageChang
 
     @Bind(R.id.tv_title)
     TextView tvTitle;
+    @Bind(R.id.add_plan)
+    TextView addPlan;
     @Bind(R.id.top_layout)
     RelativeLayout topLayout;
     @Bind(R.id.my_launch_radio_btn)
@@ -78,17 +83,23 @@ public class CheckFragment extends BaseFragment implements ViewPager.OnPageChang
     }
 
 
-    @OnClick({R.id.my_launch_radio_btn, R.id.un_check_radio_btn, R.id.checked_radio_btn})
+    @OnClick({R.id.my_launch_radio_btn, R.id.un_check_radio_btn, R.id.checked_radio_btn, R.id.add_plan})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.my_launch_radio_btn:
                 mPageVp.setCurrentItem(0);
+                addPlan.setVisibility(View.VISIBLE);
                 break;
             case R.id.un_check_radio_btn:
                 mPageVp.setCurrentItem(1);
+                addPlan.setVisibility(View.GONE);
                 break;
             case R.id.checked_radio_btn:
                 mPageVp.setCurrentItem(2);
+                addPlan.setVisibility(View.GONE);
+                break;
+            case R.id.add_plan:
+                PageSwitcher.switchToTopNavPage(getActivity(), AddCheckFragement.class, null, getString(R.string.trip_plan),null);
                 break;
         }
     }

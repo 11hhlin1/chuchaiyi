@@ -50,6 +50,7 @@
     <string name="check_psw">确认密码</string>
     <string name="hint_check_psw">请再次确认</string>
     <string name="choose_set_out_date">选择出发日期</string>
+    <string name="choose_date">选择日期</string>
     <string name="choose_set_out_city">选择出发城市</string>
     <string name="choose_arrive_city">选择到达城市</string>
     <string name="year">年</string>
@@ -71,10 +72,11 @@
     <string name="empty_no_data">这里什么都木有</string>
     <string name="load_fail_click_reload">网络错误，请重试</string>
     <string name="load_fail">网络错误</string>
+    <string name="success">提交成功</string>
     <string name="price_fail">价格已过期需重新查询</string>
     <string name="pre_day">前一天</string>
     <string name="book">预订</string>
-    <string name="policy">差旅政策</string>
+    <string name="policy">差旅标准</string>
     <string name="money">￥%1$s起</string>
     <string name="money_no_end">￥%1$s</string>
     <string name="date_format">%1$s 至 %2$s</string>
@@ -82,6 +84,8 @@
     <string name="discount">%1$s折</string>
     <string name="next_day">后一天</string>
     <string name="time_tab">时间从早到晚</string>
+    <string name="choose_city">请选择城市</string>
+    <string name="choose_time">请选择日期</string>
     <string name="late_to_early_tab">时间从晚到早</string>
     <string name="low_to_high">价格从低到高</string>
     <string name="high_to_low">价格从高到低</string>
@@ -131,5 +135,12 @@
     <string name="stop_tip">经停</string>
     <string name="edit">编辑</string>
     <string name="choose_check_num">选择审批单号</string>
+    <string name="enter_psw_error">两次密码不一致</string>
+    <string name="change_psw_success">修改密码成功</string>
+    <string name="travel_reason">出差事由</string>
+    <string name="trip_city">出差地点</string>
+    <string name="start_date">起始日期</string>
+    <string name="end_date">截止日期</string>
+    <string name="trip_plan">出差计划</string>
 
 </resources>

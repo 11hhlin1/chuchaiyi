@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseRecyclerViewAdapter;
 import com.ccy.chuchaiyi.base.RecyclerItemOnclickListener;
+import com.ccy.chuchaiyi.base.SimpleRecyclerViewAdapter;
 import com.gjj.applibrary.util.Util;
 
 import java.util.List;
@@ -20,7 +21,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Chuck on 2016/9/2.
  */
-public class ChooseCheckNumAdapter extends BaseRecyclerViewAdapter<Approval> {
+public class ChooseCheckNumAdapter extends SimpleRecyclerViewAdapter<Approval> {
 
     public void setmItemOnclickListener(RecyclerItemOnclickListener mItemOnclickListener) {
         this.mItemOnclickListener = mItemOnclickListener;

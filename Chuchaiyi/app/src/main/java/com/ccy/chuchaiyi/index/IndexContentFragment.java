@@ -33,6 +33,7 @@ import com.ccy.chuchaiyi.event.EventOfSelDate;
 import com.ccy.chuchaiyi.flight.FlightsListFragment;
 import com.gjj.applibrary.log.L;
 import com.gjj.applibrary.util.PreferencesManager;
+import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 
 import org.greenrobot.eventbus.EventBus;
@@ -87,13 +88,11 @@ public class IndexContentFragment extends BaseFragment {
     private String mSeatCode;
     private String mSelSetOutDate;
     private String mSelReturnDate;
-    private int mSelMax = 130;
+    public  static int mSelMax = 130;
     private CitySort mArriveCity;
     private CitySort mSetOutCity;
 
-    public IndexContentFragment(int index) {
-        this.mIndex = index;
-    }
+
 
     @Override
     public int getContentViewLayout() {
@@ -102,6 +101,7 @@ public class IndexContentFragment extends BaseFragment {
 
     @Override
     public void initView() {
+        this.mIndex = getArguments().getInt("index");
         mItemList = new ArrayList<>();
         String[] names = getResources().getStringArray(R.array.seatName);
         String[] codes = getResources().getStringArray(R.array.seatCode);
@@ -187,14 +187,20 @@ public class IndexContentFragment extends BaseFragment {
                 showPickupWindow();
                 break;
             case R.id.search_btn:
-                if(mSetOutCity == null || mArriveCity == null)
+                if(mSetOutCity == null || mArriveCity == null) {
+                    ToastUtil.shortToast(R.string.choose_city);
                     return;
+                }
                 bundle.putString("DepartureCode", mSetOutCity.getCode());
                 bundle.putString("ArrivalCode", mArriveCity.getCode());
                 if(mIndex == 0) {
                     bundle.putString("SetOutDate", mSelSetOutDate.replace("#","-"));
                 } else {
                     bundle.putString("SetOutDate", mSelSetOutDate.replace("#","-"));
+                    if(mSelReturnDate == null) {
+                        ToastUtil.shortToast(R.string.choose_time);
+                        return;
+                    }
                     bundle.putString("ReturnDate", mSelReturnDate.replace("#","-"));
                 }
                 bundle.putString("BunkType",mItemList.get(mSeatIndex).mCode);
@@ -211,13 +217,16 @@ public class IndexContentFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void setDate(EventOfSelDate event) {
+        if(getActivity() == null) {
+            return;
+        }
             if(event.mDateType == EventOfSelDate.SET_OUT_DATE) {
                 String [] dates = event.mDate.split("#");
                 StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
                 stringBuilder.append(dates[1]).append(getString(R.string.month)).append(dates[2]).append(getString(R.string.sunday));
                 setOutDateTv.setText(stringBuilder.toString());
                 mSelSetOutDate = event.mDate;
-            } else {
+            } else if(event.mDateType == EventOfSelDate.RETURN_DATE){
                 if(1 == mIndex) {
                     String[] dates = event.mDate.split("#");
                     StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();

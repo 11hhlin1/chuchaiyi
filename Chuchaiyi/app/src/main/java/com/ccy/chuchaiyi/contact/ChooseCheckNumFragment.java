@@ -22,6 +22,7 @@ import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.cache.CacheMode;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import okhttp3.Call;
@@ -34,7 +35,7 @@ import okhttp3.Response;
 public class ChooseCheckNumFragment extends BaseFragment implements RecyclerItemOnclickListener{
     @Bind(R.id.ptr_recycler_view)
     PullToRefreshRecyclerView mRecyclerView;
-    ChooseCheckNumAdapter mAdapter;
+    private ChooseCheckNumAdapter mAdapter;
     private PassengerInfo mPassengerInfo;
     private String startTime;
 

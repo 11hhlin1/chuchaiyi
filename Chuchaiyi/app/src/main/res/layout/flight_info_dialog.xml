@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/margin_20p"
+    android:paddingTop="@dimen/margin_20p"
+    android:paddingBottom="@dimen/margin_20p"
     android:background="@drawable/corner_white_bg">
 
     <android.support.v7.widget.RecyclerView
@@ -13,4 +14,12 @@
         android:background="@null">
 
     </android.support.v7.widget.RecyclerView>
-</LinearLayout>
+
+    <ImageView
+        android:id="@+id/dialog_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/icon_close"
+        android:paddingRight="8dp"
+        android:layout_gravity="right|top"/>
+</FrameLayout>

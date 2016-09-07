@@ -1,5 +1,6 @@
 package com.ccy.chuchaiyi.contact;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,9 +13,12 @@ import android.view.ViewGroup;
 
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
+import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.city.PinyinComparator;
 import com.ccy.chuchaiyi.city.PinyinUtils;
+import com.ccy.chuchaiyi.event.EventOfSelPerson;
 import com.ccy.chuchaiyi.net.ApiConstants;
+import com.ccy.chuchaiyi.order.EditPassengerFragment;
 import com.ccy.chuchaiyi.widget.EditTextWithDel;
 import com.gjj.applibrary.http.callback.CommonCallback;
 import com.gjj.applibrary.http.callback.JsonCallback;
@@ -23,6 +27,8 @@ import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.cache.CacheMode;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,13 +43,18 @@ import okhttp3.Response;
 /**
  * Created by Chuck on 2016/8/24.
  */
-public class ChoosePassengerFragment extends BaseFragment {
+public class ChoosePassengerFragment extends BaseFragment implements ChoosePassengerAdapter.CallBack{
 
     @Bind(R.id.et_search)
     EditTextWithDel etSearch;
     @Bind(R.id.recyclerView)
     RecyclerView recyclerView;
     ChoosePassengerAdapter mAdapter;
+
+    public final static int IS_FROM_ORDER = 0;
+    public final static int IS_FROM_CHECK = 1;
+
+    Bundle mBundle;
 
     @Override
     public int getContentViewLayout() {
@@ -54,8 +65,10 @@ public class ChoosePassengerFragment extends BaseFragment {
     public void initView() {
         Context context = getActivity();
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mAdapter = new ChoosePassengerAdapter(context, new ArrayList<PassengerData>(), getArguments());
+        mBundle = getArguments();
+        mAdapter = new ChoosePassengerAdapter(context, new ArrayList<PassengerData>());
         recyclerView.setAdapter(mAdapter);
+        mAdapter.setmCallBack(this);
         doRequest();
     }
 
@@ -129,5 +142,23 @@ public class ChoosePassengerFragment extends BaseFragment {
                     }
                 });
 
+    }
+
+    @Override
+    public void selPerson(PassengerInfo passengerInfo) {
+        int flag = mBundle.getInt("flag");
+        if (flag == ChoosePassengerFragment.IS_FROM_ORDER) {
+            editPassenger(passengerInfo);
+        } else if (flag == ChoosePassengerFragment.IS_FROM_CHECK) {
+            onBackPressed();
+        }
+        EventOfSelPerson eventOfSelPerson = new EventOfSelPerson();
+        eventOfSelPerson.mPassengerInfo = passengerInfo;
+        EventBus.getDefault().post(eventOfSelPerson);
+    }
+    void editPassenger(PassengerInfo passengerInfo) {
+//        Bundle bundle = new Bundle();
+        mBundle.putSerializable("passenger", passengerInfo);
+        PageSwitcher.switchToTopNavPage(getActivity(), EditPassengerFragment.class, mBundle, getString(R.string.edit),null);
     }
 }

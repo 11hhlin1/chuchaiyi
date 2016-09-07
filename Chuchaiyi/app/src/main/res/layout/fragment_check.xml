@@ -10,6 +10,16 @@
             android:id="@+id/tv_title"
             style="@style/title_textView"
             android:text="@string/check"/>
+        <TextView
+            android:id="@+id/add_plan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/textsize_15sp"
+            android:textColor="@color/white"
+            android:padding="10dp"
+            android:text="@string/trip_plan" />
     </RelativeLayout>
 
     <RelativeLayout

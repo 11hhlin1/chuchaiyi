@@ -104,8 +104,8 @@ public class FlightPolicyFragment extends BaseFragment {
             resultInfo.setTwoCabinWarningMsg(warningInfo.getTwoCabinWarningMsg());
             resultInfo.setNotPreNDaysReason(warningInfo.getPreNDaysReasons().get(mAdapter.getSecondReasonPos() - dividePos - 1));
             PreferencesManager.getInstance().put("SetOutWarningInfoBean", SaveObjUtil.serialize(resultInfo));
-            bundle.putString("DepartureCode", mDepartureCode);
-            bundle.putString("ArrivalCode", mArrivalCode);
+            bundle.putString("DepartureCode", mArrivalCode);
+            bundle.putString("ArrivalCode", mDepartureCode);
             bundle.putString("SetOutDate", mReturnDateString);
             bundle.putString("BunkType",mBunkType);
             PageSwitcher.switchToTopNavPage(getActivity(), FlightsListFragment.class, bundle, mTitle ,getString(R.string.policy));

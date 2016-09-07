@@ -1,5 +1,6 @@
 package com.ccy.chuchaiyi.index;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -23,7 +24,10 @@ public class IndexFragmentAdapter extends FragmentPagerAdapter {
             return fragment;
         }
 //        if (position == 0) {
-            fragment = new IndexContentFragment(position);
+        Bundle bundle = new Bundle();
+        bundle.putInt("index", position);
+        fragment = new IndexContentFragment();
+        fragment.setArguments(bundle);
 //        } else if (position == 1) {
 //            fragment = new IndexContentFragment();
 //        }

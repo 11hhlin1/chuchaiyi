@@ -40,6 +40,7 @@ import com.lzy.okhttputils.cache.CacheMode;
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
@@ -341,24 +342,27 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
                     .execute(new JsonCallback<ReturnFlightPolicy>(ReturnFlightPolicy.class) {
                         @Override
                         public void onResponse(boolean isFromCache, ReturnFlightPolicy returnFlightPolicy, Request request, @Nullable Response response) {
-                            PolicyDialog policyDialog = new PolicyDialog(mContext);
-                            mConfirmDialog = policyDialog;
-                            policyDialog.setCanceledOnTouchOutside(true);
-                            policyDialog.setCancelClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    dismissConfirmDialog();
-                                }
-                            });
-                            policyDialog.setConfirmClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    book(flight,bunks);
-                                }
-                            });
-                            policyDialog.show();
-                            policyDialog.setContent(flight,bunks);
-                            policyDialog.setContent(returnFlightPolicy.getReturnPolicyDesc(), returnFlightPolicy.getChangePolicyDesc(),returnFlightPolicy.getSignPolicyDesc());
+                            if(mConfirmDialog == null) {
+                                PolicyDialog policyDialog = new PolicyDialog(mContext);
+                                mConfirmDialog = policyDialog;
+                                policyDialog.setCanceledOnTouchOutside(true);
+                                policyDialog.setCancelClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        dismissConfirmDialog();
+                                    }
+                                });
+                                policyDialog.setConfirmClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        book(flight,bunks);
+                                    }
+                                });
+                            }
+
+                            mConfirmDialog.show();
+                            mConfirmDialog.setContent(flight,bunks);
+                            mConfirmDialog.setContent(returnFlightPolicy.getReturnPolicyDesc(), returnFlightPolicy.getChangePolicyDesc(),returnFlightPolicy.getSignPolicyDesc());
                         }
 
                         @Override
@@ -430,7 +434,8 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
                     }
 
                     @Override
-                    public void onResponse(boolean isFromCache, BookValidateInfo bookValidateInfo, Request request, @Nullable Response response) {
+                    public void onResponse(boolean isFromCache, final BookValidateInfo bookValidateInfo, Request request, @Nullable Response response) {
+
                         BookValidateInfo.WarningInfoBean warningInfoBean = bookValidateInfo.getWarningInfo();
                         if(warningInfoBean == null) {
                             String  SetOutWarningInfoBean = PreferencesManager.getInstance().get("SetOutWarningInfoBean");
@@ -464,6 +469,8 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
                             PageSwitcher.switchToTopNavPage((Activity) mContext,FlightPolicyFragment.class,bundle,mContext.getString(R.string.policy),null);
 
                         }
+
+
                     }
 
                     @Override

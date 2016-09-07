@@ -46,10 +46,14 @@ public class ChoosePassengerAdapter extends BaseRecyclerViewAdapter<PassengerDat
     public static final int VIEW_TYPE_ITEM = 2; // 没数据
 
     public static final int VIEW_TYPE_PINYIN_ITEM = 3; // 顶部空view
-    Bundle mBundle;
-    public ChoosePassengerAdapter(Context context, List<PassengerData> items, Bundle bundle) {
+
+    public void setmCallBack(CallBack mCallBack) {
+        this.mCallBack = mCallBack;
+    }
+
+    private CallBack mCallBack;
+    public ChoosePassengerAdapter(Context context, List<PassengerData> items) {
         super(context, items);
-        mBundle = bundle;
     }
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
@@ -171,7 +175,8 @@ public class ChoosePassengerAdapter extends BaseRecyclerViewAdapter<PassengerDat
                                     @Override
                                     public void onResponse(boolean isFromCache, PassengerInfo passengerInfo, Request request, @Nullable Response response) {
 //                                        dismissLoadingDialog();
-                                        editPassenger(passengerInfo);
+                                        mCallBack.selPerson(passengerInfo);
+
                                     }
 
                                     @Override
@@ -182,7 +187,7 @@ public class ChoosePassengerAdapter extends BaseRecyclerViewAdapter<PassengerDat
                                     }
                                 });
                     } else {
-                        editPassenger(passengerData.mPassengerInfo);
+                        mCallBack.selPerson(passengerData.mPassengerInfo);
                     }
 
                 }
@@ -190,10 +195,10 @@ public class ChoosePassengerAdapter extends BaseRecyclerViewAdapter<PassengerDat
         }
     }
 
-    void editPassenger(PassengerInfo passengerInfo) {
-//        Bundle bundle = new Bundle();
-        mBundle.putSerializable("passenger", passengerInfo);
-        PageSwitcher.switchToTopNavPage((Activity) mContext, EditPassengerFragment.class, mBundle, mContext.getString(R.string.edit),null);
+
+
+    public interface CallBack {
+        void selPerson(PassengerInfo passengerInfo);
     }
     class PinYinViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.pinyin_title)
