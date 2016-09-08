@@ -8,10 +8,12 @@ import java.util.List;
  */
 public class BookValidateInfo implements Serializable{
     private static final long serialVersionUID = 1L;
+
     /**
      * Code : 0
      * Message : string
      * WarningInfo : {"LowPriceWarningMsg":"string","PreNDaysWarningMsg":"string","DiscountLimitWarningMsg":"string","TwoCabinWarningMsg":"string","LowPriceReasons":["string"],"PreNDaysReasons":["string"]}
+     * Flight : {"Departure":{"CityCode":"string","CityName":"string","AirportCode":"string","AirportName":"string","Terminal":"string","DateTime":"string"},"Arrival":{"CityCode":"string","CityName":"string","AirportCode":"string","AirportName":"string","Terminal":"string","DateTime":"string"},"Airline":"string","AirlineName":"string","FlightNo":"string","PlanType":"string","StopInfo":{"StopLocations":[{"City":"string","Arrival":"string","Departure":"string"}]},"ShareFlight":"string","Distance":0,"Meal":"string","YBunkPrice":0,"CBunkPrice":0,"FBunkPrice":0,"AirportFee":0,"OilFee":0,"InsuranceFeeUnitPrice":0,"TicketServiceFee":0,"Bunks":[{"BunkType":"string","BunkCode":"string","BunkName":"string","ReturnPolicy":{"ReturnPolicyDesc":"string","ReturnPolicyReturnFee":0},"ChangePolicy":{"ChangePolicyDesc":"string","ChangeAllowed":true,"ChangePolicyChangeFee":0},"SignPolicy":{"SignPolicyDesc":"string","SignAllowed":true},"PolicyRemark":"string","RemainNum":0,"BunkPrice":{"Discount":0,"BunkPrice":0,"ProtocolCode":"string","ProtocolDiscount":0,"FactBunkPrice":0,"FactDiscount":0,"CorpAddedPrice":0},"PriceSource":"string"}]}
      */
 
     private int Code;
@@ -26,6 +28,28 @@ public class BookValidateInfo implements Serializable{
      */
 
     private WarningInfoBean WarningInfo;
+    /**
+     * Departure : {"CityCode":"string","CityName":"string","AirportCode":"string","AirportName":"string","Terminal":"string","DateTime":"string"}
+     * Arrival : {"CityCode":"string","CityName":"string","AirportCode":"string","AirportName":"string","Terminal":"string","DateTime":"string"}
+     * Airline : string
+     * AirlineName : string
+     * FlightNo : string
+     * PlanType : string
+     * StopInfo : {"StopLocations":[{"City":"string","Arrival":"string","Departure":"string"}]}
+     * ShareFlight : string
+     * Distance : 0
+     * Meal : string
+     * YBunkPrice : 0
+     * CBunkPrice : 0
+     * FBunkPrice : 0
+     * AirportFee : 0
+     * OilFee : 0
+     * InsuranceFeeUnitPrice : 0
+     * TicketServiceFee : 0
+     * Bunks : [{"BunkType":"string","BunkCode":"string","BunkName":"string","ReturnPolicy":{"ReturnPolicyDesc":"string","ReturnPolicyReturnFee":0},"ChangePolicy":{"ChangePolicyDesc":"string","ChangeAllowed":true,"ChangePolicyChangeFee":0},"SignPolicy":{"SignPolicyDesc":"string","SignAllowed":true},"PolicyRemark":"string","RemainNum":0,"BunkPrice":{"Discount":0,"BunkPrice":0,"ProtocolCode":"string","ProtocolDiscount":0,"FactBunkPrice":0,"FactDiscount":0,"CorpAddedPrice":0},"PriceSource":"string"}]
+     */
+
+    public FlightInfo Flight;
 
     public int getCode() {
         return Code;
@@ -52,7 +76,7 @@ public class BookValidateInfo implements Serializable{
     }
 
     public static class WarningInfoBean implements Serializable{
-        private static final long serialVersionUID = -8986781L;
+        private static final long serialVersionUID = -2086450458683547684L;
         private String LowPriceWarningMsg;
         private String PreNDaysWarningMsg;
         private String DiscountLimitWarningMsg;
@@ -108,4 +132,7 @@ public class BookValidateInfo implements Serializable{
             this.PreNDaysReasons = PreNDaysReasons;
         }
     }
+
+
+
 }

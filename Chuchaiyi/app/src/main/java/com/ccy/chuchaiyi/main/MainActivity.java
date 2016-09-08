@@ -3,14 +3,20 @@ package com.ccy.chuchaiyi.main;
 import android.os.Bundle;
 
 import com.ccy.chuchaiyi.R;
+import com.ccy.chuchaiyi.app.BaseApplication;
 import com.ccy.chuchaiyi.base.BaseMainActivity;
+import com.ccy.chuchaiyi.check.CategoryData;
 import com.ccy.chuchaiyi.check.CheckFragment;
+import com.ccy.chuchaiyi.check.ViewPagerGoodListFragment;
+import com.ccy.chuchaiyi.db.UserInfo;
 import com.ccy.chuchaiyi.index.IndexFragment;
 import com.ccy.chuchaiyi.order.OrderFragment;
 import com.ccy.chuchaiyi.person.PersonalFragment;
 import com.ccy.chuchaiyi.widget.NestRadioGroup;
 import com.gjj.applibrary.task.MainTaskExecutor;
 import com.gjj.applibrary.util.ToastUtil;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -95,7 +101,36 @@ public class MainActivity extends BaseMainActivity {
 
     private void showCheckTab() {
 
-        replaceFragment(CheckFragment.class);
+        Bundle bundle = new Bundle();
+        ArrayList<CategoryData> dataList = new ArrayList<>();
+        UserInfo userInfo = BaseApplication.getUserMgr().getUser();
+        if(userInfo.getApprovalRequired()) {
+            CategoryData categoryData = new CategoryData();
+            categoryData.mCateId = CategoryData.MY_APPLY;
+            categoryData.mCateName = getString(R.string.my_launch);
+            dataList.add(categoryData);
+            CategoryData categoryData1 = new CategoryData();
+            categoryData1.mCateId = CategoryData.MY_UN_CHECK;
+            categoryData1.mCateName = getString(R.string.un_check);
+            dataList.add(categoryData1);
+            CategoryData categoryData2 = new CategoryData();
+            categoryData2.mCateId = CategoryData.MY_CHECKED;
+            categoryData2.mCateName = getString(R.string.checked);
+            dataList.add(categoryData2);
+        }
+
+        if(userInfo.getOverrunOption().equals("WarningAndAuthorize")) {
+            CategoryData categoryData1 = new CategoryData();
+            categoryData1.mCateId = CategoryData.MY_UN_AUDIT;
+            categoryData1.mCateName = getString(R.string.un_audit);
+            dataList.add(categoryData1);
+            CategoryData categoryData2 = new CategoryData();
+            categoryData2.mCateId = CategoryData.MY_AUDITED;
+            categoryData2.mCateName = getString(R.string.audited);
+            dataList.add(categoryData2);
+        }
+        bundle.putParcelableArrayList("data", dataList);
+        replaceFragment(ViewPagerGoodListFragment.class,bundle);
     }
 
     private void showIndexTab() {

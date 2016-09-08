@@ -30,7 +30,7 @@ public class NavLineView extends View {
         super(context, attrs, defStyle);
 
         mPaint = new Paint();
-        mPaint.setColor(getResources().getColor(R.color.orange));
+        mPaint.setColor(getResources().getColor(R.color.color_0071c4));
         mRectF = new RectF();
         mRectF.top = 0;
     }

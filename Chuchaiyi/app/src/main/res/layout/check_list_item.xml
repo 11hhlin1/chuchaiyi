@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/check_item_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_30p">
+
+        <TextView
+            android:id="@+id/check_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_15sp"/>
+        <LinearLayout
+            android:id="@+id/city_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/check_title"
+            android:layout_marginTop="@dimen/margin_15p"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_aaaaaa"
+                android:text="出差地点"
+                android:textSize="@dimen/textsize_13sp"/>
+
+            <TextView
+                android:id="@+id/check_trip_arrive_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_15p"
+                android:textColor="@color/color_222222"
+                android:textSize="@dimen/textsize_13sp"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/city_ll"
+            android:layout_marginTop="@dimen/margin_6p"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="出差时间"
+                android:textColor="@color/color_aaaaaa"
+                android:textSize="@dimen/textsize_13sp"/>
+
+            <TextView
+                android:id="@+id/check_trip_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_15p"
+                android:textColor="@color/color_222222"
+                android:textSize="@dimen/textsize_13sp"/>
+        </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_enter"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <View
+        style="@style/horizontal_line"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+        <TextView
+            android:id="@+id/check_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:textColor="@color/color_aaaaaa"
+            android:textSize="@dimen/textsize_14sp"/>
+
+
+        <Button
+            android:layout_width="65dp"
+            android:layout_height="30dp"
+            android:id="@+id/handle_btn"
+            android:text="@string/checkcancle"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@drawable/circle_rect_blue"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin_30p"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/textsize_14sp"/>
+        <Button
+            android:layout_width="65dp"
+            android:layout_height="30dp"
+            android:id="@+id/handle_btn_left"
+            android:gravity="center"
+            android:layout_toLeftOf="@+id/handle_btn"
+            android:textColor="@color/color_0071c4"
+            android:background="@drawable/choose_air_company_cancle_btn"
+            android:layout_marginRight="@dimen/margin_30p"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/textsize_14sp"/>
+    </RelativeLayout>
+</LinearLayout>

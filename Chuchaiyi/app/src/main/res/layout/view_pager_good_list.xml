@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/top_layout"
+        style="@style/titlebar">
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/title_textView"
+            android:text="@string/check"/>
+        <TextView
+            android:id="@+id/add_plan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/textsize_15sp"
+            android:textColor="@color/white"
+            android:padding="10dp"
+            android:text="@string/trip_plan" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/top_rl"
+        android:layout_width="match_parent"
+        android:layout_height="42.3dp"
+        android:background="@color/white" >
+
+        <LinearLayout
+            android:id="@+id/project_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_line_height_120px"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_alignParentTop="true">
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/bottom_line"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/line_color_gray"
+            android:layout_alignParentBottom="true"/>
+
+        <com.ccy.chuchaiyi.widget.NavLineView
+            android:id="@+id/tab_line_iv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/top_nav_scroll_line_height"
+            android:layout_above="@id/bottom_line"/>
+
+    </RelativeLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/page_vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

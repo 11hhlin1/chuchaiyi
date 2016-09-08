@@ -10,7 +10,7 @@ public class DateUtil {
 
     /**
      *
-     * @param date 2011-03-06
+     * @param date 2011-03-06 hh:mm
      * @return
      */
     public static String getDateTitle(String date) {
@@ -37,6 +37,22 @@ public class DateUtil {
         } else if (weekDay == Calendar.SUNDAY) {
             dateTitle.append(" 周日");
         }
+        return dateTitle.toString();
+    }
+
+
+    /**
+     *
+     * @param date 2011-03-06
+     * @return
+     */
+    public static String getDate(String date) {
+        String[] dates = date.split("-");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Integer.valueOf(dates[0]), Integer.valueOf(dates[1]) - 1, Integer.valueOf(dates[2]));
+        StringBuilder dateTitle = Util.getThreadSafeStringBuilder();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM月dd日");
+        dateTitle.append(simpleDateFormat.format(calendar.getTime()));
         return dateTitle.toString();
     }
 }

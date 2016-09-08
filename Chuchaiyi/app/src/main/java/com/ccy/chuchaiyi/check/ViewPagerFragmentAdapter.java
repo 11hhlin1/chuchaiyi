@@ -6,17 +6,20 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 
-import com.ccy.chuchaiyi.index.IndexContentFragment;
+
+import java.util.ArrayList;
 
 /**
- * Created by Chuck on 2016/8/16.
+ * Created by Chuck on 2016/9/5.
  */
-public class CheckFragmentAdapter extends FragmentPagerAdapter {
+public class ViewPagerFragmentAdapter extends FragmentPagerAdapter {
     private Fragment[] mCache;
-
-    public CheckFragmentAdapter(FragmentManager fm, Fragment[] cache) {
+    private ArrayList<CategoryData> dataArrayList;
+    public ViewPagerFragmentAdapter(FragmentManager fm, Fragment[] cache, ArrayList<CategoryData> datas) {
         super(fm);
         mCache = cache;
+        dataArrayList = datas;
+
     }
 
     @Override
@@ -25,15 +28,9 @@ public class CheckFragmentAdapter extends FragmentPagerAdapter {
         if (fragment != null) {
             return fragment;
         }
+        fragment = new CheckTypeFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("pos", position);
-        if (position == 0) {
-            fragment = new CheckTypeFragment();
-        } else if (position == 1) {
-            fragment = new CheckTypeFragment();
-        } else {
-            fragment = new CheckTypeFragment();
-        }
+        bundle.putParcelable("data", dataArrayList.get(position));
         fragment.setArguments(bundle);
         mCache[position] = fragment;
         return fragment;
@@ -49,3 +46,4 @@ public class CheckFragmentAdapter extends FragmentPagerAdapter {
 //        super.destroyItem(container, position, object);
     }
 }
+

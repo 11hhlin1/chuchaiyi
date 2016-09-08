@@ -328,7 +328,7 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
         @OnClick(R.id.left_ll)
         void showDialog() {
             int groupPos = (int) changeMsg.getTag(R.id.left_ll);
-            int childPos = (int) changeMsg.getTag(R.id.change_msg);
+            final int childPos = (int) changeMsg.getTag(R.id.change_msg);
             final FlightInfo flight = getGroup(groupPos);
             final FlightInfo.BunksBean bunks = getChild(groupPos,childPos);
             OkHttpUtils.get(ApiConstants.GET_FLIGHT_POLICY)
@@ -445,11 +445,15 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
                                 bundle.putSerializable("SetOutWarningInfoBean", resultInfo);
                                 bundle.putSerializable("SetOutFlightInfo", (FlightInfo)SaveObjUtil.unSerialize(PreferencesManager.getInstance().get("SetOutFlightInfo")));
                                 bundle.putSerializable("SetOutBunksBean", (FlightInfo.BunksBean)SaveObjUtil.unSerialize(PreferencesManager.getInstance().get("SetOutBunksBean")));
-                                bundle.putSerializable("ReturnFlightInfo", flight);
-                                bundle.putSerializable("ReturnBunksBean", bunks);
+                                FlightInfo flightInfo = bookValidateInfo.Flight;
+                                List<FlightInfo.BunksBean> bunksBeanList = flightInfo.getBunks();
+                                bundle.putSerializable("ReturnFlightInfo", flightInfo);
+                                bundle.putSerializable("ReturnBunksBean", bunksBeanList.get(0));
                             } else {
-                                bundle.putSerializable("SetOutFlightInfo", flight);
-                                bundle.putSerializable("SetOutBunksBean", bunks);
+                                FlightInfo flightInfo = bookValidateInfo.Flight;
+                                List<FlightInfo.BunksBean> bunksBeanList = flightInfo.getBunks();
+                                bundle.putSerializable("SetOutFlightInfo", flightInfo);
+                                bundle.putSerializable("SetOutBunksBean", bunksBeanList.get(0));
                             }
 
                             StringBuilder title = Util.getThreadSafeStringBuilder();
@@ -459,8 +463,10 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
                         } else {
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("warningInfoBean", warningInfoBean);
-                            bundle.putSerializable("FlightInfo", flight);
-                            bundle.putSerializable("BunksBean", bunks);
+                            FlightInfo flightInfo = bookValidateInfo.Flight;
+                            List<FlightInfo.BunksBean> bunksBeanList = flightInfo.getBunks();
+                            bundle.putSerializable("FlightInfo", flightInfo);
+                            bundle.putSerializable("BunksBean", bunksBeanList.get(0));
                             bundle.putString("returnDate", mReturnDateString);
                             bundle.putString("mDepartureCode", mDepartureCode);
                             bundle.putString("mArrivalCode", mArrivalCode);

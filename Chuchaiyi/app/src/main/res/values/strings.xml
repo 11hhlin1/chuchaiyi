@@ -68,6 +68,8 @@
     <string name="my_launch">我发起</string>
     <string name="un_check">待审</string>
     <string name="checked">已审</string>
+    <string name="un_audit">待授权</string>
+    <string name="audited">已授权</string>
 
     <string name="empty_no_data">这里什么都木有</string>
     <string name="load_fail_click_reload">网络错误，请重试</string>
@@ -142,5 +144,8 @@
     <string name="start_date">起始日期</string>
     <string name="end_date">截止日期</string>
     <string name="trip_plan">出差计划</string>
+    <string name="checkcancle">撤销</string>
+    <string name="agree">同意</string>
+    <string name="refuse">拒绝</string>
 
 </resources>
