@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_30p"
+        android:orientation="vertical"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true">
 
@@ -42,6 +43,7 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/margin_30p"
+        android:visibility="invisible"
         android:button="@null" />
     <View
         style="@style/personal_page_bottom_line"/>

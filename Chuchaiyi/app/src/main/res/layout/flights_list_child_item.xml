@@ -45,7 +45,6 @@
         android:layout_width="65dp"
         android:layout_height="30dp"
         android:id="@+id/book_btn"
-        android:padding="8dp"
         android:text="@string/book"
         android:gravity="center"
         android:textColor="@color/white"

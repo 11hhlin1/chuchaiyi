@@ -11,15 +11,24 @@ import com.alibaba.fastjson.JSON;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.SpaceItemDecoration;
+import com.ccy.chuchaiyi.event.EventOfAddCheck;
+import com.ccy.chuchaiyi.event.EventOfAgreeCheck;
+import com.ccy.chuchaiyi.event.EventOfCancelApproval;
+import com.ccy.chuchaiyi.event.EventOfSelDate;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.util.ToastUtil;
+import com.gjj.applibrary.util.Util;
 import com.gjj.applibrary.widget.EmptyErrorViewController;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshRecyclerView;
 import com.handmark.pulltorefresh.library.internal.PrepareRelativeLayout;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.cache.CacheMode;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -47,6 +56,7 @@ public class CheckTypeFragment extends BaseFragment{
     TextView mErrorTextView;
 
     private CheckTypeAdapter mAdapter;
+    private AuthorizesAdapter mAuthorizeAdapter;
 
     private static final String PULL_FLAG = "isUpPullRefresh";
 
@@ -113,11 +123,20 @@ public class CheckTypeFragment extends BaseFragment{
         recyclerView.getRefreshableView().setLayoutManager(new LinearLayoutManager(context));
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.margin_30p);
         mRecyclerView.getRefreshableView().addItemDecoration(new SpaceItemDecoration(spacingInPixels));
-        mAdapter = new CheckTypeAdapter(context, new ArrayList<Approval.ApprovalsBean>(),categoryData.mCateId);
-        CheckTypeAdapter adapter = mAdapter;
-        recyclerView.getRefreshableView().setAdapter(adapter);
-        mEmptyErrorViewController = new EmptyErrorViewController(mEmptyTextView, mErrorTextView, recyclerView,
-                new EmptyErrorViewController.AdapterWrapper(adapter));
+
+        if(categoryData.mCateId == CategoryData.MY_CHECKED || categoryData.mCateId == CategoryData.MY_UN_CHECK || categoryData.mCateId == CategoryData.MY_APPLY) {
+            mAdapter = new CheckTypeAdapter(context, new ArrayList<Approval.ApprovalsBean>(),categoryData.mCateId);
+            CheckTypeAdapter adapter = mAdapter;
+            recyclerView.getRefreshableView().setAdapter(adapter);
+            mEmptyErrorViewController = new EmptyErrorViewController(mEmptyTextView, mErrorTextView, recyclerView,
+                    new EmptyErrorViewController.AdapterWrapper(adapter));
+        } else {
+            mAuthorizeAdapter = new AuthorizesAdapter(context, new ArrayList<Authorizes.AuthorizesBean>(),categoryData.mCateId);
+            AuthorizesAdapter adapter = mAuthorizeAdapter;
+            recyclerView.getRefreshableView().setAdapter(adapter);
+            mEmptyErrorViewController = new EmptyErrorViewController(mEmptyTextView, mErrorTextView, recyclerView,
+                    new EmptyErrorViewController.AdapterWrapper(adapter));
+        }
         recyclerView.setRefreshPrepareLayoutListener(new PrepareRelativeLayout.RefreshPrepareLayoutListener() {
             @Override
             public void onPrepareLayout() {
@@ -125,6 +144,7 @@ public class CheckTypeFragment extends BaseFragment{
             }
         });
         setEmptyTextView();
+        EventBus.getDefault().register(this);
     }
 
     private void setEmptyTextView() {
@@ -143,6 +163,14 @@ public class CheckTypeFragment extends BaseFragment{
             }
             case CategoryData.MY_CHECKED: {
                 getMyCheck(ApiConstants.GET_AUDITED_APPROVALS,page);
+                break;
+            }
+            case CategoryData.MY_UN_AUDIT: {
+                getMyAuthorizes(ApiConstants.GET_AUTHORIZE_SHEETS,page);
+                break;
+            }
+            case CategoryData.MY_AUDITED: {
+                getMyAuthorizes(ApiConstants.GET_AUTHORIZED_SHEETS,page);
                 break;
             }
         }
@@ -193,6 +221,102 @@ public class CheckTypeFragment extends BaseFragment{
                             public void run() {
                                 if (approval != null) {
                                     mRecyclerView.hasMore(approval.getApprovals().size() == NUM);
+                                } else {
+                                    mRecyclerView.hasMore(false);
+                                }
+                                mRecyclerView.onRefreshComplete();
+                            }
+                        });
+                    }
+                });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshList(EventOfCancelApproval event) {
+        if(getActivity() == null) {
+            return;
+        }
+        if(categoryData.mCateId == CategoryData.MY_APPLY) {
+            getMyCheck(ApiConstants.GET_MY_APPROVALS,1);
+        }
+        if(categoryData.mCateId == CategoryData.MY_UN_CHECK) {
+            getMyCheck(ApiConstants.GET_AUDIT_FOR_ME_APPROVALS,1);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshList(EventOfAddCheck event) {
+        if(getActivity() == null) {
+            return;
+        }
+        if(categoryData.mCateId == CategoryData.MY_APPLY) {
+            getMyCheck(ApiConstants.GET_MY_APPROVALS,1);
+        }
+        if(categoryData.mCateId == CategoryData.MY_UN_CHECK) {
+            getMyCheck(ApiConstants.GET_AUDIT_FOR_ME_APPROVALS,1);
+        }
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshList(EventOfAgreeCheck event) {
+        if(getActivity() == null) {
+            return;
+        }
+        if(categoryData.mCateId == CategoryData.MY_APPLY) {
+            getMyCheck(ApiConstants.GET_MY_APPROVALS,1);
+        }
+        if(categoryData.mCateId == CategoryData.MY_UN_CHECK) {
+            getMyCheck(ApiConstants.GET_AUDIT_FOR_ME_APPROVALS,1);
+        }
+        if(categoryData.mCateId == CategoryData.MY_CHECKED) {
+            getMyCheck(ApiConstants.GET_AUDITED_APPROVALS,1);
+        }
+    }
+    private void getMyAuthorizes(String url, final int page) {
+        OkHttpUtils.get(url)
+                .tag(this)
+                .params("pageNumber", String.valueOf(page))
+                .params("pageSize", String.valueOf(NUM))
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new JsonCallback<Authorizes>(Authorizes.class) {
+                    @Override
+                    public void onResponse(boolean isFromCache, final Authorizes authorizes, Request request, @Nullable Response response) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(page == 1) {
+                                    mAuthorizeAdapter.setData(authorizes.getAuthorizes());
+                                } else {
+                                    mAuthorizeAdapter.addData(authorizes.getAuthorizes());
+                                }
+                                mMyApprovalPage++;
+                                mEmptyErrorViewController.onRequestFinish(mAuthorizeAdapter.getItemCount() > 0);
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                        super.onError(isFromCache, call, response, e);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ToastUtil.shortToast(R.string.load_fail);
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onAfter(boolean isFromCache, @Nullable final Authorizes authorizes, Call call, @Nullable Response response, @Nullable Exception e) {
+                        super.onAfter(isFromCache, authorizes, call, response, e);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (authorizes != null) {
+                                    mRecyclerView.hasMore(authorizes.getAuthorizes().size() == NUM);
                                 } else {
                                     mRecyclerView.hasMore(false);
                                 }

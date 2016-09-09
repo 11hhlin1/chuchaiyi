@@ -24,6 +24,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/margin_30p"
         android:background="@drawable/selector_check_box"
+        android:visibility="invisible"
         android:button="@null" />
 
     <View style="@style/personal_page_bottom_line" />

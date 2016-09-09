@@ -159,6 +159,6 @@ public class ChoosePassengerFragment extends BaseFragment implements ChoosePasse
     void editPassenger(PassengerInfo passengerInfo) {
 //        Bundle bundle = new Bundle();
         mBundle.putSerializable("passenger", passengerInfo);
-        PageSwitcher.switchToTopNavPage(getActivity(), EditPassengerFragment.class, mBundle, getString(R.string.edit),null);
+        PageSwitcher.switchToTopNavPage(getActivity(), EditPassengerFragment.class, mBundle, getString(R.string.edit),getString(R.string.sure));
     }
 }

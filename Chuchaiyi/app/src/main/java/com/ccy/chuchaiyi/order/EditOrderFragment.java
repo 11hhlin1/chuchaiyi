@@ -12,17 +12,21 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.app.BaseApplication;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.contact.ChoosePassengerFragment;
+import com.ccy.chuchaiyi.contact.PassengerInfo;
 import com.ccy.chuchaiyi.db.UserInfo;
+import com.ccy.chuchaiyi.event.EventOfSelPassenger;
 import com.ccy.chuchaiyi.flight.FlightInfo;
 import com.ccy.chuchaiyi.flight.PolicyResultInfo;
 import com.ccy.chuchaiyi.flight.StopInfoRsp;
@@ -30,9 +34,14 @@ import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.util.CallUtil;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.util.DateUtil;
+import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.cache.CacheMode;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +49,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -109,6 +119,7 @@ public class EditOrderFragment extends BaseFragment {
     private int safeFeeMoney;
     private int delayFeeMoney;
     private FlightInfoDialog mFlightInfoDialog;
+    private List<Passenger> mPassengers;
 
     @Override
     public void onRightBtnClick() {
@@ -168,13 +179,14 @@ public class EditOrderFragment extends BaseFragment {
         UserInfo user = BaseApplication.getUserMgr().getUser();
         contactName.setText(user.getEmployeeName());
         contactPhone.setText(user.getMobile());
+        EventBus.getDefault().register(this);
     }
 
     private void getStopInfo() {
-        if(mFlightInfo.getStopInfo() != null) {
+        if (mFlightInfo.getStopInfo() != null) {
             requestStopInfo(mFlightInfo);
         }
-        if(mReturnFlightInfo != null && mReturnFlightInfo.getStopInfo() != null) {
+        if (mReturnFlightInfo != null && mReturnFlightInfo.getStopInfo() != null) {
             requestStopInfo(mReturnFlightInfo);
         }
     }
@@ -196,7 +208,7 @@ public class EditOrderFragment extends BaseFragment {
     private void setDepartureTv() {
         FlightInfo.DepartureBean departureBean = mFlightInfo.getDeparture();
 //        String date = departureBean.getDateTime().split(" ")[0];
-        String dates  = DateUtil.getDateTitle(departureBean.getDateTime());
+        String dates = DateUtil.getDateTitle(departureBean.getDateTime());
         StringBuilder dateRes = Util.getThreadSafeStringBuilder();
         dateRes.append(dates).append("  ").append(mBunksBean.getBunkName());
         setOutTime.setText(dateRes.toString());
@@ -208,7 +220,7 @@ public class EditOrderFragment extends BaseFragment {
     private void setReturnTv() {
         FlightInfo.DepartureBean departureBean = mReturnFlightInfo.getDeparture();
 //        String date = departureBean.getDateTime().split(" ")[0];
-        String dates  = DateUtil.getDateTitle(departureBean.getDateTime());
+        String dates = DateUtil.getDateTitle(departureBean.getDateTime());
         StringBuilder dateRes = Util.getThreadSafeStringBuilder();
         dateRes.append(dates).append("  ").append(mReturnBunksBean.getBunkName());
         arriveTime.setText(dateRes);
@@ -230,21 +242,61 @@ public class EditOrderFragment extends BaseFragment {
                 bundle.putString("start", mFlightInfo.getDeparture().getDateTime());
                 bundle.putString("end", mFlightInfo.getArrival().getDateTime());
                 bundle.putInt("flag", ChoosePassengerFragment.IS_FROM_ORDER);
-                PageSwitcher.switchToTopNavPage(getActivity(), ChoosePassengerFragment.class, bundle, getString(R.string.choose_passenger),null);
+                PageSwitcher.switchToTopNavPage(getActivity(), ChoosePassengerFragment.class, bundle, getString(R.string.choose_passenger), null);
                 break;
             case R.id.order_money_detail:
                 showPickupWindow();
                 break;
             case R.id.commit_order:
+                commitOrder();
                 break;
         }
     }
 
+    private void commitOrder() {
+        showLoadingDialog(R.string.commit, false);
+        PlaceAskOrderRequest request = new PlaceAskOrderRequest();
+        request.FirstRoute = mFlightInfo;
+        request.ContactMobile = contactPhone.getText().toString();
+        request.ContactName = contactName.getText().toString();
+        request.FirstRoutePolicyInfo = mSetoutResonInfo;
+        request.SecondRoute = mReturnFlightInfo;
+        request.SecondRoutePolicyInfo = mReturnResonInfo;
+        request.Passengers = mPassengers;
+        OkHttpUtils.post(ApiConstants.COMMIT_ORDER)
+                .tag(this)
+                .cacheMode(CacheMode.NO_CACHE)
+                .postJson(JSON.toJSONString(request))
+                .execute(new JsonCallback<StopInfoRsp>(StopInfoRsp.class) {
+                    @Override
+                    public void onResponse(boolean b, StopInfoRsp stopInfoRsp, Request request, @Nullable Response response) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dismissLoadingDialog();
+                                ToastUtil.shortToast(R.string.commit_success);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                        super.onError(isFromCache, call, response, e);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dismissLoadingDialog();
+                            }
+                        });
+                    }
+                });
+    }
+
     private void showPlanDetailDialog() {
-        if(mFlightInfoDialog == null) {
+        if (mFlightInfoDialog == null) {
             List<FlightInfo> flightInfoList = new ArrayList<>();
             flightInfoList.add(mFlightInfo);
-            if(mReturnFlightInfo != null) {
+            if (mReturnFlightInfo != null) {
                 flightInfoList.add(mReturnFlightInfo);
             }
             FlightInfoDialog flightInfoDialog = new FlightInfoDialog(getActivity(), flightInfoList);
@@ -329,6 +381,7 @@ public class EditOrderFragment extends BaseFragment {
         }
     }
 
+
     static class ViewHolder {
         @Bind(R.id.pop_ticket_value)
         TextView ticketValue;
@@ -345,4 +398,64 @@ public class EditOrderFragment extends BaseFragment {
             ButterKnife.bind(this, view);
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void setAddPassenger(EventOfSelPassenger event) {
+        if (getActivity() == null) {
+            return;
+        }
+        PassengerInfo passenger1 = event.mPassenger;
+//        if(!mPassengers.contains(passenger1)) {
+            PassengerViewHolder holder = inflatePassengerView(getActivity().getLayoutInflater());
+            holder.passengerName.setText(passenger1.getEmployeeName());
+            holder.passengerJob.setText(passenger1.getDepartmentName());
+            holder.orderNum.setText(String.valueOf(event.ApprovalId));
+        holder.projectNum.setText(event.ProjectName);
+            holder.deletePassenger.setTag(passenger1);
+            passengerLl.addView(holder.parent);
+
+
+            Passenger passenger = new Passenger();
+            passenger.ApprovalId = event.ApprovalId;
+            passenger.BelongedDeptId = passenger1.getDepartmentId();
+            passenger.CertNo = passenger1.getDefaultCertNo();
+            passenger.CertType = passenger1.getDefaultCertType();
+            passenger.EmployeeId = passenger1.getEmployeeId();
+            passenger.InsuranceCount = 1;
+            passenger.Mobile = passenger1.getMobile();
+            passenger.IsEmployee = true;
+            passenger.PassengerType = "Adult";
+            passenger.ProjectId = event.ProjectId;
+            passenger.PassengerName = passenger1.getEmployeeName();
+            passenger.ReceiveFlightDynamic = true;
+            mPassengers.add(passenger);
+//        }
+    }
+
+    private PassengerViewHolder inflatePassengerView(LayoutInflater inflater) {
+        View child = inflater.inflate(R.layout.passenger_item, null);
+        PassengerViewHolder holder = new PassengerViewHolder(child);
+        return holder;
+    }
+
+    class PassengerViewHolder {
+        @Bind(R.id.delete_passenger)
+        ImageView deletePassenger;
+        @Bind(R.id.passenger_name)
+        TextView passengerName;
+        @Bind(R.id.order_num)
+        TextView orderNum;
+        @Bind(R.id.project_num)
+        TextView projectNum;
+        @Bind(R.id.passenger_job)
+        TextView passengerJob;
+        View parent;
+        PassengerViewHolder(View view) {
+            parent = view;
+            ButterKnife.bind(this, view);
+        }
+    }
+
+
+
 }

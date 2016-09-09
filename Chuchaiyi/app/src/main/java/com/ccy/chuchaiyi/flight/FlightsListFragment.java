@@ -94,8 +94,10 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
     RadioButton seatTab;
     @Bind(R.id.company_tab)
     RadioButton companyTab;
-    @Bind(R.id.redTip)
-    ImageView redTip;
+    @Bind(R.id.company_redTip)
+    ImageView companyRedTip;
+    @Bind(R.id.seat_redTip)
+    ImageView seatRedTip;
     @Bind(R.id.company_fl)
     FrameLayout companyFl;
     private String mDepartureCode;
@@ -316,11 +318,36 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
         String[] names = getResources().getStringArray(R.array.seatName);
         String[] codes = getResources().getStringArray(R.array.seatCode);
         int len = names.length;
-        for (int i=0; i< len; i++) {
+        for (int i = 0; i < len; i++) {
             SeatType seatType = new SeatType();
             seatType.mCode = codes[i];
             seatType.mName = names[i];
+            if(seatType.mCode.equals(mBunkType)) {
+                mSeatIndex = i;
+            }
             mItemList.add(seatType);
+        }
+
+        setSeatRedTip();
+    }
+
+    private void setSeatRedTip() {
+        if(mSeatIndex != 0) {
+            seatRedTip.setVisibility(View.VISIBLE);
+        } else {
+            seatRedTip.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void setCompanyRedTip() {
+        if(mSelCompanyAdapter == null) {
+            return;
+        }
+        List<Company> companies = mSelCompanyAdapter.getmCompanyList();
+        if(companies.get(0).mIsSel) {
+            companyRedTip.setVisibility(View.INVISIBLE);
+        } else {
+            companyRedTip.setVisibility(View.VISIBLE);
         }
     }
     /**
@@ -390,6 +417,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                 @Override
                 public void onClick(View view) {
                     dismissChooseCompanyWindow();
+                    setCompanyRedTip();
                     doSeatFilter();
                 }
             });
@@ -510,6 +538,8 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                     @Override
                     public void onClick(View v) {
                         mSeatIndex = (int) typeName.getTag();
+                        mBunkType = mItemList.get(mSeatIndex).mCode;
+                        setSeatRedTip();
                         dismissConstructNoticeWindow();
                         doSeatFilter();
                     }
@@ -517,9 +547,9 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
             }
         }
     }
-    private void doSeatFilter() {
+    private List<FlightInfo> doSeatFilter() {
         if (Util.isListEmpty(mOriFlightInfoList))
-            return;
+            return null;
         List<FlightInfo> flightInfos = new ArrayList<>();
         if (mSelCompanyAdapter != null) {
             List<Company> companies = mSelCompanyAdapter.getmCompanyList();
@@ -592,28 +622,8 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
         mFlightInfoList = flightInfos;
         mAdapter.setData(mFlightInfoList);
 
-
+      return flightInfos;
     }
-//    private void doCompanyFilter() {
-//        if (Util.isListEmpty(mFlightInfoList) || mSelCompanyAdapter == null)
-//            return;
-//        int len = mFlightInfoList.size();
-//        List<Company> companies = mSelCompanyAdapter.getmCompanyList();
-//        if(companies.get(0).mIsSel) {
-//            return;
-//        }
-//        List<FlightInfo> flightInfos = new ArrayList<>();
-//        for (int i=0; i<len; i++){
-//            FlightInfo flightInfo = mFlightInfoList.get(i);
-//            for (Company company: companies) {
-//                if (company.mIsSel && company.mAirlineName.equals(flightInfo.getAirlineName())) {
-//                    flightInfos.add(flightInfo);
-//                }
-//            }
-//        }
-////        mFlightInfoList = flightInfos;
-//        mAdapter.setData(flightInfos);
-//    }
 
     void setTodayTv() {
         mCurrentDate = calendar.getTime();
@@ -647,7 +657,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
         request.setDepartureCode(mDepartureCode);
         request.setArrivalCode(mArrivalCode);
         request.setFlightDate(mCurrentDateString);
-        request.setBunkType(mBunkType);
+        request.setBunkType("");
         request.setDepartureCodeIsCity(true);
         request.setArrivalCodeIsCity(true);
         request.setAirlines("");
@@ -705,49 +715,8 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                                             companies.add(company);
                                         }
                                     }
-
-
-                                    List<FlightInfo> flightInfos = new ArrayList<>();
-                                    if (mSelCompanyAdapter != null) {
-                                        List<Company> companies = mSelCompanyAdapter.getmCompanyList();
-                                        if(!companies.get(0).mIsSel) {
-                                            for (int i = 1; i < len; i++) {
-                                                FlightInfo flightInfo = mFlightInfoList.get(i);
-                                                for (Company company : companies) {
-                                                    if (company.mIsSel && company.mAirlineName.equals(flightInfo.getAirlineName())) {
-                                                        flightInfos.add(flightInfo);
-                                                    }
-                                                }
-                                            }
-                                        } else {
-                                            flightInfos = mFlightInfoList;
-                                        }
-                                    } else {
-                                        flightInfos = mFlightInfoList;
-                                    }
-                                    if (mSeatIndex != 0) {
-                                        List<FlightInfo> infos = new ArrayList<>();
-                                        for (int i=0; i<len; i++) {
-                                            FlightInfo flightInfo = flightInfos.get(i);
-                                            List<FlightInfo.BunksBean> bunksBeen = flightInfo.getBunks();
-                                            List<FlightInfo.BunksBean> bunksBeenTemp = new ArrayList<>();
-                                            for (FlightInfo.BunksBean bean :bunksBeen) {
-
-                                                if(!mItemList.get(mSeatIndex).mCode.equals(bean.getBunkCode())) {
-                                                    continue;
-                                                }
-                                                bunksBeenTemp.add(bean);
-                                            }
-                                            flightInfo.setBunks(bunksBeenTemp);
-                                            if(bunksBeenTemp.size() > 0) {
-                                                infos.add(flightInfo);
-                                            }
-                                        }
-                                        flightInfos = infos;
-                                    } else {
-                                        flightInfos = mFlightInfoList;
-                                    }
-
+                                    setCompanyRedTip();
+                                    List<FlightInfo> flightInfos = doSeatFilter();
 
                                     if(mTimeType == 0 && mPriceType == 0) {
                                         mAdapter.setData(flightInfos);

@@ -91,13 +91,28 @@
             android:paddingBottom="3dp"
             android:paddingTop="5dp"
             android:text="@string/price" />
+        <FrameLayout
+            android:id="@+id/seat_fl"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
         <RadioButton
             android:id="@+id/seat_tab"
-            style="@style/main_RadioButton_style"
+            style="@style/main_Red_RadioButton_style"
             android:drawableTop="@mipmap/icon_filter_seat"
             android:paddingBottom="3dp"
             android:paddingTop="5dp"
             android:text="@string/seat" />
+            <ImageView
+                android:id="@+id/seat_redTip"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="15dp"
+                android:background="@mipmap/icon_filter_dot"
+                android:visibility="invisible"/>
+        </FrameLayout>
         <FrameLayout
             android:id="@+id/company_fl"
             android:layout_width="0dp"
@@ -112,14 +127,14 @@
                 android:text="@string/plane_company" />
 
             <ImageView
-                android:id="@+id/redTip"
-                android:layout_width="7dp"
-                android:layout_height="7dp"
+                android:id="@+id/company_redTip"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
                 android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
-                android:layout_marginLeft="12dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="15dp"
                 android:background="@mipmap/icon_filter_dot"
-                android:visibility="gone" />
+                android:visibility="invisible"/>
         </FrameLayout>
 
     </com.ccy.chuchaiyi.widget.NestRadioGroup>

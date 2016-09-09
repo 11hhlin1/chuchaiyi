@@ -117,6 +117,7 @@
             android:textSize="@dimen/textsize_13sp" />
 
         <TextView
+            android:id="@+id/check_num_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -150,6 +151,7 @@
             android:textSize="@dimen/textsize_13sp" />
 
         <TextView
+            android:id="@+id/check_project_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

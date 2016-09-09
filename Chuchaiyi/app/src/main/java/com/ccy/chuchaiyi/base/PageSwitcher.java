@@ -1,9 +1,12 @@
 package com.ccy.chuchaiyi.base;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+
+import com.gjj.applibrary.app.AppLib;
 
 /**
  * Created by Chuck on 2016/7/26.
@@ -55,7 +58,21 @@ public class PageSwitcher {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(act, intent);
     }
-
+    /**
+     * 弹至指定页面
+     * @param act
+     * @param fragment
+     * @param include
+     */
+    public static void goBackTopNavPage(Activity act, Class<? extends Fragment> fragment, boolean include) {
+        Context ctx = AppLib.getContext();
+        Intent intent = new Intent(ctx, TopNavSubActivity.class);
+        intent.putExtra(BaseSubActivity.INTENT_EXTRA_FRAGMENT_ACTION_POP_PAGE, 1);
+        intent.putExtra(BaseSubActivity.INTENT_EXTRA_FRAGMENT_CLASS_NAME, fragment.getName());
+        intent.putExtra(BaseSubActivity.INTENT_EXTRA_FRAGMENT_CLASS_INCLUDE, include);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(act, intent);
+    }
 
     private static void startActivity(Activity act, Intent intent) {
         if (act != null) {

@@ -21,6 +21,7 @@ import com.ccy.chuchaiyi.contact.ApprovalList;
 import com.ccy.chuchaiyi.contact.ChoosePassengerFragment;
 import com.ccy.chuchaiyi.contact.PassengerInfo;
 import com.ccy.chuchaiyi.db.UserInfo;
+import com.ccy.chuchaiyi.event.EventOfAddCheck;
 import com.ccy.chuchaiyi.event.EventOfSelDate;
 import com.ccy.chuchaiyi.event.EventOfSelPerson;
 import com.ccy.chuchaiyi.index.IndexContentFragment;
@@ -184,6 +185,7 @@ public class AddCheckFragement extends BaseFragment {
                             public void run() {
                                 dismissLoadingDialog();
                                 ToastUtil.shortToast(R.string.success);
+                                EventBus.getDefault().post(new EventOfAddCheck());
                                 onBackPressed();
                             }
                         });
