@@ -1,6 +1,8 @@
 package com.ccy.chuchaiyi.check;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -13,8 +15,10 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.ccy.chuchaiyi.R;
+import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.base.RecyclerItemOnclickListener;
 import com.ccy.chuchaiyi.base.SimpleRecyclerViewAdapter;
+import com.ccy.chuchaiyi.calendar.CalendarSelectorFragment;
 import com.ccy.chuchaiyi.event.EventOfAgreeCheck;
 import com.ccy.chuchaiyi.event.EventOfCancelApproval;
 import com.ccy.chuchaiyi.net.ApiConstants;
@@ -175,6 +179,13 @@ public class CheckTypeAdapter extends SimpleRecyclerViewAdapter<Approval.Approva
                 @Override
                 public void onClick(View v) {
                     int pos = (int) checkItemLl.getTag();
+                    Approval.ApprovalsBean approvalsBean = getData(pos);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("approvalId",approvalsBean.getApprovalId());
+                    StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+                    stringBuilder.append(approvalsBean.getAskEmployeeName()).append("的出差申请");
+                    PageSwitcher.switchToTopNavPage((Activity) mContext, CheckDetailFragment.class, bundle, stringBuilder.toString(), null);
+
 //                    mItemOnclickListener.onItemClick(v, pos);
                 }
             });

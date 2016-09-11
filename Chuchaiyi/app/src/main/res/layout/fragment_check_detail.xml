@@ -33,7 +33,7 @@
                         android:gravity="center_vertical|left"/>
                     <View
                         style="@style/horizontal_line"/>
-                    <LinearLayout
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/margin_30p"
@@ -52,11 +52,11 @@
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/textsize_13sp"
                             android:textColor="@color/color_222222"
-                            android:layout_marginLeft="@dimen/margin_20p"
+                            android:layout_marginLeft="@dimen/margin_160p"
                             android:text="@string/travel_reason"
                             android:gravity="center_vertical|left"/>
-                    </LinearLayout>
-                    <LinearLayout
+                    </FrameLayout>
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/margin_10p"
@@ -75,11 +75,11 @@
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/textsize_13sp"
                             android:textColor="@color/color_222222"
-                            android:layout_marginLeft="@dimen/margin_20p"
+                            android:layout_marginLeft="@dimen/margin_160p"
                             android:text="@string/travel_reason"
                             android:gravity="center_vertical|left"/>
-                    </LinearLayout>
-                    <LinearLayout
+                    </FrameLayout>
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/margin_10p"
@@ -98,11 +98,11 @@
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/textsize_13sp"
                             android:textColor="@color/color_222222"
-                            android:layout_marginLeft="@dimen/margin_20p"
+                            android:layout_marginLeft="@dimen/margin_160p"
                             android:text="@string/travel_reason"
                             android:gravity="center_vertical|left"/>
-                    </LinearLayout>
-                    <LinearLayout
+                    </FrameLayout>
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/margin_10p"
@@ -121,11 +121,11 @@
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/textsize_13sp"
                             android:textColor="@color/color_222222"
-                            android:layout_marginLeft="@dimen/margin_20p"
+                            android:layout_marginLeft="@dimen/margin_160p"
                             android:text="@string/travel_reason"
                             android:gravity="center_vertical|left"/>
-                    </LinearLayout>
-                    <LinearLayout
+                    </FrameLayout>
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/margin_10p"
@@ -144,11 +144,11 @@
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/textsize_13sp"
                             android:textColor="@color/color_222222"
-                            android:layout_marginLeft="@dimen/margin_20p"
+                            android:layout_marginLeft="@dimen/margin_160p"
                             android:text="@string/travel_reason"
                             android:gravity="center_vertical|left"/>
-                    </LinearLayout>
-                    <LinearLayout
+                    </FrameLayout>
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/margin_10p"
@@ -167,11 +167,11 @@
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/textsize_13sp"
                             android:textColor="@color/color_222222"
-                            android:layout_marginLeft="@dimen/margin_20p"
+                            android:layout_marginLeft="@dimen/margin_160p"
                             android:text="@string/travel_reason"
                             android:gravity="center_vertical|left"/>
-                    </LinearLayout>
-                    <LinearLayout
+                    </FrameLayout>
+                    <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="@dimen/margin_10p"
@@ -191,12 +191,13 @@
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/textsize_13sp"
                             android:textColor="@color/color_222222"
-                            android:layout_marginLeft="@dimen/margin_20p"
+                            android:layout_marginLeft="@dimen/margin_160p"
                             android:text="@string/travel_reason"
                             android:gravity="center_vertical|left"/>
-                    </LinearLayout>
+                    </FrameLayout>
                 </LinearLayout>
                 <ImageView
+                    android:id="@+id/state_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|right"
@@ -244,22 +245,14 @@
         android:id="@+id/bottom_rl"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
+        android:background="@color/white"
         android:layout_height="44dp">
-        <TextView
-            android:id="@+id/check_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margin_30p"
-            android:textColor="@color/color_aaaaaa"
-            android:textSize="@dimen/textsize_14sp"/>
-
 
         <Button
             android:layout_width="65dp"
             android:layout_height="30dp"
-            android:id="@+id/handle_btn"
-            android:text="@string/checkcancle"
+            android:id="@+id/agree_btn"
+            android:text="@string/agree"
             android:gravity="center"
             android:textColor="@color/white"
             android:background="@drawable/circle_rect_blue"
@@ -270,9 +263,10 @@
         <Button
             android:layout_width="65dp"
             android:layout_height="30dp"
-            android:id="@+id/handle_btn_left"
+            android:id="@+id/refuse_btn"
             android:gravity="center"
-            android:layout_toLeftOf="@+id/handle_btn"
+            android:text="@string/refuse"
+            android:layout_toLeftOf="@+id/agree_btn"
             android:textColor="@color/color_0071c4"
             android:background="@drawable/choose_air_company_cancle_btn"
             android:layout_marginRight="@dimen/margin_30p"

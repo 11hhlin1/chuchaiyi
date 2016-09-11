@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/margin_30p"
-    android:paddingLeft="@dimen/margin_30p">
+    android:paddingLeft="@dimen/margin_30p"
+    android:paddingRight="@dimen/margin_20p">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -14,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginLeft="@dimen/margin_20p"
         android:background="@drawable/hot_city_bg"
         android:padding="@dimen/margin_20p">
 

@@ -25,6 +25,7 @@ import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.login.ForgetPswFragment;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.order.EditOrderFragment;
+import com.ccy.chuchaiyi.util.DiscountUtil;
 import com.ccy.chuchaiyi.widget.PolicyDialog;
 import com.gjj.applibrary.event.EventOfTokenError;
 import com.gjj.applibrary.http.callback.CommonCallback;
@@ -263,7 +264,7 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
             childHolder.changeMsg.setTag(R.id.change_msg,childPosition);
             childHolder.bookBtn.setTag(R.id.left_ll,groupPosition);
             childHolder.bookBtn.setTag(R.id.book_btn,childPosition);
-            childHolder.discount.setText(mContext.getString(R.string.discount, bunksBean.getBunkPrice().getDiscount()));
+            childHolder.discount.setText(DiscountUtil.getDis(bunksBean.getBunkPrice().getDiscount()));
             childHolder.detailMoney.setText((mContext.getString(R.string.money_no_end, bunksBean.getBunkPrice().getFactBunkPrice())));
             if (bunksBean.getRemainNum() < 5) {
                 childHolder.remainNum.setVisibility(View.VISIBLE);

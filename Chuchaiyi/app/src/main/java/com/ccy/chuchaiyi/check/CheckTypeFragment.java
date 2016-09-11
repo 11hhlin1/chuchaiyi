@@ -41,7 +41,7 @@ import okhttp3.Response;
 /**
  * Created by Chuck on 2016/8/16.
  */
-public class CheckTypeFragment extends BaseFragment{
+public class CheckTypeFragment extends BaseFragment {
     @Bind(R.id.ptr_recycler_view)
     PullToRefreshRecyclerView mRecyclerView;
     /**

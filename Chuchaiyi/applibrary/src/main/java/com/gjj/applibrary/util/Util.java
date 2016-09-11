@@ -101,7 +101,7 @@ public class Util {
     private static final String M_D_FORMAT_STR = "M.d";
     private static volatile ThreadLocal<DateFormat> THREAD_SAFE_M_D_FORMAT;
 
-    private static final String YYYY_MM_DD_HH_MM_SS_FORMAT_STR = "yyyyMMddHHmmss";
+    private static final String YYYY_MM_DD_HH_MM_SS_FORMAT_STR = "yyyy年MM月dd日 HH:mm:ss";
     private static volatile ThreadLocal<DateFormat> THREAD_SAFE_YYYY_MM_DD_HH_MM_SS_FORMAT;
 
     private static final String TIME_24_FORMAT_STR = "HH:mm";
