@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Chuchaiyi</string>
+    <string name="app_name">出差易</string>
     <string name="dialog_default_cancel_title">取消</string>
     <string name="dialog_default_confirm_title">确定</string>
     <string name="index">首页</string>
@@ -149,5 +149,7 @@
     <string name="agree">同意</string>
     <string name="refuse">拒绝</string>
     <string name="commit_success">提交成功</string>
+    <string name="apply_time">申请时间</string>
+    <string name="book_success_tip">您的订单已经提交成功\n我们将尽快处理,稍后通知\n您预订结果</string>
 
 </resources>

@@ -11,4 +11,5 @@ public class EventOfSelPassenger {
     public int ApprovalId;
     public int ProjectId;
     public String ProjectName;
+    public String ApprovalNo;
 }

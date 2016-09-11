@@ -8,12 +8,14 @@ public class ApiConstants {
     public static final String LOGIN = host + "Account/Login";
     public static final String LOGOUT = host + "Account/Logout";
     public static final String CHANGE_PSW = host + "Account/ChangePassword";
+    public static final String REFRESH_LOGIN_INFO = host + "Account/RefreshLoginInfo";
     public static final String GET_FLIGHT_LOCATION = host+ "Flight/GetFlightLocations";
     public static final String GET_FLIGHT_LIST = host+ "Flight/GetFlights";
     public static final String GET_BOOK_VALIDATE= host+ "Flight/BookingValidate";
     public static final String GET_FLIGHT_STOPS= host+ "Flight/GetFlightStops";
     public static final String GET_FLIGHT_POLICY = host+ "Flight/GetFlightPolicy";
     public static final String COMMIT_ORDER = host+ "Flight/PlaceAskOrder";
+    public static final String CONFIRM_BY_CORP_CREDIT = host+ "Flight/AskOrderConfirmByCorpCredit";
     public static final String GET_STORED_USER= host+ "Common/GetMyStoredUsers";
     public static final String GET_EMPLOYEE_POLICY= host+ "Common/GetEmployeePolicyInfo";
     public static final String GET_EMPLOYEES= host+ "Common/GetEmployees";

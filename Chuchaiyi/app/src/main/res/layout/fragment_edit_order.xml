@@ -5,7 +5,9 @@
     android:layout_height="match_parent">
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/order_detail_rl"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -216,40 +218,40 @@
             </RelativeLayout>
             <View
                 style="@style/horizontal_line"/>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:background="@color/white"
-                android:layout_height="44dp">
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:background="@color/white"-->
+                <!--android:layout_height="44dp">-->
 
-                <TextView
-                    android:id="@+id/delay_fee"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/margin_30p"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_222222"
-                    android:textSize="@dimen/textsize_13sp"
-                    android:text="@string/delay_fee"/>
-                <TextView
-                    android:id="@+id/delay_fee_value"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="100dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/color_222222"
-                    android:textSize="@dimen/textsize_13sp"
-                    android:text="30 * 1"/>
-                <CheckBox
-                    android:id="@+id/delay_fee_check_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/selector_muti_check_box"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/margin_30p"
-                    android:button="@null" />
-            </RelativeLayout>
+                <!--<TextView-->
+                    <!--android:id="@+id/delay_fee"-->
+                    <!--android:layout_alignParentLeft="true"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:layout_marginLeft="@dimen/margin_30p"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textColor="@color/color_222222"-->
+                    <!--android:textSize="@dimen/textsize_13sp"-->
+                    <!--android:text="@string/delay_fee"/>-->
+                <!--<TextView-->
+                    <!--android:id="@+id/delay_fee_value"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:layout_marginLeft="100dp"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textColor="@color/color_222222"-->
+                    <!--android:textSize="@dimen/textsize_13sp"-->
+                    <!--android:text="30 * 1"/>-->
+                <!--<CheckBox-->
+                    <!--android:id="@+id/delay_fee_check_icon"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:background="@drawable/selector_muti_check_box"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_marginRight="@dimen/margin_30p"-->
+                    <!--android:button="@null" />-->
+            <!--</RelativeLayout>-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:background="@color/white"

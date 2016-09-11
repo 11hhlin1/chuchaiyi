@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingTop="@dimen/margin_20p"
+    android:paddingLeft="@dimen/margin_30p"
+    android:paddingBottom="@dimen/margin_20p">
+    
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:id="@+id/detail_icon"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/detail_icon"
+        android:layout_marginLeft="@dimen/margin_20p"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/detail_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_15sp"
+            android:text="深圳-北京"/>
+        <TextView
+            android:id="@+id/detail_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_aaaaaa"
+            android:textSize="@dimen/textsize_13sp"
+            android:text=""/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_30p"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/orange"
+        android:textSize="@dimen/textsize_14sp"
+        android:layout_marginTop="@dimen/margin_20p"/>
+</RelativeLayout>

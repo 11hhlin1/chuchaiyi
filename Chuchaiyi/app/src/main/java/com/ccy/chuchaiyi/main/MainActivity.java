@@ -9,12 +9,18 @@ import com.ccy.chuchaiyi.check.CategoryData;
 import com.ccy.chuchaiyi.check.CheckFragment;
 import com.ccy.chuchaiyi.check.ViewPagerGoodListFragment;
 import com.ccy.chuchaiyi.db.UserInfo;
+import com.ccy.chuchaiyi.event.EventOfChangeTab;
+import com.ccy.chuchaiyi.event.EventOfSelPassenger;
 import com.ccy.chuchaiyi.index.IndexFragment;
 import com.ccy.chuchaiyi.order.OrderFragment;
 import com.ccy.chuchaiyi.person.PersonalFragment;
 import com.ccy.chuchaiyi.widget.NestRadioGroup;
 import com.gjj.applibrary.task.MainTaskExecutor;
 import com.gjj.applibrary.util.ToastUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -77,11 +83,21 @@ public class MainActivity extends BaseMainActivity {
                 mRadioGroup.check(R.id.index_tab);
                 break;
         }
+        EventBus.getDefault().register(this);
 //        Glide.with(this).load("http://jcodecraeer.com/uploads/20150327/1427445294447874.jpg")
 //                .into(imageView);
 
     }
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void changeTab(EventOfChangeTab event) {
+        if(isFinishing())
+            return;
+        switch (event.mIndex) {
+            case 2:
+                mRadioGroup.check(R.id.order_tab);
+                break;
+        }
+    }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

@@ -33,4 +33,26 @@ public class Passenger {
     public int InsuranceCount;
     public boolean ReceiveFlightDynamic;
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Passenger passenger = (Passenger) o;
+
+        if (EmployeeId != passenger.EmployeeId) return false;
+        if (PassengerName != null ? !PassengerName.equals(passenger.PassengerName) : passenger.PassengerName != null)
+            return false;
+        return Mobile != null ? Mobile.equals(passenger.Mobile) : passenger.Mobile == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = PassengerName != null ? PassengerName.hashCode() : 0;
+        result = 31 * result + EmployeeId;
+        result = 31 * result + (Mobile != null ? Mobile.hashCode() : 0);
+        return result;
+    }
 }

@@ -21,20 +21,20 @@
             android:layout_marginTop="@dimen/margin_20p"
             android:paddingBottom="@dimen/margin_40p"
             android:gravity="center"
-            android:text="但是肯定快卡死的数量的历史的品牌分配的"
+            android:text="@string/book_success_tip"
             android:textColor="@color/color_222222"
             android:textSize="@dimen/textsize_13sp"
             android:layout_gravity="center_horizontal"/>
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_40p"
+        android:padding="@dimen/margin_30p"
         android:background="@color/white">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_30p"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:orientation="vertical">
@@ -49,16 +49,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_222222"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
+                android:textSize="@dimen/textsize_14sp"/>
+            <TextView
+                android:id="@+id/passenger_list_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_222222"
+                android:layout_marginTop="4dp"
                 android:textSize="@dimen/textsize_14sp"/>
         </LinearLayout>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/margin_20p"
-            android:layout_marginRight="@dimen/margin_30p"
-            android:src="@mipmap/icon_enter" />
+
     </RelativeLayout>
     <View
         style="@style/horizontal_line"/>
@@ -66,24 +67,25 @@
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:background="@color/white">
-        <TextView
-            android:id="@+id/time_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_30p"
-            android:layout_centerVertical="true"
-            android:textColor="@color/color_aaaaaa"
-            android:textSize="@dimen/textsize_12sp"/>
         <Button
-            android:id="@+id/dai_ban_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:id="@+id/back_index_btn"
+            android:layout_width="65dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/circle_rect_blue"
+            android:text="继续预订"
+            android:textColor="@color/white"
+            android:textSize="@dimen/textsize_13sp"
+            android:layout_marginLeft="@dimen/margin_30p"/>
+        <Button
+            android:id="@+id/back_order_btn"
+            android:layout_width="65dp"
+            android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:background="@drawable/circle_rect_blue"
-            android:text="@string/dai_ban_zhi_ji"
+            android:text="查看订单"
             android:textColor="@color/white"
             android:textSize="@dimen/textsize_13sp"
             android:layout_marginRight="@dimen/margin_30p"/>

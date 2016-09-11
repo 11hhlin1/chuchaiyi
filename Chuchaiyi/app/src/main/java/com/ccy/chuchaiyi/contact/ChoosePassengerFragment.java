@@ -73,7 +73,7 @@ public class ChoosePassengerFragment extends BaseFragment implements ChoosePasse
     }
 
     private void doRequest() {
-        showLoadingDialog(R.string.submitting,false);
+        showLoadingDialog(R.string.submitting, false);
         final List<PassengerData> dataList = new ArrayList<>();
         OkHttpUtils.get(ApiConstants.GET_STORED_USER)
                 .tag(this)
