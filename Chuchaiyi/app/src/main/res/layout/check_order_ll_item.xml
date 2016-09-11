@@ -4,14 +4,16 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:paddingTop="@dimen/margin_20p"
-    android:paddingLeft="@dimen/margin_30p"
+
     >
     
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/margin_30p"
         android:id="@+id/detail_icon"/>
     <LinearLayout
+        android:id="@+id/detail_ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/detail_icon"
@@ -43,4 +45,7 @@
         android:textSize="@dimen/textsize_14sp"
         android:layout_marginTop="@dimen/margin_20p"/>
 
+    <View
+        android:layout_below="@+id/detail_ll"
+        style="@style/horizontal_line"/>
 </RelativeLayout>

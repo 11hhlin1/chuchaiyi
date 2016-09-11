@@ -110,8 +110,7 @@ public class CheckDetailFragment extends BaseFragment {
                                     viewHolder.detailTv.setText(checkDetail.toString());
                                     viewHolder.amountTv.setText(getString(R.string.money_no_end, flightOrdersBean.getAmount()));
                                     orderDetailLl.addView(viewHolder.parent);
-                                    View line = inflater.inflate(R.layout.bottom_line, null);
-                                    orderDetailLl.addView(line);
+
                                 }
                                 for (CheckDetailRsp.ApprovalDetailBean.HotelOrdersBean hotelOrdersBean : detail.getHotelOrders()) {
                                     FlightViewHolder viewHolder = inflateFlightView(inflater);
@@ -122,8 +121,6 @@ public class CheckDetailFragment extends BaseFragment {
                                     viewHolder.detailTv.setText(checkDetail.toString());
                                     viewHolder.amountTv.setText(getString(R.string.money_no_end, hotelOrdersBean.getAmount()));
                                     orderDetailLl.addView(viewHolder.parent);
-                                    View line = inflater.inflate(R.layout.bottom_line, null);
-                                    orderDetailLl.addView(line);
                                 }
                                 for (CheckDetailRsp.ApprovalDetailBean.ApprovalHisBean approvalHisBean : detail.getApprovalHis()) {
                                     PersonalViewHolder viewHolder = inflatePersonView(inflater);
