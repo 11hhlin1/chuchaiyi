@@ -7,7 +7,7 @@ public class DiscountUtil {
     public static String getDis(int discount) {
         float dis = discount / 10.0f;
         if(dis == 10) {
-            return "无折扣";
+            return "全价";
         } else {
             return dis + "折";
         }

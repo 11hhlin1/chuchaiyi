@@ -1,8 +1,10 @@
 package com.ccy.chuchaiyi.check;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -11,15 +13,20 @@ import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
+import com.ccy.chuchaiyi.event.EventOfAgreeCheck;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.util.DiscountUtil;
 import com.gjj.applibrary.http.callback.JsonCallback;
+import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.cache.CacheMode;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -60,6 +67,8 @@ public class CheckDetailFragment extends BaseFragment {
     @Bind(R.id.bottom_rl)
     RelativeLayout bottomRl;
     private LayoutInflater inflater;
+    int approvalId;
+    private RejectDialog mConfirmDialog;
 
     @Override
     public int getContentViewLayout() {
@@ -70,7 +79,7 @@ public class CheckDetailFragment extends BaseFragment {
     public void initView() {
         inflater = getActivity().getLayoutInflater();
 
-        int approvalId = getArguments().getInt("approvalId");
+        approvalId = getArguments().getInt("approvalId");
         showLoadingDialog(R.string.submitting, false);
         OkHttpUtils.get(ApiConstants.GET_APPROVAL_DETAIL)
                 .tag(this)
@@ -84,7 +93,7 @@ public class CheckDetailFragment extends BaseFragment {
                             public void run() {
                                 dismissLoadingDialog();
                                 CheckDetailRsp.ApprovalDetailBean detail = checkDetailRsp.getApprovalDetail();
-                                if(detail.getStatus().equals("审批通过")||detail.getStatus().equals("审批拒绝")) {
+                                if (detail.getStatus().equals("审批通过") || detail.getStatus().equals("审批拒绝")) {
                                     bottomRl.setVisibility(View.GONE);
                                 } else {
                                     bottomRl.setVisibility(View.VISIBLE);
@@ -157,6 +166,65 @@ public class CheckDetailFragment extends BaseFragment {
         return holder;
     }
 
+    @OnClick({R.id.agree_btn, R.id.refuse_btn})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.agree_btn:
+                checkApproval(ApiConstants.AUDIT_PASS_APPROVAL,"");
+                break;
+            case R.id.refuse_btn:
+                final RejectDialog rejectDialog = new RejectDialog(getActivity());
+                mConfirmDialog = rejectDialog;
+                rejectDialog.setCanceledOnTouchOutside(false);
+                rejectDialog.setCancelClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dismissConfirmDialog();
+                    }
+                });
+                rejectDialog.setConfirmClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        checkApproval(ApiConstants.AUDIT_REJECT_APPROVAL, rejectDialog.getText());
+                    }
+                });
+                mConfirmDialog.showAndKeyboard();
+                break;
+        }
+    }
+    /**
+     * dismiss确认对话框
+     */
+    private void dismissConfirmDialog() {
+        RejectDialog confirmDialog = mConfirmDialog;
+        if (null != confirmDialog && confirmDialog.isShowing()) {
+            confirmDialog.dismiss();
+            mConfirmDialog = null;
+        }
+    }
+
+    private void checkApproval(String url,String opinion) {
+        StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+        stringBuilder.append(url).append("?").append("approvalId=").append(approvalId)
+                .append("&opinion=").append(opinion);
+        OkHttpUtils.post(stringBuilder.toString())
+                .tag(getActivity())
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new JsonCallback<String>(String.class) {
+                    @Override
+                    public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
+                        EventBus.getDefault().post(new EventOfAgreeCheck());
+                        ToastUtil.shortToast(R.string.success);
+                        onBackPressed();
+                    }
+
+                    @Override
+                    public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                        super.onError(isFromCache, call, response, e);
+                        ToastUtil.shortToast(R.string.load_fail);
+                    }
+                });
+    }
     class FlightViewHolder {
         @Bind(R.id.detail_icon)
         ImageView detailIcon;
@@ -180,21 +248,4 @@ public class CheckDetailFragment extends BaseFragment {
         return holder;
     }
 
-    static class PersonalViewHolder {
-        @Bind(R.id.check_state_icon)
-        ImageView checkStateIcon;
-        @Bind(R.id.check_person)
-        TextView checkPerson;
-        @Bind(R.id.check_person_job)
-        TextView checkPersonJob;
-        @Bind(R.id.check_time)
-        TextView checkTime;
-        @Bind(R.id.check_detail_tv)
-        TextView checkDetailTv;
-        View parent;
-        PersonalViewHolder(View view) {
-            parent = view;
-            ButterKnife.bind(this, view);
-        }
-    }
 }

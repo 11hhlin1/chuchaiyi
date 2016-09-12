@@ -66,8 +66,8 @@
     <string name="hot_city">热门城市</string>
     <string name="submitting">正在请求网络</string>
     <string name="my_launch">我发起</string>
-    <string name="un_check">待审</string>
-    <string name="checked">已审</string>
+    <string name="un_check">待审批</string>
+    <string name="checked">已审批</string>
     <string name="un_audit">待授权</string>
     <string name="audited">已授权</string>
 

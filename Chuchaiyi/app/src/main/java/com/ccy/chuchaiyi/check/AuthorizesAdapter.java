@@ -1,6 +1,9 @@
 package com.ccy.chuchaiyi.check;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,21 +12,38 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
+import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.base.SimpleRecyclerViewAdapter;
+import com.ccy.chuchaiyi.event.EventOfAgreeCheck;
+import com.ccy.chuchaiyi.event.EventOfCancelApproval;
+import com.ccy.chuchaiyi.event.EventOfCheckedAudit;
+import com.ccy.chuchaiyi.net.ApiConstants;
+import com.gjj.applibrary.http.callback.JsonCallback;
+import com.gjj.applibrary.task.MainTaskExecutor;
 import com.gjj.applibrary.util.DateUtil;
+import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
+import com.lzy.okhttputils.OkHttpUtils;
+import com.lzy.okhttputils.cache.CacheMode;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by Chuck on 2016/9/9.
  */
 public class AuthorizesAdapter extends SimpleRecyclerViewAdapter<Authorizes.AuthorizesBean> {
     private int mType;
+    private RejectDialog mConfirmDialog;
+
     public AuthorizesAdapter(Context context, List<Authorizes.AuthorizesBean> items, int type) {
         super(context, items);
         mType = type;
@@ -92,9 +112,33 @@ public class AuthorizesAdapter extends SimpleRecyclerViewAdapter<Authorizes.Auth
         @Bind(R.id.check_item_ll)
         RelativeLayout checkItemLl;
 
+        @OnClick(R.id.handle_btn_left)
+        void setHandleLeftBtn() {
+            int pos = (int) checkItemLl.getTag();
+            final Authorizes.AuthorizesBean authorizesBean = getData(pos);
+            final RejectDialog rejectDialog = new RejectDialog(mContext);
+            mConfirmDialog = rejectDialog;
+            rejectDialog.setCanceledOnTouchOutside(false);
+            rejectDialog.setCancelClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismissConfirmDialog();
+                }
+            });
+            rejectDialog.setConfirmClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    checkUrl(ApiConstants.REJECT_AUTHORIZE_DETAIL, authorizesBean.getAuthorizeId(), rejectDialog.getText());
+                }
+            });
+            mConfirmDialog.showAndKeyboard();
+
+        }
         @OnClick(R.id.handle_btn)
         void setHandleBtn() {
-
+            int pos = (int) checkItemLl.getTag();
+            final Authorizes.AuthorizesBean authorizesBean = getData(pos);
+            checkUrl(ApiConstants.PASS_AUTHORIZE_DETAIL,authorizesBean.getAuthorizeId(),"");
         }
 
         ViewHolderHeader(View view) {
@@ -104,12 +148,48 @@ public class AuthorizesAdapter extends SimpleRecyclerViewAdapter<Authorizes.Auth
                 @Override
                 public void onClick(View v) {
                     int pos = (int) checkItemLl.getTag();
+                    Authorizes.AuthorizesBean authorizesBean = getData(pos);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("authorizeId",authorizesBean.getAuthorizeId());
+                    StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+                    stringBuilder.append(authorizesBean.getTravellerName()).append("的订单授权");
+                    PageSwitcher.switchToTopNavPage((Activity) mContext, AuditDetailFragment.class, bundle, stringBuilder.toString(), null);
+
 //                    mItemOnclickListener.onItemClick(v, pos);
                 }
             });
         }
     }
+    /**
+     * dismiss确认对话框
+     */
+    private void dismissConfirmDialog() {
+        RejectDialog confirmDialog = mConfirmDialog;
+        if (null != confirmDialog && confirmDialog.isShowing()) {
+            confirmDialog.dismiss();
+            mConfirmDialog = null;
+        }
+    }
+    private void checkUrl(String url,int authorizeId, String opinion) {
+        StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+        stringBuilder.append(url).append("?").append("authorizeId=").append(authorizeId)
+                .append("&opinion=").append(opinion);
+        OkHttpUtils.post(stringBuilder.toString())
+                .tag(this)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new JsonCallback<String>(String.class) {
+                    @Override
+                    public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
+                        EventBus.getDefault().post(new EventOfCheckedAudit());
+                        ToastUtil.shortToast(R.string.success);
+                    }
 
-
+                    @Override
+                    public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                        super.onError(isFromCache, call, response, e);
+                        ToastUtil.shortToast(R.string.load_fail);
+                    }
+                });
+    }
 }
 

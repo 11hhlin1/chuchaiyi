@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/progress_img_popbg">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+            android:id="@+id/dialog_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_close"
+            android:layout_marginTop="@dimen/margin_20p"
+            android:layout_marginRight="@dimen/margin_20p"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_222222"
+        android:textSize="@dimen/textsize_16sp"
+        android:layout_marginLeft="@dimen/margin_50p"
+        android:text="你确认拒绝该审批单?" />
+    <EditText
+        android:id="@+id/reject_reason"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginLeft="@dimen/margin_40p"
+        android:background="@color/disable_gray"
+        android:gravity="left"
+        android:layout_marginRight="@dimen/margin_40p"
+        android:layout_marginTop="@dimen/margin_20p"
+        android:padding="@dimen/margin_20p"
+        android:textColor="@color/color_222222"
+        android:textSize="@dimen/textsize_15sp"
+        android:textColorHint="@color/color_aaaaaa"
+        android:hint="非必填"
+        android:imeOptions="actionNext"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/single_line_height_132px"
+        android:layout_marginTop="@dimen/margin_40p"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/pay_btn_cancel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/textsize_18sp"
+            android:textColor="@color/color_222222"
+            android:text="@string/dialog_default_cancel_title"
+            />
+        <TextView
+            android:id="@+id/pay_btn_sure"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/textsize_18sp"
+            android:textColor="@color/orange"
+            android:text="@string/sure" />
+    </LinearLayout>
+</LinearLayout>

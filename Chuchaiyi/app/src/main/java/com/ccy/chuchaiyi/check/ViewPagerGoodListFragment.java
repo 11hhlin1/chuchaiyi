@@ -82,10 +82,10 @@ public class ViewPagerGoodListFragment extends BaseFragment implements ViewPager
             mTextViews[i] = textView;
             CategoryData categoryData = mDataArrayList.get(i);
             textView.setId(categoryData.mCateId);
-            textView.setGravity(Gravity.CENTER);
             textView.setText(categoryData.mCateName);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
             textView.setLayoutParams(layoutParams);
+            textView.setGravity(Gravity.CENTER);
             final int finalI = i;
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override

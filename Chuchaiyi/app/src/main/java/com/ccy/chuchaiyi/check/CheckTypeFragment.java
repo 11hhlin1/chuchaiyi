@@ -14,6 +14,7 @@ import com.ccy.chuchaiyi.base.SpaceItemDecoration;
 import com.ccy.chuchaiyi.event.EventOfAddCheck;
 import com.ccy.chuchaiyi.event.EventOfAgreeCheck;
 import com.ccy.chuchaiyi.event.EventOfCancelApproval;
+import com.ccy.chuchaiyi.event.EventOfCheckedAudit;
 import com.ccy.chuchaiyi.event.EventOfSelDate;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.gjj.applibrary.http.callback.JsonCallback;
@@ -189,6 +190,8 @@ public class CheckTypeFragment extends BaseFragment {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                if(approvalList == null)
+                                    return;
                                 if(page == 1) {
                                     mAdapter.setData(approvalList.getApprovals());
                                 } else {
@@ -257,7 +260,10 @@ public class CheckTypeFragment extends BaseFragment {
         }
 
     }
-
+    /***
+     * 审批后刷新列表
+     * @param event
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void refreshList(EventOfAgreeCheck event) {
         if(getActivity() == null) {
@@ -273,6 +279,24 @@ public class CheckTypeFragment extends BaseFragment {
             getMyCheck(ApiConstants.GET_AUDITED_APPROVALS,1);
         }
     }
+
+    /***
+     * 授权审批后刷新列表
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshList(EventOfCheckedAudit event) {
+        if(getActivity() == null) {
+            return;
+        }
+        if(categoryData.mCateId == CategoryData.MY_UN_AUDIT) {
+            getMyAuthorizes(ApiConstants.GET_AUTHORIZE_SHEETS,1);
+        }
+        if(categoryData.mCateId == CategoryData.MY_AUDITED) {
+            getMyAuthorizes(ApiConstants.GET_AUTHORIZED_SHEETS,1);
+        }
+
+    }
     private void getMyAuthorizes(String url, final int page) {
         OkHttpUtils.get(url)
                 .tag(this)
@@ -285,6 +309,9 @@ public class CheckTypeFragment extends BaseFragment {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                if(authorizes == null) {
+                                    return;
+                                }
                                 if(page == 1) {
                                     mAuthorizeAdapter.setData(authorizes.getAuthorizes());
                                 } else {

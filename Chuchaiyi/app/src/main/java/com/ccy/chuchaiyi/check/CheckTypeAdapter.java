@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.base.RecyclerItemOnclickListener;
@@ -21,7 +22,9 @@ import com.ccy.chuchaiyi.base.SimpleRecyclerViewAdapter;
 import com.ccy.chuchaiyi.calendar.CalendarSelectorFragment;
 import com.ccy.chuchaiyi.event.EventOfAgreeCheck;
 import com.ccy.chuchaiyi.event.EventOfCancelApproval;
+import com.ccy.chuchaiyi.event.EventOfChangeTab;
 import com.ccy.chuchaiyi.net.ApiConstants;
+import com.ccy.chuchaiyi.order.PayDialog;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.util.DateUtil;
 import com.gjj.applibrary.util.ToastUtil;
@@ -45,6 +48,8 @@ import okhttp3.Response;
  */
 public class CheckTypeAdapter extends SimpleRecyclerViewAdapter<Approval.ApprovalsBean> {
     private int mType;
+    private RejectDialog mConfirmDialog;
+
     public CheckTypeAdapter(Context context, List<Approval.ApprovalsBean> items,int type) {
         super(context, items);
         mType = type;
@@ -121,9 +126,26 @@ public class CheckTypeAdapter extends SimpleRecyclerViewAdapter<Approval.Approva
         @Bind(R.id.check_item_ll)
         RelativeLayout checkItemLl;
 
-        @OnClick(R.id.handle_btn)
+        @OnClick(R.id.handle_btn_left)
         void setHandleLeftBtn() {
-
+            int pos = (int) checkItemLl.getTag();
+            final Approval.ApprovalsBean approvalsBean = getData(pos);
+            RejectDialog rejectDialog = new RejectDialog(mContext);
+            mConfirmDialog = rejectDialog;
+            rejectDialog.setCanceledOnTouchOutside(false);
+            rejectDialog.setCancelClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismissConfirmDialog();
+                }
+            });
+            rejectDialog.setConfirmClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    checkApproval(ApiConstants.AUDIT_REJECT_APPROVAL, approvalsBean.getApprovalId());
+                }
+            });
+            mConfirmDialog.showAndKeyboard();
         }
         @OnClick(R.id.handle_btn)
         void setHandleBtn() {
@@ -152,25 +174,41 @@ public class CheckTypeAdapter extends SimpleRecyclerViewAdapter<Approval.Approva
 
                         });
             } else if(mType == CategoryData.MY_UN_CHECK) {
-                StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
-                stringBuilder.append(ApiConstants.AUDIT_PASS_APPROVAL).append("?").append("approvalId=").append(approvalsBean.getApprovalId())
-                        .append("&opinion=").append(" ");
-                OkHttpUtils.post(stringBuilder.toString())
-                        .tag(mContext)
-                        .cacheMode(CacheMode.NO_CACHE)
-                        .execute(new JsonCallback<String>(String.class) {
-                            @Override
-                            public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
-                                EventBus.getDefault().post(new EventOfAgreeCheck());
-                            }
-
-                            @Override
-                            public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
-                                super.onError(isFromCache, call, response, e);
-                            }
-                        });
+                checkApproval(ApiConstants.AUDIT_PASS_APPROVAL,approvalsBean.getApprovalId());
             }
         }
+        private void checkApproval(String url, int approvalId) {
+            StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+            stringBuilder.append(url).append("?").append("approvalId=").append(approvalId)
+                    .append("&opinion=").append(" ");
+            OkHttpUtils.post(stringBuilder.toString())
+                    .tag(mContext)
+                    .cacheMode(CacheMode.NO_CACHE)
+                    .execute(new JsonCallback<String>(String.class) {
+                        @Override
+                        public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
+                            EventBus.getDefault().post(new EventOfAgreeCheck());
+                            ToastUtil.shortToast(R.string.success);
+                        }
+
+                        @Override
+                        public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                            super.onError(isFromCache, call, response, e);
+                            ToastUtil.shortToast(R.string.load_fail);
+                        }
+                    });
+        }
+        /**
+         * dismiss确认对话框
+         */
+        private void dismissConfirmDialog() {
+            RejectDialog confirmDialog = mConfirmDialog;
+            if (null != confirmDialog && confirmDialog.isShowing()) {
+                confirmDialog.dismiss();
+                mConfirmDialog = null;
+            }
+        }
+
 
         ViewHolderHeader(View view) {
             super(view);

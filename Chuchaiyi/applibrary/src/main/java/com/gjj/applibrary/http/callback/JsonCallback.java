@@ -56,7 +56,7 @@ public abstract class JsonCallback<T> extends CommonCallback<T> {
                  */
                 if (clazz == String.class) return (T) data;
                 if (clazz != null) {
-                     T object = JSON.parseObject(data, clazz);
+                    T object = JSON.parseObject(data, clazz);
                     L.d("@@@@", object);
                     return object;
 

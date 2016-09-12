@@ -496,12 +496,17 @@ public class EditOrderFragment extends BaseFragment {
         StringBuilder oilFeeStr = Util.getThreadSafeStringBuilder();
         oilFeeStr.append(getString(R.string.money_no_end, oilFee)).append("*  ").append(mPassengerNum).append(" 人");
         viewHolder.oilFee.setText(oilFeeStr);
-        StringBuilder delayStr = Util.getThreadSafeStringBuilder();
-        delayStr.append(getString(R.string.money_no_end, safeFeeMoney)).append("*  ").append(mPassengerNum).append(" 人");
-        viewHolder.delayFee.setText(delayStr);
-        StringBuilder safeStr = Util.getThreadSafeStringBuilder();
-        safeStr.append(getString(R.string.money_no_end, safeFeeMoney)).append("*  ").append(mPassengerNum).append(" 人");
-        viewHolder.safeFee.setText(safeStr);
+//        StringBuilder delayStr = Util.getThreadSafeStringBuilder();
+//        delayStr.append(getString(R.string.money_no_end, safeFeeMoney)).append("*  ").append(mPassengerNum).append(" 人");
+//        viewHolder.delayFee.setText(delayStr);
+        if(safeFeeCheckIcon.isChecked()) {
+            viewHolder.safeFeeRl.setVisibility(View.VISIBLE);
+            StringBuilder safeStr = Util.getThreadSafeStringBuilder();
+            safeStr.append(getString(R.string.money_no_end, safeFeeMoney)).append("*  ").append(mPassengerNum).append(" 人");
+            viewHolder.safeFee.setText(safeStr);
+        } else {
+            viewHolder.safeFeeRl.setVisibility(View.GONE);
+        }
         //判读window是否显示，消失了就执行动画
         if (!popupWindow.isShowing()) {
             Animation animation2 = AnimationUtils.loadAnimation(getActivity(), R.anim.effect_bg_show);
@@ -533,8 +538,10 @@ public class EditOrderFragment extends BaseFragment {
         TextView oilFee;
         @Bind(R.id.pop_safe_fee)
         TextView safeFee;
-        @Bind(R.id.pop_delay_fee)
-        TextView delayFee;
+        @Bind(R.id.safe_fee_rl)
+        RelativeLayout safeFeeRl;
+//        @Bind(R.id.pop_delay_fee)
+//        TextView delayFee;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

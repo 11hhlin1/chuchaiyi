@@ -30,6 +30,10 @@ public class ApiConstants {
     public static final String GET_AUTHORIZE_SHEETS = host+ "Approval/GetAuthorizeSheetsToAuditForMe";
     public static final String GET_AUTHORIZED_SHEETS = host+ "Approval/GetAuthorizeSheetsAuditedByMe";
     public static final String AUDIT_PASS_APPROVAL = host+ "Approval/AuditPassApproval";
+    public static final String AUDIT_REJECT_APPROVAL = host+ "Approval/AuditRejectApproval";
     public static final String GET_APPROVAL_DETAIL = host+ "Approval/GetApprovalDetail";
+    public static final String GET_AUTHORIZE_DETAIL = host+ "Approval/GetAuthorizeDetail";
+    public static final String PASS_AUTHORIZE_DETAIL = host+ "Approval/AuditPassAuthorize";
+    public static final String REJECT_AUTHORIZE_DETAIL = host+ "Approval/AuditRejectAuthorize";
 
 }

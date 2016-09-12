@@ -36,6 +36,7 @@
                 android:id="@+id/check_person_job"
                 android:layout_toRightOf="@+id/check_person"
                 android:textSize="@dimen/textsize_14sp"
+                android:layout_marginLeft="@dimen/margin_20p"
                 android:textColor="@color/color_aaaaaa" />
             <TextView
                 android:id="@+id/check_time"
