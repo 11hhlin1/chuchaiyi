@@ -2,6 +2,7 @@ package com.ccy.chuchaiyi.check;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,10 +94,20 @@ public class CheckDetailFragment extends BaseFragment {
                             public void run() {
                                 dismissLoadingDialog();
                                 CheckDetailRsp.ApprovalDetailBean detail = checkDetailRsp.getApprovalDetail();
-                                if (detail.getStatus().equals("审批通过") || detail.getStatus().equals("审批拒绝")) {
+                                String status = detail.getStatus();
+                                if (status.equals("审批通过") || status.equals("审批拒绝")) {
                                     bottomRl.setVisibility(View.GONE);
                                 } else {
                                     bottomRl.setVisibility(View.VISIBLE);
+                                }
+                                if(status.equals("审批通过")) {
+                                    stateIcon.setImageResource(R.mipmap.icon_approve_agree);
+                                } else if(status.equals("审批拒绝")) {
+                                    stateIcon.setImageResource(R.mipmap.icon_approve_refuse);
+                                } else if(status.equals("待审批")) {
+                                    stateIcon.setImageResource(R.mipmap.icon_approve_ing);
+                                } else if(status.equals("已撤消")) {
+                                    stateIcon.setImageResource(R.mipmap.icon_approve_cannel);
                                 }
                                 checkStateTv.setText(detail.getStatus());
                                 tripReason.setText(detail.getTravelReason());
@@ -107,10 +118,17 @@ public class CheckDetailFragment extends BaseFragment {
                                 travelTime.setText(travelTimeStr);
                                 applyTime.setText(detail.getCreateTime());
                                 checkNum.setText(detail.getApprovalNo());
-                                travelWay.setText(detail.getTransport());
+                                if(TextUtils.isEmpty(detail.getTransport())) {
+                                    travelWay.setText(R.string.plane);
+                                } else {
+                                    travelWay.setText(detail.getTransport());
+                                }
+                                if(detail.getFlightOrders().size() <= 0) {
+                                    orderDetailTitle.setVisibility(View.GONE);
+                                }
                                 for (CheckDetailRsp.ApprovalDetailBean.FlightOrdersBean flightOrdersBean : detail.getFlightOrders()) {
                                     FlightViewHolder viewHolder = inflateFlightView(inflater);
-                                    viewHolder.detailIcon.setImageResource(R.mipmap.all_img_dot_pr);
+                                    viewHolder.detailIcon.setImageResource(R.mipmap.icon_order_flight);
                                     StringBuilder title = Util.getThreadSafeStringBuilder();
                                     title.append(flightOrdersBean.getDepartureCityName()).append("-").append(flightOrdersBean.getArrivalCityName()).append(" ").append(DiscountUtil.getDis(flightOrdersBean.getDiscount())).append(flightOrdersBean.getBunkName());
                                     viewHolder.detailTitle.setText(title.toString());
@@ -123,7 +141,7 @@ public class CheckDetailFragment extends BaseFragment {
                                 }
                                 for (CheckDetailRsp.ApprovalDetailBean.HotelOrdersBean hotelOrdersBean : detail.getHotelOrders()) {
                                     FlightViewHolder viewHolder = inflateFlightView(inflater);
-                                    viewHolder.detailIcon.setImageResource(R.mipmap.all_img_dot_pr);
+                                    viewHolder.detailIcon.setImageResource(R.mipmap.icon_order_hotel);
                                     viewHolder.detailTitle.setText(hotelOrdersBean.getHotelName());
                                     StringBuilder checkDetail = Util.getThreadSafeStringBuilder();
                                     checkDetail.append(hotelOrdersBean.getRoomTypeName()).append("  ").append(hotelOrdersBean.getCheckInDate()).append(hotelOrdersBean.getCheckOutDate());
@@ -133,10 +151,30 @@ public class CheckDetailFragment extends BaseFragment {
                                 }
                                 for (CheckDetailRsp.ApprovalDetailBean.ApprovalHisBean approvalHisBean : detail.getApprovalHis()) {
                                     PersonalViewHolder viewHolder = inflatePersonView(inflater);
-                                    viewHolder.checkStateIcon.setImageResource(R.mipmap.all_img_dot_pr);
-                                    viewHolder.checkPerson.setText(approvalHisBean.getAuditEmployeeName());
+                                    String hisName = approvalHisBean.getAuditEmployeeName();
+                                    if(TextUtils.isEmpty(hisName)) {
+                                        String names = approvalHisBean.getAuditPositionEmployeeNames();
+                                        if(names.contains(",")) {
+                                            String [] nameArray = names.split(",");
+                                            viewHolder.checkPerson.setText(nameArray[0]);
+                                        } else {
+                                            viewHolder.checkPerson.setText(names);
+                                        }
+                                    } else {
+                                        viewHolder.checkPerson.setText(hisName);
+                                    }
                                     viewHolder.checkPersonJob.setText(approvalHisBean.getAuditPositionName());
-                                    viewHolder.checkDetailTv.setText(approvalHisBean.getStatus());
+                                    String hiStatus = approvalHisBean.getStatus();
+                                    if(hiStatus.equals("审批通过")) {
+                                        viewHolder.checkStateIcon.setImageResource(R.mipmap.icon_order_approve1);
+                                    } else if(hiStatus.equals("审批拒绝")) {
+                                        viewHolder.checkStateIcon.setImageResource(R.mipmap.icon_order_approve3);
+                                    } else if(hiStatus.equals("待审批")) {
+                                        viewHolder.checkStateIcon.setImageResource(R.mipmap.icon_order_approve2);
+                                    } else {
+                                        viewHolder.checkStateIcon.setImageResource(R.mipmap.icon_order_approve2);
+                                    }
+                                    viewHolder.checkDetailTv.setText(hiStatus);
                                     viewHolder.checkTime.setText(approvalHisBean.getAuditDate());
                                     checkStateLl.addView(viewHolder.parent);
                                 }

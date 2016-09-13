@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -42,6 +43,8 @@ import okhttp3.Response;
 public class AuditDetailFragment extends BaseFragment {
     @Bind(R.id.check_state_tv)
     TextView checkStateTv;
+    @Bind(R.id.state_icon)
+    ImageView stateIcon;
     @Bind(R.id.low_price)
     TextView lowPrice;
     @Bind(R.id.pre_n_day)
@@ -170,11 +173,21 @@ public class AuditDetailFragment extends BaseFragment {
                                            dismissLoadingDialog();
 
                                            AuthorizeDetailRsp.AuthorizeDetailBean detail = authorizeDetailRsp.getAuthorizeDetail();
-                                           checkStateTv.setText(detail.getStatus());
+                                           String status = detail.getStatus();
+                                           checkStateTv.setText(status);
                                            if(detail.getStatus().equals("待授权")) {
                                                bottomRl.setVisibility(View.VISIBLE);
                                            } else {
                                                bottomRl.setVisibility(View.GONE);
+                                           }
+                                           if(status.equals("授权通过")) {
+                                               stateIcon.setImageResource(R.mipmap.icon_approve_agree);
+                                           } else if(status.equals("授权拒绝")) {
+                                               stateIcon.setImageResource(R.mipmap.icon_approve_refuse);
+                                           } else if(status.equals("待授权")) {
+                                               stateIcon.setImageResource(R.mipmap.icon_approve_ing);
+                                           } else if(status.equals("已撤消")) {
+                                               stateIcon.setImageResource(R.mipmap.icon_approve_cannel);
                                            }
                                            AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean order = detail.getFlightOrder();
                                            AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean.PassengerBean.TravelPolicyInfoBean policy = order.getPassenger().getTravelPolicyInfo();
@@ -244,8 +257,30 @@ public class AuditDetailFragment extends BaseFragment {
 
                                            PersonalViewHolder viewHolder = inflatePersonView(inflater);
                                            viewHolder.checkStateIcon.setImageResource(R.mipmap.all_img_dot_pr);
-                                           viewHolder.checkPerson.setText(detail.getAuditEmployeeName());
+                                           String hisName = detail.getAuditEmployeeName();
+                                           if(TextUtils.isEmpty(hisName)) {
+                                               String names = detail.getAuditPositionEmployeeNames();
+                                               if(names.contains(",")) {
+                                                   String [] nameArray = names.split(",");
+                                                   viewHolder.checkPerson.setText(nameArray[0]);
+                                               } else {
+                                                   viewHolder.checkPerson.setText(names);
+                                               }
+                                           } else {
+                                               viewHolder.checkPerson.setText(hisName);
+                                           }
                                            viewHolder.checkPersonJob.setText(detail.getAuditPositionName());
+                                           String hiStatus = detail.getStatus();
+
+                                           if(hiStatus.equals("授权通过")) {
+                                               viewHolder.checkStateIcon.setImageResource(R.mipmap.icon_order_approve1);
+                                           } else if(hiStatus.equals("授权拒绝")) {
+                                               viewHolder.checkStateIcon.setImageResource(R.mipmap.icon_order_approve3);
+                                           } else if(hiStatus.equals("待授权")) {
+                                               viewHolder.checkStateIcon.setImageResource(R.mipmap.icon_order_approve2);
+                                           } else {
+                                               viewHolder.checkStateIcon.setImageResource(R.mipmap.icon_order_approve2);
+                                           }
                                            viewHolder.checkDetailTv.setText(detail.getStatus());
                                            viewHolder.checkTime.setText(detail.getAuditDate());
                                            checkStateLl.addView(viewHolder.parent);

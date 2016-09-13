@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/margin_30p"
+        android:layout_marginTop="2dp"
         android:id="@+id/detail_icon"/>
     <LinearLayout
         android:id="@+id/detail_ll"

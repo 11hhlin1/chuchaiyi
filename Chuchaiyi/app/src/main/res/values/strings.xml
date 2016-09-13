@@ -151,5 +151,6 @@
     <string name="commit_success">提交成功</string>
     <string name="apply_time">申请时间</string>
     <string name="book_success_tip">您的订单已经提交成功\n我们将尽快处理,稍后通知\n您预订结果</string>
+    <string name="plane">飞机</string>
 
 </resources>
