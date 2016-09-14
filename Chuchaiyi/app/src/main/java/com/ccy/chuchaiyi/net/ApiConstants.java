@@ -16,6 +16,7 @@ public class ApiConstants {
     public static final String GET_FLIGHT_POLICY = host+ "Flight/GetFlightPolicy";
     public static final String COMMIT_ORDER = host+ "Flight/PlaceAskOrder";
     public static final String CONFIRM_BY_CORP_CREDIT = host+ "Flight/AskOrderConfirmByCorpCredit";
+    public static final String GET_FLIGHT_ORDER = host+ "Flight/GetMyFlightOrders";
     public static final String GET_STORED_USER= host+ "Common/GetMyStoredUsers";
     public static final String GET_EMPLOYEE_POLICY= host+ "Common/GetEmployeePolicyInfo";
     public static final String GET_EMPLOYEES= host+ "Common/GetEmployees";
