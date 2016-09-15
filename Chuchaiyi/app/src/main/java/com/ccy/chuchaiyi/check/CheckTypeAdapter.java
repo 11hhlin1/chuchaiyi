@@ -76,6 +76,7 @@ public class CheckTypeAdapter extends SimpleRecyclerViewAdapter<Approval.Approva
         stringBuilder.append(approvalsBean.getEmployeeName()).append("的审批");
         viewHolderHeader.checkTitle.setText(stringBuilder.toString());
         viewHolderHeader.checkTripArriveCity.setText(approvalsBean.getTravelDestination());
+
         String startTime = DateUtil.getDate(approvalsBean.getTravelDateStart());
         String endTime = DateUtil.getDate(approvalsBean.getTravelDateEnd());
         StringBuilder time = Util.getThreadSafeStringBuilder();

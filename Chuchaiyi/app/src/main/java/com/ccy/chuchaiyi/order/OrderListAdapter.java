@@ -1,15 +1,19 @@
 package com.ccy.chuchaiyi.order;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
+import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.base.SimpleRecyclerViewAdapter;
 import com.ccy.chuchaiyi.util.DiscountUtil;
 import com.gjj.applibrary.util.Util;
@@ -60,7 +64,7 @@ public class OrderListAdapter extends SimpleRecyclerViewAdapter<OrderInfo.Orders
         //TODO
         viewHolderHeader.flightTime.setText(ordersBean.getDepartureDateTime());
         viewHolderHeader.passenger.setText(ordersBean.getPassengerName());
-
+        viewHolderHeader.passenger.setTag(ordersBean);
         setBtnText(viewHolderHeader);
 //        if(ordersBean.isCanCancel()) {
 //            viewHolderHeader.handleBtn1.setText(mContext.getString(R.string.dialog_default_cancel_title));
@@ -187,9 +191,20 @@ public class OrderListAdapter extends SimpleRecyclerViewAdapter<OrderInfo.Orders
         @Bind(R.id.bottom_btn_rl)
         RelativeLayout bottomBtnRl;
 
+
         ViewHolderHeader(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OrderInfo.OrdersBean ordersBean = (OrderInfo.OrdersBean) passenger.getTag();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("orderId", ordersBean.getOrderId());
+                    PageSwitcher.switchToTopNavPage((Activity) mContext, OrderDetailFragment.class, bundle, "订单详情",null);
+
+                }
+            });
         }
     }
 }

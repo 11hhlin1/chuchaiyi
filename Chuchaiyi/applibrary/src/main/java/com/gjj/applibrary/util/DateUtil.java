@@ -1,5 +1,7 @@
 package com.gjj.applibrary.util;
 
+import android.text.TextUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -49,6 +51,8 @@ public class DateUtil {
     public static String getDate(String date) {
         String[] dates = date.split("-");
         Calendar calendar = Calendar.getInstance();
+        if(TextUtils.isEmpty(dates[0]) || TextUtils.isEmpty(dates[1])|| TextUtils.isEmpty(dates[2]))
+            return "";
         calendar.set(Integer.valueOf(dates[0]), Integer.valueOf(dates[1]) - 1, Integer.valueOf(dates[2]));
         StringBuilder dateTitle = Util.getThreadSafeStringBuilder();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM月dd日");
