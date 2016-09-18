@@ -197,7 +197,7 @@ public class CheckTypeFragment extends BaseFragment {
                                 } else {
                                     mAdapter.addData(approvalList.getApprovals());
                                 }
-                                mMyApprovalPage++;
+                                mMyApprovalPage = page + 1;
                                 mEmptyErrorViewController.onRequestFinish(mAdapter.getItemCount() > 0);
                             }
                         });
@@ -256,6 +256,7 @@ public class CheckTypeFragment extends BaseFragment {
             getMyCheck(ApiConstants.GET_MY_APPROVALS,1);
         }
         if(categoryData.mCateId == CategoryData.MY_UN_CHECK) {
+            mMyApprovalPage = 1;
             getMyCheck(ApiConstants.GET_AUDIT_FOR_ME_APPROVALS,1);
         }
 
@@ -317,7 +318,7 @@ public class CheckTypeFragment extends BaseFragment {
                                 } else {
                                     mAuthorizeAdapter.addData(authorizes.getAuthorizes());
                                 }
-                                mMyApprovalPage++;
+                                mMyApprovalPage = page + 1;
                                 mEmptyErrorViewController.onRequestFinish(mAuthorizeAdapter.getItemCount() > 0);
                             }
                         });

@@ -26,7 +26,6 @@ import com.ccy.chuchaiyi.app.BaseApplication;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.base.TopNavSubActivity;
-import com.ccy.chuchaiyi.contact.ChooseCheckNumFragment;
 import com.ccy.chuchaiyi.contact.ChoosePassengerFragment;
 import com.ccy.chuchaiyi.contact.PassengerInfo;
 import com.ccy.chuchaiyi.db.UserInfo;
@@ -37,7 +36,6 @@ import com.ccy.chuchaiyi.flight.PolicyResultInfo;
 import com.ccy.chuchaiyi.flight.StopInfoRsp;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.util.CallUtil;
-import com.ccy.chuchaiyi.widget.PolicyDialog;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.util.DateUtil;
 import com.gjj.applibrary.util.ToastUtil;
@@ -48,7 +46,6 @@ import com.lzy.okhttputils.cache.CacheMode;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -317,7 +314,7 @@ public class EditOrderFragment extends BaseFragment {
                                 dismissLoadingDialog();
                                 ToastUtil.shortToast(R.string.commit_success);
                                 if(mConfirmDialog == null) {
-                                    payDialogData payDialogData = new payDialogData();
+                                    PayDialogData payDialogData = new PayDialogData();
                                     StringBuilder name = Util.getThreadSafeStringBuilder();
                                     for (Passenger passenger : mPassengers) {
                                         name.append(passenger.PassengerName).append("  ");

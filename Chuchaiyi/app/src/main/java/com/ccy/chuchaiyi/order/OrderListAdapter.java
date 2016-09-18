@@ -3,25 +3,37 @@ package com.ccy.chuchaiyi.order;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.base.SimpleRecyclerViewAdapter;
+import com.ccy.chuchaiyi.event.EventOfRefreshOrderList;
+import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.util.DiscountUtil;
+import com.gjj.applibrary.http.callback.JsonCallback;
+import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
+import com.lzy.okhttputils.OkHttpUtils;
+import com.lzy.okhttputils.cache.CacheMode;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by Chuck on 2016/9/13.
@@ -66,22 +78,6 @@ public class OrderListAdapter extends SimpleRecyclerViewAdapter<OrderInfo.Orders
         viewHolderHeader.passenger.setText(ordersBean.getPassengerName());
         viewHolderHeader.passenger.setTag(ordersBean);
         setBtnText(viewHolderHeader);
-//        if(ordersBean.isCanCancel()) {
-//            viewHolderHeader.handleBtn1.setText(mContext.getString(R.string.dialog_default_cancel_title));
-//        } else if(ordersBean.isCanPayment()){
-//            String text = viewHolderHeader.handleBtn1.getText().toString();
-//            if(TextUtils.isEmpty(text)) {
-//                viewHolderHeader.handleBtn1.setText(mContext.getString(R.string.pay));
-//            } else {
-//                viewHolderHeader.handleBtn2.setText(mContext.getString(R.string.pay));
-//            }
-//        } else if(ordersBean.isCanReturn()) {
-//            setBtnText(viewHolderHeader,R.string.returnPolicy);
-//        } else if(ordersBean.isCanChange()) {
-//            setBtnText(viewHolderHeader,R.string.changePolicy);
-//        } else if(ordersBean.isCanNetCheckIn()) {
-//            setBtnText(viewHolderHeader,R.string.dai_ban_zhi_ji);
-//        }
         if(ordersBean.isCanCancel()) {
             setBtnText(viewHolderHeader,mContext.getString(R.string.dialog_default_cancel_title));
         } else {
@@ -109,6 +105,7 @@ public class OrderListAdapter extends SimpleRecyclerViewAdapter<OrderInfo.Orders
         }
         setBtnVisibility(viewHolderHeader);
     }
+
     private void setBtnText(ViewHolderHeader viewHolderHeader) {
 
         viewHolderHeader.handleBtn1.setText(null);
@@ -192,6 +189,18 @@ public class OrderListAdapter extends SimpleRecyclerViewAdapter<OrderInfo.Orders
         RelativeLayout bottomBtnRl;
 
 
+        @OnClick(R.id.handle_btn_1)
+        void setHandleBtn1() {
+            handleBtn(handleBtn1);
+        }
+        @OnClick(R.id.handle_btn_2)
+        void setHandleBtn2() {
+            handleBtn(handleBtn2);
+        }
+        @OnClick(R.id.handle_btn_3)
+        void setHandleBtn3() {
+            handleBtn(handleBtn3);
+        }
         ViewHolderHeader(View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -202,9 +211,66 @@ public class OrderListAdapter extends SimpleRecyclerViewAdapter<OrderInfo.Orders
                     Bundle bundle = new Bundle();
                     bundle.putInt("orderId", ordersBean.getOrderId());
                     PageSwitcher.switchToTopNavPage((Activity) mContext, OrderDetailFragment.class, bundle, "订单详情",null);
-
                 }
             });
+        }
+
+        private void handleBtn(Button button) {
+            OrderInfo.OrdersBean ordersBean = (OrderInfo.OrdersBean) passenger.getTag();
+            String str = button.getText().toString();
+            if(str.equals(mContext.getString(R.string.dialog_default_cancel_title))) {
+                StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+                stringBuilder.append(ApiConstants.CANCEL_ORDER).append("?").append("orderId=").append(ordersBean.getOrderId());
+                OkHttpUtils.post(stringBuilder.toString())
+                        .tag(mContext)
+                        .cacheMode(CacheMode.NO_CACHE)
+                        .execute(new JsonCallback<String>(String.class) {
+
+                            @Override
+                            public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
+                                EventOfRefreshOrderList eventOfRefreshOrderList = new EventOfRefreshOrderList();
+                                EventBus.getDefault().post(eventOfRefreshOrderList);
+                                ToastUtil.shortToast(R.string.success);
+                            }
+
+                            @Override
+                            public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                                super.onError(isFromCache, call, response, e);
+                            }
+
+                        });
+            } else if(str.equals(mContext.getString(R.string.pay))) {
+                StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+                stringBuilder.append(ApiConstants.CONFIRM_ORDER_BY_LIST).append("?").append("orderId=").append(ordersBean.getOrderId());
+                OkHttpUtils.post(stringBuilder.toString())
+                        .tag(mContext)
+                        .cacheMode(CacheMode.NO_CACHE)
+                        .execute(new JsonCallback<String>(String.class) {
+
+                            @Override
+                            public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
+                                EventOfRefreshOrderList eventOfRefreshOrderList = new EventOfRefreshOrderList();
+                                EventBus.getDefault().post(eventOfRefreshOrderList);
+                                ToastUtil.shortToast(R.string.success);
+                            }
+
+                            @Override
+                            public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                                super.onError(isFromCache, call, response, e);
+                            }
+
+                        });
+            } else if(str.equals(mContext.getString(R.string.returnPolicy))) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("order", ordersBean);
+                PageSwitcher.switchToTopNavPage((Activity)mContext, ReturnOrderFragment.class, bundle, mContext.getString(R.string.returnPolicy),null);
+            } else if(str.equals(mContext.getString(R.string.changePolicy))) {
+
+            } else if(str.equals(mContext.getString(R.string.dai_ban_zhi_ji))) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("order", ordersBean);
+                PageSwitcher.switchToTopNavPage((Activity)mContext, NetCheckInFragment.class, bundle, mContext.getString(R.string.dai_ban_zhi_ji),null);
+            }
         }
     }
 }

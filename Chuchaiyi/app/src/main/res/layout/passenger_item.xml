@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_aaaaaa"
             android:textSize="@dimen/textsize_11sp"
-            android:text="@string/order_num_no_end"/>
+            android:text="@string/check_num_no_end"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             android:layout_marginLeft="4dp"
             android:id="@+id/order_num"
             android:textSize="@dimen/textsize_11sp"
-            android:text="@string/order_num"/>
+            android:text="@string/check_num"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"

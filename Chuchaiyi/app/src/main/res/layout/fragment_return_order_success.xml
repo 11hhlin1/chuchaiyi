@@ -16,6 +16,7 @@
             android:layout_gravity="center_horizontal"
             android:src="@mipmap/icon_flight_sucess"/>
         <TextView
+            android:id="@+id/tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_20p"
@@ -51,13 +52,6 @@
                 android:textColor="@color/color_222222"
                 android:layout_marginTop="4dp"
                 android:textSize="@dimen/textsize_14sp"/>
-            <TextView
-                android:id="@+id/passenger_list_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_222222"
-                android:layout_marginTop="4dp"
-                android:textSize="@dimen/textsize_14sp"/>
         </LinearLayout>
 
     </RelativeLayout>
@@ -70,24 +64,24 @@
         android:layout_marginLeft="@dimen/margin_30p"
         android:layout_marginRight="@dimen/margin_30p">
         <Button
-            android:id="@+id/back_index_btn"
+            android:id="@+id/back_order_list"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/choose_air_company_cancle_btn"
-            android:text="继续预订"
+            android:text="订单列表"
             android:textColor="@color/color_0071c4"
             android:layout_marginRight="@dimen/margin_10p"
             android:textSize="@dimen/textsize_13sp"
             />
         <Button
-            android:id="@+id/back_order_btn"
+            android:id="@+id/back_order_detail"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginLeft="@dimen/margin_10p"
             android:background="@drawable/choose_air_company_cancle_btn"
-            android:text="查看订单"
+            android:text="查看详情"
             android:textColor="@color/color_0071c4"
             android:textSize="@dimen/textsize_13sp"
             />

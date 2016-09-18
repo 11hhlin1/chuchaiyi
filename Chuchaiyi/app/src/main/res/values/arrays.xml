@@ -12,4 +12,20 @@
         <item>Y</item>
         <item>F</item>
     </string-array>
+
+
+    <string-array name="returnOrderReason">
+        <item>出差计划取消</item>
+        <item>航班被航空公司取消</item>
+        <item>需要变动行程,该航班不可改签</item>
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="netCheckIn">
+        <item>前排</item>
+        <item>后排</item>
+        <item>靠窗</item>
+        <item>靠近过道</item>
+        <item>靠近紧急出口</item>
+    </string-array>
 </resources>

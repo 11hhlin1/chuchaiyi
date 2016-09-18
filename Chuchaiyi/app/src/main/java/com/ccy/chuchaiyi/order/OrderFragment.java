@@ -14,6 +14,8 @@ import com.ccy.chuchaiyi.check.Authorizes;
 import com.ccy.chuchaiyi.check.AuthorizesAdapter;
 import com.ccy.chuchaiyi.check.CategoryData;
 import com.ccy.chuchaiyi.check.CheckTypeAdapter;
+import com.ccy.chuchaiyi.event.EventOfCancelApproval;
+import com.ccy.chuchaiyi.event.EventOfRefreshOrderList;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.util.ToastUtil;
@@ -23,6 +25,10 @@ import com.handmark.pulltorefresh.library.PullToRefreshRecyclerView;
 import com.handmark.pulltorefresh.library.internal.PrepareRelativeLayout;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.cache.CacheMode;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -118,13 +124,21 @@ public class OrderFragment extends BaseFragment{
             }
         });
         setEmptyTextView();
-    }
+        EventBus.getDefault().register(this);
 
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshList(EventOfRefreshOrderList event) {
+        if(getActivity() == null) {
+            return;
+        }
+        doRequest(1);
+    }
     private void setEmptyTextView() {
         mEmptyTextView.setText(getString(R.string.empty_no_data));
     }
 
-    public void doRequest(int page) {
+    public void doRequest(final int page) {
         OkHttpUtils.get(ApiConstants.GET_FLIGHT_ORDER)
                 .tag(this)
                 .params("pageNumber", String.valueOf(page))
@@ -139,12 +153,12 @@ public class OrderFragment extends BaseFragment{
                             public void run() {
                                 if(orderInfo == null)
                                     return;
-                                if(mPage == 1) {
+                                if(page == 1) {
                                     mAdapter.setData(orderInfo.getOrders());
                                 } else {
                                     mAdapter.addData(orderInfo.getOrders());
                                 }
-                                mPage++;
+                                mPage = page + 1;
                                 mEmptyErrorViewController.onRequestFinish(mAdapter.getItemCount() > 0);
                             }
                         });

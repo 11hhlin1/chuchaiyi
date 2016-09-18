@@ -18,6 +18,10 @@ public class ApiConstants {
     public static final String CONFIRM_BY_CORP_CREDIT = host+ "Flight/AskOrderConfirmByCorpCredit";
     public static final String GET_FLIGHT_ORDER = host+ "Flight/GetMyFlightOrders";
     public static final String GET_ORDER_DETAIL = host+ "Flight/GetOrderDetail";
+    public static final String CANCEL_ORDER = host+ "Flight/CancelApply";
+    public static final String CONFIRM_ORDER_BY_LIST = host+ "Flight/OrderConfirmByCorpCredit";
+    public static final String RETURN_ORDER = host+ "Flight/ReturnApply";
+    public static final String NET_CHECK_IN = host+ "Flight/NetCheckInApply";
     public static final String GET_STORED_USER= host+ "Common/GetMyStoredUsers";
     public static final String GET_EMPLOYEE_POLICY= host+ "Common/GetEmployeePolicyInfo";
     public static final String GET_EMPLOYEES= host+ "Common/GetEmployees";

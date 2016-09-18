@@ -165,7 +165,7 @@ public class CheckTypeAdapter extends SimpleRecyclerViewAdapter<Approval.Approva
                             public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
                                 EventOfCancelApproval eventOfCancelApproval = new EventOfCancelApproval();
                                 eventOfCancelApproval.mType = CategoryData.MY_APPLY;
-                                EventBus.getDefault().post(new EventOfCancelApproval());
+                                EventBus.getDefault().post(eventOfCancelApproval);
                             }
 
                             @Override

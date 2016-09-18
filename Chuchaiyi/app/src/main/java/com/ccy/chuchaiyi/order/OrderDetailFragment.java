@@ -202,10 +202,43 @@ public class OrderDetailFragment extends BaseFragment {
                                 AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean.PassengerBean passengerBean = orderBean.getPassenger();
                                 passengerName.setText(passengerBean.getPassengerName());
                                 passengerJob.setText(passengerBean.getBelongedDeptName());
-                                contactName.setText(orderBean.getContactName() + orderBean.getContactMobile());
+                                StringBuilder name = Util.getThreadSafeStringBuilder();
+                                name.append(orderBean.getContactName()).append("  ").append(orderBean.getContactMobile());
+                                contactName.setText(name.toString());
                                 StringBuilder safeFee = Util.getThreadSafeStringBuilder();
                                 safeFee.append("航意险").append(getString(R.string.money_no_end,orderBean.getFeeInfo().getInsuranceFee())).append("份 *").append(passengerBean.getInsuranceCount());
                                 safeFeeTv.setText(safeFee.toString());
+
+                                orderAudit.setText(orderBean.getApprovalStatus());
+                                moreThanAudit.setText(orderBean.getAuthorizeStatus());
+
+                                setBtnText();
+                                if(orderBean.isCanCancel()) {
+                                    setBtnText(getString(R.string.dialog_default_cancel_title));
+                                } else {
+                                    setBtnText(null);
+                                }
+                                if(orderBean.isCanPayment()) {
+                                    setBtnText(getString(R.string.pay));
+                                } else {
+                                    setBtnText(null);
+                                }
+                                if(orderBean.isCanReturn()) {
+                                    setBtnText(getString(R.string.returnPolicy));
+                                } else {
+                                    setBtnText(null);
+                                }
+                                if(orderBean.isCanChange()) {
+                                    setBtnText(getString(R.string.changePolicy));
+                                } else {
+                                    setBtnText(null);
+                                }
+                                if(orderBean.isCanNetCheckIn()) {
+                                    setBtnText(getString(R.string.dai_ban_zhi_ji));
+                                } else {
+                                    setBtnText(null);
+                                }
+                                setBtnVisibility();
                             }
                         });
 
@@ -235,6 +268,53 @@ public class OrderDetailFragment extends BaseFragment {
                 break;
             case R.id.handle_btn_3:
                 break;
+        }
+    }
+
+
+    private void setBtnText() {
+
+        handleBtn1.setText(null);
+        handleBtn2.setText(null);
+        handleBtn3.setText(null);
+
+    }
+    private void setBtnText( String res) {
+        String text = handleBtn1.getText().toString();
+        String text2 = handleBtn2.getText().toString();
+        if(TextUtils.isEmpty(text)) {
+            handleBtn1.setText(res);
+        } else if(TextUtils.isEmpty(text2)) {
+            handleBtn2.setText(res);
+        } else {
+            handleBtn3.setText(res);
+        }
+    }
+
+    private void setBtnVisibility() {
+        String text3 = handleBtn3.getText().toString();
+        String text2 = handleBtn2.getText().toString();
+        String text1 = handleBtn1.getText().toString();
+        if(TextUtils.isEmpty(text3)) {
+            handleBtn3.setVisibility(View.GONE);
+        } else {
+            handleBtn3.setVisibility(View.VISIBLE);
+        }
+        if(TextUtils.isEmpty(text2)) {
+            handleBtn2.setVisibility(View.GONE);
+        } else {
+            handleBtn2.setVisibility(View.VISIBLE);
+        }
+        if(TextUtils.isEmpty(text1)){
+            handleBtn1.setVisibility(View.GONE);
+        } else {
+            handleBtn1.setVisibility(View.VISIBLE);
+        }
+
+        if(TextUtils.isEmpty(text3) && TextUtils.isEmpty(text2) && TextUtils.isEmpty(text1)) {
+            bottomRl.setVisibility(View.GONE);
+        } else {
+            bottomRl.setVisibility(View.VISIBLE);
         }
     }
 }

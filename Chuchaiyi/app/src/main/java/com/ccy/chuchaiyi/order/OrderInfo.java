@@ -82,7 +82,7 @@ public class OrderInfo implements Serializable{
         this.Orders = Orders;
     }
 
-    public static class OrdersBean {
+    public static class OrdersBean implements Serializable{
         private int OrderId;
         private String OrderNo;
         private String TravelType;

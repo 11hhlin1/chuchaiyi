@@ -100,6 +100,7 @@
     <string name="signPolicy">备注</string>
     <string name="low_price_title">因你未选择最低价格航班，请您选择原因：</string>
     <string name="pre_day_title">因你未提前预订航班，请您选择原因：</string>
+    <string name="return_order_title">请选择退票的原因：</string>
     <string name="commit">提交</string>
     <string name="detail">明细</string>
     <string name="return_change">退改签</string>
@@ -114,8 +115,8 @@
     <string name="all_pay">统一支付</string>
     <string name="pay_way">支付方式</string>
     <string name="ticket_tip">只支持直接出票</string>
-    <string name="order_num">审批单号 %1$s</string>
-    <string name="order_num_no_end">审批单号</string>
+    <string name="check_num">审批单号 %1$s</string>
+    <string name="check_num_no_end">审批单号</string>
     <string name="project_num">所属项目 %1$s</string>
     <string name="project_num_no_end">所属项目</string>
     <string name="pay_sure">支付确认</string>
@@ -151,7 +152,12 @@
     <string name="commit_success">提交成功</string>
     <string name="apply_time">申请时间</string>
     <string name="book_success_tip">您的订单已经提交成功\n我们将尽快处理,稍后通知\n您预订结果</string>
+    <string name="return_order_success_tip">退票申请提交成功\n我们将尽快处理</string>
+    <string name="net_check_success_tip">待办值机提交成功\n我们将尽快处理</string>
     <string name="plane">飞机</string>
     <string name="pay">付款</string>
+    <string name="return_order_title_tip">退票费按产品规定。</string>
+    <string name="return_order_desc">若费用变更,我们将及时联系您。申请退票后,座位会被取消。</string>
+    <string name="order_num_no_end">订单号  %1$s</string>
 
 </resources>

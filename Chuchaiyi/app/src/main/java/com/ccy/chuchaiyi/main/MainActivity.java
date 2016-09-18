@@ -38,6 +38,11 @@ public class MainActivity extends BaseMainActivity {
     NestRadioGroup mRadioGroup;
 
     private boolean mIsBackPressed = false;
+    private static MainActivity sMainActivity;
+
+    public static MainActivity getMainActivity() {
+        return sMainActivity;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +100,9 @@ public class MainActivity extends BaseMainActivity {
         switch (event.mIndex) {
             case 2:
                 mRadioGroup.check(R.id.order_tab);
+                break;
+            case 0:
+                mRadioGroup.check(R.id.index_tab);
                 break;
         }
     }
