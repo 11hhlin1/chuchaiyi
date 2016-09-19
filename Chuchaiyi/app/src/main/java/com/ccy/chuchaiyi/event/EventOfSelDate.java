@@ -5,6 +5,7 @@ package com.ccy.chuchaiyi.event;
  */
 public class EventOfSelDate {
     public static final int SET_OUT_DATE = -1;
+    public static final int CHANGE_SET_OUT_DATE = -3;
     public static final int RETURN_DATE = -2;
     public static final int START_DATE = 1;
     public static final int END_DATE = 2;
