@@ -27,5 +27,6 @@
         <item>靠窗</item>
         <item>靠近过道</item>
         <item>靠近紧急出口</item>
+        <item>其他</item>
     </string-array>
 </resources>

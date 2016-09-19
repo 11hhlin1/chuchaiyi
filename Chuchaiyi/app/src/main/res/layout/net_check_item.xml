@@ -20,8 +20,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/margin_30p"
+        android:layout_marginLeft="@dimen/margin_20p"
         android:layout_toRightOf="@+id/check_icon"
         android:textColor="@color/color_222222"
         android:textSize="@dimen/textsize_13sp" />
+
+    <EditText
+        android:id="@+id/other_et"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginLeft="@dimen/margin_20p"
+        android:background="@null"
+        android:visibility="gone"
+        android:gravity="left|center_vertical"
+        android:layout_toRightOf="@+id/seat_name"
+        android:textColor="@color/color_222222"
+        android:textSize="@dimen/textsize_12sp"
+        android:textColorHint="@color/color_aaaaaa"
+        android:hint="请输入位置偏好"
+        android:imeOptions="actionNext"/>
 </RelativeLayout>

@@ -4,10 +4,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -42,9 +42,11 @@ public class NetCheckInFragment extends BaseFragment {
     LinearLayout seatListRl;
     @Bind(R.id.btn_sure)
     Button btnSure;
-    private String[] checkInArrary;
-    ArrayList<String> mSelSeat;
+    private String[] checkInArray;
+    private ArrayList<String> mSelSeat;
     private OrderInfo.OrdersBean ordersBean;
+    private boolean mIsSelOthers;
+    private EditText mOthers;
 
     @Override
     public int getContentViewLayout() {
@@ -56,14 +58,22 @@ public class NetCheckInFragment extends BaseFragment {
         ordersBean = (OrderInfo.OrdersBean) getArguments().getSerializable("order");
         assert ordersBean != null;
         passengerName.setText(ordersBean.getPassengerName());
-
-        checkInArrary = getResources().getStringArray(R.array.netCheckIn);
+        String dateAndTime = ordersBean.getDepartureDateTime();
+//        String[] dates = dateAndTime.split(" ");
+//        String date = dates[0];
+//        String time = dates[1];
+//        timeDateline.setText();
+        checkInArray = getResources().getStringArray(R.array.netCheckIn);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         mSelSeat = new ArrayList<>();
-        for (int i = 0; i < checkInArrary.length; i++) {
+        for (int i = 0; i < checkInArray.length; i++) {
             ViewHolder holder = inflateConstructingView(inflater);
-            holder.seatName.setText(checkInArrary[i]);
-            holder.checkIcon.setTag(checkInArrary[i]);
+            holder.seatName.setText(checkInArray[i]);
+            holder.checkIcon.setTag(i);
+            if(i == (checkInArray.length -1)) {
+                holder.otherEt.setVisibility(View.VISIBLE);
+                mOthers = holder.otherEt;
+            }
             seatListRl.addView(holder.parent);
         }
 
@@ -83,10 +93,14 @@ public class NetCheckInFragment extends BaseFragment {
         for (String s : mSelSeat) {
             seat.append(s).append(",");
         }
+        if(mIsSelOthers) {
+            seat.append(mOthers.getText().toString());
+        }
+        String seatStr = seat.toString();
         StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
         stringBuilder.append(ApiConstants.NET_CHECK_IN).append("?").append("orderId=")
                 .append(ordersBean.getOrderId())
-                .append("&seatRequirement=").append(seat.toString());
+                .append("&seatRequirement=").append(seatStr);
         OkHttpUtils.post(stringBuilder.toString())
                 .tag(this)
                 .cacheMode(CacheMode.NO_CACHE)
@@ -122,6 +136,8 @@ public class NetCheckInFragment extends BaseFragment {
         CheckBox checkIcon;
         @Bind(R.id.seat_name)
         TextView seatName;
+        @Bind(R.id.other_et)
+        EditText otherEt;
         View parent;
 
         ViewHolder(View view) {
@@ -130,12 +146,18 @@ public class NetCheckInFragment extends BaseFragment {
             checkIcon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    String res = (String) checkIcon.getTag();
-                    if (isChecked) {
-                        mSelSeat.add(res);
+                    int pos = (int) checkIcon.getTag();
+                    if(pos == (checkInArray.length -1)) {
+                        mIsSelOthers = isChecked;
                     } else {
-                        mSelSeat.remove(res);
+                        if (isChecked) {
+                            mSelSeat.add(checkInArray[pos]);
+                        } else {
+                            mSelSeat.remove(checkInArray[pos]);
+                        }
                     }
+
+
                 }
             });
         }

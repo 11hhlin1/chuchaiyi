@@ -14,13 +14,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:drawableLeft="@mipmap/icon_back_un"
-            android:drawablePadding="4dp"
             android:textSize="@dimen/textsize_12sp"
             android:layout_marginLeft="@dimen/margin_30p"
             android:textColor="@color/color_aaaaaa"
             android:layout_centerVertical="true"
-            android:text="@string/pre_day"/>
+            android:text="@string/pre_day_btn"/>
 
         <TextView
             android:id="@+id/today_tv"
@@ -36,13 +34,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:drawableRight="@mipmap/icon_back_un"
-            android:drawablePadding="4dp"
             android:textSize="@dimen/textsize_12sp"
             android:textColor="@color/color_aaaaaa"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_30p"
-            android:text="@string/next_day"/>
+            android:text="@string/next_day_btn"/>
         <View
             style="@style/personal_page_bottom_line"/>
     </RelativeLayout>

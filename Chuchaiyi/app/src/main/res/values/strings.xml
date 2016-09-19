@@ -159,5 +159,7 @@
     <string name="return_order_title_tip">退票费按产品规定。</string>
     <string name="return_order_desc">若费用变更,我们将及时联系您。申请退票后,座位会被取消。</string>
     <string name="order_num_no_end">订单号  %1$s</string>
+    <string name="pre_day_btn"><![CDATA[< 前一天]]></string>
+    <string name="next_day_btn"><![CDATA[后一天 >]]></string>
 
 </resources>
