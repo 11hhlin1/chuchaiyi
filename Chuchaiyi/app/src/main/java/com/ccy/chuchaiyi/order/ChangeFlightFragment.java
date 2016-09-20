@@ -81,9 +81,10 @@ public class ChangeFlightFragment extends BaseFragment {
                 PageSwitcher.switchToTopNavPage(getActivity(), CalendarSelectorFragment.class, bundle, getString(R.string.choose_set_out_date),null);
                 break;
             case R.id.search_btn:
-//                bundle.putString("DepartureCode", ordersBean);
-//                bundle.putString("ArrivalCode", mArriveCity.getCode());
-//                bundle.putString("SetOutDate", mSelSetOutDate.replace("#","-"));
+                bundle.putString("DepartureCode", ordersBean.getDepartureCityCode());
+                bundle.putString("ArrivalCode", ordersBean.getArrivalCityCode());
+                bundle.putString("SetOutDate", mSelSetOutDate.replace("#","-"));
+                bundle.putInt("accessFlag", FlightsListFragment.FROM_CHANGE_FLIGHT);
 //                bundle.putString("BunkType",mItemList.get(mSeatIndex).mCode);
                 StringBuilder title = Util.getThreadSafeStringBuilder();
                 title.append(ordersBean.getDepartureCityName()).append("-").append(ordersBean.getArrivalCityName());

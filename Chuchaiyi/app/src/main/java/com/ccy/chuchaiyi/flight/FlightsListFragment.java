@@ -74,6 +74,8 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
     TextView nextDay;
     @Bind(R.id.elistview)
     PullToRefreshExpandableListView mListView;
+    public static final int FROM_CHANGE_FLIGHT = 1;
+    public static final int FROM_INDEX = 0;
     /**
      * 空提示
      */

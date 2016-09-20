@@ -9,15 +9,7 @@ import java.util.List;
 public class OrderInfo implements Serializable{
     private static final long serialVersionUID = 2448947305691347980L;
 
-    /**
-     * Code : 0
-     * Message : string
-     * TotalCount : 0
-     * Orders : [{"OrderId":0,"OrderNo":"string","TravelType":"string","PayMode":"string","Status":"string","PaymentStatus":"string","ApprovalStatus":"string","AuthorizeStatus":"string","BookingEmployeeName":"string","PassengerName":"string","CreateTime":"string","DepartureDateTime":"string","FlightNo":"string","AirlineName":"string","BunkName":"string","Discount":0,"DepartureCityName":"string","DepartureAirportName":"string","ArrivalCityName":"string","ArrivalAirportName":"string","PaymentAmount":0,"CanCancel":true,"CanPayment":true,"CanReturn":true,"CanChange":true,"CanNetCheckIn":true}]
-     */
 
-    private int Code;
-    private String Message;
     private int TotalCount;
     /**
      * OrderId : 0
@@ -36,9 +28,13 @@ public class OrderInfo implements Serializable{
      * AirlineName : string
      * BunkName : string
      * Discount : 0
+     * DepartureCityCode : string
      * DepartureCityName : string
+     * DepartureAirportCode : string
      * DepartureAirportName : string
+     * ArrivalCityCode : string
      * ArrivalCityName : string
+     * ArrivalAirportCode : string
      * ArrivalAirportName : string
      * PaymentAmount : 0
      * CanCancel : true
@@ -50,21 +46,6 @@ public class OrderInfo implements Serializable{
 
     private List<OrdersBean> Orders;
 
-    public int getCode() {
-        return Code;
-    }
-
-    public void setCode(int Code) {
-        this.Code = Code;
-    }
-
-    public String getMessage() {
-        return Message;
-    }
-
-    public void setMessage(String Message) {
-        this.Message = Message;
-    }
 
     public int getTotalCount() {
         return TotalCount;
@@ -83,6 +64,7 @@ public class OrderInfo implements Serializable{
     }
 
     public static class OrdersBean implements Serializable{
+        private static final long serialVersionUID = 5515656549322905583L;
         private int OrderId;
         private String OrderNo;
         private String TravelType;
@@ -99,9 +81,13 @@ public class OrderInfo implements Serializable{
         private String AirlineName;
         private String BunkName;
         private int Discount;
+        private String DepartureCityCode;
         private String DepartureCityName;
+        private String DepartureAirportCode;
         private String DepartureAirportName;
+        private String ArrivalCityCode;
         private String ArrivalCityName;
+        private String ArrivalAirportCode;
         private String ArrivalAirportName;
         private int PaymentAmount;
         private boolean CanCancel;
@@ -238,12 +224,28 @@ public class OrderInfo implements Serializable{
             this.Discount = Discount;
         }
 
+        public String getDepartureCityCode() {
+            return DepartureCityCode;
+        }
+
+        public void setDepartureCityCode(String DepartureCityCode) {
+            this.DepartureCityCode = DepartureCityCode;
+        }
+
         public String getDepartureCityName() {
             return DepartureCityName;
         }
 
         public void setDepartureCityName(String DepartureCityName) {
             this.DepartureCityName = DepartureCityName;
+        }
+
+        public String getDepartureAirportCode() {
+            return DepartureAirportCode;
+        }
+
+        public void setDepartureAirportCode(String DepartureAirportCode) {
+            this.DepartureAirportCode = DepartureAirportCode;
         }
 
         public String getDepartureAirportName() {
@@ -254,12 +256,28 @@ public class OrderInfo implements Serializable{
             this.DepartureAirportName = DepartureAirportName;
         }
 
+        public String getArrivalCityCode() {
+            return ArrivalCityCode;
+        }
+
+        public void setArrivalCityCode(String ArrivalCityCode) {
+            this.ArrivalCityCode = ArrivalCityCode;
+        }
+
         public String getArrivalCityName() {
             return ArrivalCityName;
         }
 
         public void setArrivalCityName(String ArrivalCityName) {
             this.ArrivalCityName = ArrivalCityName;
+        }
+
+        public String getArrivalAirportCode() {
+            return ArrivalAirportCode;
+        }
+
+        public void setArrivalAirportCode(String ArrivalAirportCode) {
+            this.ArrivalAirportCode = ArrivalAirportCode;
         }
 
         public String getArrivalAirportName() {
