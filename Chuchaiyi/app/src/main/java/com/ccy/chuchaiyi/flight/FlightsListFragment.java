@@ -30,6 +30,7 @@ import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.TopNavSubActivity;
 import com.ccy.chuchaiyi.index.SeatType;
 import com.ccy.chuchaiyi.net.ApiConstants;
+import com.ccy.chuchaiyi.order.OrderInfo;
 import com.ccy.chuchaiyi.widget.NestRadioGroup;
 import com.ccy.chuchaiyi.widget.PolicyDialog;
 import com.gjj.applibrary.event.EventOfTokenError;
@@ -156,6 +157,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
     private String mReturnDateString;
     private Date mCurrentDate;
     private Date mReturnDate;
+    private int mAccessFlags;
 
     @Override
     public void onRightBtnClick() {
@@ -256,6 +258,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
     }
 
     private Calendar calendar = Calendar.getInstance();
+    private OrderInfo.OrdersBean ordersBean;
 
     @Override
     public int getContentViewLayout() {
@@ -272,9 +275,10 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
         mCurrentDateString = bundle.getString("SetOutDate");
         mReturnDateString = bundle.getString("ReturnDate","");
         mBunkType = bundle.getString("BunkType");
+        mAccessFlags = bundle.getInt("accessFlag");
         final PullToRefreshExpandableListView listView = mListView;
         TopNavSubActivity act = (TopNavSubActivity) getActivity();
-        mAdapter = new FlightsListAdapter(getActivity(), new ArrayList<FlightInfo>(), mReturnDateString, mDepartureCode,mArrivalCode,mBunkType,act.getTitleText());
+        mAdapter = new FlightsListAdapter(getActivity(), new ArrayList<FlightInfo>(), mReturnDateString, mDepartureCode,mArrivalCode,mBunkType,act.getTitleText(),mAccessFlags,ordersBean);
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ExpandableListView>() {
             @Override
             public void onRefresh(PullToRefreshBase<ExpandableListView> refreshView) {

@@ -21,6 +21,12 @@
         <item>其他</item>
     </string-array>
 
+    <string-array name="changeOrderReason">
+        <item>行程变动</item>
+        <item>航班延误</item>
+        <item>自愿升舱</item>
+        <item>其他</item>
+    </string-array>
     <string-array name="netCheckIn">
         <item>前排</item>
         <item>后排</item>

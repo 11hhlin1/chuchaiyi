@@ -153,11 +153,13 @@
     <string name="apply_time">申请时间</string>
     <string name="book_success_tip">您的订单已经提交成功\n我们将尽快处理,稍后通知\n您预订结果</string>
     <string name="return_order_success_tip">退票申请提交成功\n我们将尽快处理</string>
+    <string name="change_order_success_tip">改签申请提交成功\n我们将尽快处理</string>
     <string name="net_check_success_tip">待办值机提交成功\n我们将尽快处理</string>
     <string name="plane">飞机</string>
     <string name="pay">付款</string>
     <string name="return_order_title_tip">退票费按产品规定。</string>
     <string name="return_order_desc">若费用变更,我们将及时联系您。申请退票后,座位会被取消。</string>
+    <string name="change_order_desc">改签时需要支付机票差价及政策规定的改签手续费。\n 若费用变更,我们将及时联系您。如有其它问题,请及时联系客服人员。</string>
     <string name="order_num_no_end">订单号  %1$s</string>
     <string name="pre_day_btn"><![CDATA[< 前一天]]></string>
     <string name="next_day_btn"><![CDATA[后一天 >]]></string>

@@ -85,6 +85,7 @@ public class ChangeFlightFragment extends BaseFragment {
                 bundle.putString("ArrivalCode", ordersBean.getArrivalCityCode());
                 bundle.putString("SetOutDate", mSelSetOutDate.replace("#","-"));
                 bundle.putInt("accessFlag", FlightsListFragment.FROM_CHANGE_FLIGHT);
+                bundle.putSerializable("order", ordersBean);
 //                bundle.putString("BunkType",mItemList.get(mSeatIndex).mCode);
                 StringBuilder title = Util.getThreadSafeStringBuilder();
                 title.append(ordersBean.getDepartureCityName()).append("-").append(ordersBean.getArrivalCityName());

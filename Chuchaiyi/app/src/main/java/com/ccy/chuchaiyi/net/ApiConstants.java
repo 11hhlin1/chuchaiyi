@@ -21,6 +21,7 @@ public class ApiConstants {
     public static final String CANCEL_ORDER = host+ "Flight/CancelApply";
     public static final String CONFIRM_ORDER_BY_LIST = host+ "Flight/OrderConfirmByCorpCredit";
     public static final String RETURN_ORDER = host+ "Flight/ReturnApply";
+    public static final String CHANGE_ORDER = host+ "Flight/ChangeApply";
     public static final String NET_CHECK_IN = host+ "Flight/NetCheckInApply";
     public static final String GET_STORED_USER= host+ "Common/GetMyStoredUsers";
     public static final String GET_EMPLOYEE_POLICY= host+ "Common/GetEmployeePolicyInfo";

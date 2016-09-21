@@ -204,6 +204,7 @@ public class IndexContentFragment extends BaseFragment {
                     bundle.putString("ReturnDate", mSelReturnDate.replace("#","-"));
                 }
                 bundle.putString("BunkType",mItemList.get(mSeatIndex).mCode);
+                bundle.putInt("accessFlag", FlightsListFragment.FROM_INDEX);
                 PreferencesManager.getInstance().put("SetOutFlightInfo", "");
                 PreferencesManager.getInstance().put("SetOutBunksBean", "");
                 PreferencesManager.getInstance().put("SetOutWarningInfoBean","");
