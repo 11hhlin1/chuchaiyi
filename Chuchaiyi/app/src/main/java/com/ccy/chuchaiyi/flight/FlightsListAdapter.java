@@ -27,6 +27,7 @@ import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.order.ChooseChangeFliReasonFragment;
 import com.ccy.chuchaiyi.order.EditOrderFragment;
 import com.ccy.chuchaiyi.order.OrderInfo;
+import com.ccy.chuchaiyi.order.ReturnOrderSuccessFragment;
 import com.ccy.chuchaiyi.util.DiscountUtil;
 import com.ccy.chuchaiyi.widget.PolicyDialog;
 import com.gjj.applibrary.event.EventOfTokenError;
@@ -77,8 +78,14 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
     private String mBunkType;
     private String mTitle;
     private int mAccessFlags;
+
+    public void setmOrdersBean(OrderInfo.OrdersBean mOrdersBean) {
+        this.mOrdersBean = mOrdersBean;
+    }
+
     private OrderInfo.OrdersBean mOrdersBean;
-    public FlightsListAdapter(Context context, List<FlightInfo> dataList, String returnDateString, String departureCode, String arrivalCode, String bunkType, String title,int flag,OrderInfo.OrdersBean ordersBean) {
+    private String mChangeReason;
+    public FlightsListAdapter(Context context, List<FlightInfo> dataList, String returnDateString, String departureCode, String arrivalCode, String bunkType, String title,int flag) {
         super();
         mContext = context;
         mRes = context.getResources();
@@ -95,9 +102,12 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
         mBunkType = bunkType;
         mTitle = title;
         mAccessFlags = flag;
-        mOrdersBean = ordersBean;
     }
 
+
+    public void setChangeReason(String reason) {
+        mChangeReason = reason;
+    }
     /**
      * 填充内容
      *
@@ -502,13 +512,43 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
                         }
                     });
         } else if(mAccessFlags == FlightsListFragment.FROM_CHANGE_FLIGHT) {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("order", mOrdersBean);
+            ChangeFlightReq changeFlightReq = new ChangeFlightReq();
+            changeFlightReq.ChangeReason = mChangeReason;
+            changeFlightReq.SrcOrderId = mOrdersBean.getOrderId();
             List<FlightInfo.BunksBean> bunksBeanList = new ArrayList<>();
             bunksBeanList.add(bunks);
             flight.setBunks(bunksBeanList);
-            bundle.putSerializable("flight", flight);
-            PageSwitcher.switchToTopNavPage((Activity) mContext,ChooseChangeFliReasonFragment.class,bundle,mContext.getString(R.string.policy),null);
+            changeFlightReq.ChangeRoute = flight;
+            bunks.getBunkPrice().getFactBunkPrice();
+            mOrdersBean.getPaymentAmount();
+            changeFlightReq.ChangeDifferencePrice = 0;
+            OkHttpUtils.post(ApiConstants.CHANGE_ORDER)
+                    .tag(this)
+                    .cacheMode(CacheMode.NO_CACHE)
+                    .postJson(JSON.toJSONString(changeFlightReq))
+                    .execute(new JsonCallback<String>(String.class) {
+
+                        @Override
+                        public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
+                            ToastUtil.shortToast(R.string.success);
+                            Bundle bundle = new Bundle();
+                            StringBuilder city = Util.getThreadSafeStringBuilder();
+                            city.append(mOrdersBean.getDepartureCityName()).append("-").append(mOrdersBean.getArrivalCityName());
+                            bundle.putString("city", city.toString());
+                            bundle.putString("orderNum",mOrdersBean.getOrderNo());
+                            bundle.putInt("orderId", mOrdersBean.getOrderId());
+                            bundle.putString("tip", mContext.getString(R.string.change_order_success_tip));
+                            PageSwitcher.switchToTopNavPage((Activity) mContext, ReturnOrderSuccessFragment.class, bundle, mContext.getString(R.string.returnPolicy),mContext.getString(R.string.index));
+
+                        }
+
+                        @Override
+                        public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                            super.onError(isFromCache, call, response, e);
+                        }
+
+                    });
+
 
         }
     }

@@ -1,5 +1,6 @@
 package com.ccy.chuchaiyi.order;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -48,7 +49,7 @@ public class ChooseChangeFliReasonFragment extends BaseFragment{
     private int dividePos;
     private OrderInfo.OrdersBean ordersBean;
     private String[] reasonArray;
-    private FlightInfo mFlightInfo;
+//    private FlightInfo mFlightInfo;
     @Override
     public int getContentViewLayout() {
         return R.layout.fragment_return_order;
@@ -60,7 +61,7 @@ public class ChooseChangeFliReasonFragment extends BaseFragment{
         returnOrderDesc.setText(getString(R.string.change_order_desc));
         Bundle bundle = getArguments();
         ordersBean = (OrderInfo.OrdersBean) bundle.getSerializable("order");
-        mFlightInfo = (FlightInfo) bundle.getSerializable("flight");
+//        mFlightInfo = (FlightInfo) bundle.getSerializable("flight");
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         List<PolicyReason> reasonList = new ArrayList<>();
         PolicyReason reason = new PolicyReason();
@@ -87,41 +88,13 @@ public class ChooseChangeFliReasonFragment extends BaseFragment{
 
     @OnClick(R.id.policy_btn_sure)
     public void onClick() {
-        ChangeFlightReq changeFlightReq = new ChangeFlightReq();
-        changeFlightReq.ChangeReason = reasonArray[mAdapter.getFirstReasonPos() - 1];
-        changeFlightReq.SrcOrderId = ordersBean.getOrderId();
-        FlightInfo.BunksBean bunks = mFlightInfo.getBunks().get(0);
-        bunks.getBunkPrice().getFactBunkPrice();
-        ordersBean.getPaymentAmount();
-        changeFlightReq.ChangeDifferencePrice = 0;
-
-        OkHttpUtils.post(ApiConstants.CHANGE_ORDER)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .postJson(JSON.toJSONString(changeFlightReq))
-                .execute(new JsonCallback<String>(String.class) {
-
-                    @Override
-                    public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
-//                        EventOfRefreshOrderList eventOfRefreshOrderList = new EventOfRefreshOrderList();
-//                        EventBus.getDefault().post(eventOfRefreshOrderList);
-                        ToastUtil.shortToast(R.string.success);
-                        Bundle bundle = new Bundle();
-                        StringBuilder city = Util.getThreadSafeStringBuilder();
-                        city.append(ordersBean.getDepartureCityName()).append("-").append(ordersBean.getArrivalCityName());
-                        bundle.putString("city", city.toString());
-                        bundle.putString("orderNum",ordersBean.getOrderNo());
-                        bundle.putInt("orderId", ordersBean.getOrderId());
-                        bundle.putString("tip", getString(R.string.change_order_success_tip));
-                        PageSwitcher.switchToTopNavPage(getActivity(), ReturnOrderSuccessFragment.class, bundle, getString(R.string.returnPolicy),getString(R.string.index));
-
-                    }
-
-                    @Override
-                    public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
-                        super.onError(isFromCache, call, response, e);
-                    }
-
-                });
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("order", ordersBean);
+        bundle.putString("reason", reasonArray[mAdapter.getFirstReasonPos() - 1]);
+//        List<FlightInfo.BunksBean> bunksBeanList = new ArrayList<>();
+//        bunksBeanList.add(bunks);
+//        flight.setBunks(bunksBeanList);
+//        bundle.putSerializable("flight", flight);
+        PageSwitcher.switchToTopNavPage(getActivity(),ChangeFlightFragment.class,bundle,getString(R.string.policy),null);
     }
 }

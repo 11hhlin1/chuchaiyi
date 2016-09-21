@@ -258,7 +258,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
     }
 
     private Calendar calendar = Calendar.getInstance();
-    private OrderInfo.OrdersBean ordersBean;
+    private OrderInfo.OrdersBean mOrdersBean;
 
     @Override
     public int getContentViewLayout() {
@@ -276,9 +276,13 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
         mReturnDateString = bundle.getString("ReturnDate","");
         mBunkType = bundle.getString("BunkType");
         mAccessFlags = bundle.getInt("accessFlag");
+        mOrdersBean = (OrderInfo.OrdersBean) bundle.getSerializable("order");
+
         final PullToRefreshExpandableListView listView = mListView;
         TopNavSubActivity act = (TopNavSubActivity) getActivity();
-        mAdapter = new FlightsListAdapter(getActivity(), new ArrayList<FlightInfo>(), mReturnDateString, mDepartureCode,mArrivalCode,mBunkType,act.getTitleText(),mAccessFlags,ordersBean);
+        mAdapter = new FlightsListAdapter(getActivity(), new ArrayList<FlightInfo>(), mReturnDateString, mDepartureCode,mArrivalCode,mBunkType,act.getTitleText(),mAccessFlags);
+        mAdapter.setChangeReason(bundle.getString("reason"));
+        mAdapter.setmOrdersBean(mOrdersBean);
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ExpandableListView>() {
             @Override
             public void onRefresh(PullToRefreshBase<ExpandableListView> refreshView) {

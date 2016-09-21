@@ -265,7 +265,9 @@ public class OrderListAdapter extends SimpleRecyclerViewAdapter<OrderInfo.Orders
                 bundle.putSerializable("order", ordersBean);
                 PageSwitcher.switchToTopNavPage((Activity)mContext, ReturnOrderFragment.class, bundle, mContext.getString(R.string.returnPolicy),null);
             } else if(str.equals(mContext.getString(R.string.changePolicy))) {
-
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("order", ordersBean);
+                PageSwitcher.switchToTopNavPage((Activity)mContext, ChooseChangeFliReasonFragment.class, bundle, mContext.getString(R.string.changePolicy),null);
             } else if(str.equals(mContext.getString(R.string.dai_ban_zhi_ji))) {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("order", ordersBean);
