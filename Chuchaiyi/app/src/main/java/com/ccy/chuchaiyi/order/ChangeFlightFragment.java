@@ -20,6 +20,7 @@ import com.gjj.applibrary.util.PreferencesManager;
 import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -65,6 +66,10 @@ public class ChangeFlightFragment extends BaseFragment {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy#MM#dd");
         mSelSetOutDate = simpleDateFormat1.format(calendar.getTime());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM月dd日");
+        setOutDateTv.setText(simpleDateFormat.format(calendar.getTime()));
+        EventBus.getDefault().register(this);
+
     }
 
 

@@ -1,6 +1,7 @@
 package com.ccy.chuchaiyi.order;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
+import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.base.SpaceItemDecoration;
 import com.ccy.chuchaiyi.check.Approval;
 import com.ccy.chuchaiyi.check.Authorizes;
@@ -15,7 +17,9 @@ import com.ccy.chuchaiyi.check.AuthorizesAdapter;
 import com.ccy.chuchaiyi.check.CategoryData;
 import com.ccy.chuchaiyi.check.CheckTypeAdapter;
 import com.ccy.chuchaiyi.event.EventOfCancelApproval;
+import com.ccy.chuchaiyi.event.EventOfDumpOrderDetail;
 import com.ccy.chuchaiyi.event.EventOfRefreshOrderList;
+import com.ccy.chuchaiyi.main.MainActivity;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.util.ToastUtil;
@@ -133,7 +137,20 @@ public class OrderFragment extends BaseFragment{
             return;
         }
         doRequest(1);
+
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void dumpDetail(EventOfDumpOrderDetail event) {
+        if(getActivity() == null) {
+            return;
+        }
+        doRequest(1);
+        Bundle bundle = new Bundle();
+        bundle.putInt("orderId", event.orderId);
+        PageSwitcher.switchToTopNavPage(getActivity(), OrderDetailFragment.class, bundle, "订单详情", null);
+    }
+
     private void setEmptyTextView() {
         mEmptyTextView.setText(getString(R.string.empty_no_data));
     }

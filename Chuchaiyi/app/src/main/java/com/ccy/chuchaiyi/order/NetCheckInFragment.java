@@ -14,12 +14,15 @@ import android.widget.TextView;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.PageSwitcher;
+import com.ccy.chuchaiyi.event.EventOfRefreshOrderList;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.cache.CacheMode;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -118,6 +121,8 @@ public class NetCheckInFragment extends BaseFragment {
                         bundle.putString("orderNum", ordersBean.getOrderNo());
                         bundle.putInt("orderId", ordersBean.getOrderId());
                         bundle.putString("tip", getString(R.string.net_check_success_tip));
+                        EventOfRefreshOrderList eventOfRefreshOrderList = new EventOfRefreshOrderList();
+                        EventBus.getDefault().post(eventOfRefreshOrderList);
                         PageSwitcher.switchToTopNavPage(getActivity(), ReturnOrderSuccessFragment.class, bundle, getString(R.string.dai_ban_zhi_ji), getString(R.string.index));
 
                     }

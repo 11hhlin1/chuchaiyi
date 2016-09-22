@@ -11,7 +11,9 @@ import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.event.EventOfChangeTab;
+import com.ccy.chuchaiyi.event.EventOfDumpOrderDetail;
 import com.ccy.chuchaiyi.main.MainActivity;
+import com.gjj.applibrary.task.MainTaskExecutor;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -74,9 +76,9 @@ public class ReturnOrderSuccessFragment extends BaseFragment {
                 break;
             case R.id.back_order_detail:
                 getActivity().finish();
-                Bundle bundle = new Bundle();
-                bundle.putInt("orderId", orderId);
-                PageSwitcher.switchToTopNavPage(MainActivity.getMainActivity(), OrderDetailFragment.class, bundle, "订单详情", null);
+                EventOfDumpOrderDetail eventOfDumpOrderDetail = new EventOfDumpOrderDetail();
+                eventOfDumpOrderDetail.orderId = orderId;
+                EventBus.getDefault().post(eventOfDumpOrderDetail);
                 break;
         }
     }

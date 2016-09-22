@@ -95,6 +95,6 @@ public class ChooseChangeFliReasonFragment extends BaseFragment{
 //        bunksBeanList.add(bunks);
 //        flight.setBunks(bunksBeanList);
 //        bundle.putSerializable("flight", flight);
-        PageSwitcher.switchToTopNavPage(getActivity(),ChangeFlightFragment.class,bundle,getString(R.string.policy),null);
+        PageSwitcher.switchToTopNavPage(getActivity(),ChangeFlightFragment.class,bundle,getString(R.string.changePolicy),null);
     }
 }

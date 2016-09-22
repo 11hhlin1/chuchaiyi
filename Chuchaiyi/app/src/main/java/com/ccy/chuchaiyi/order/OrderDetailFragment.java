@@ -1,5 +1,6 @@
 package com.ccy.chuchaiyi.order;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -12,16 +13,21 @@ import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
+import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.check.AuthorizeDetailRsp;
 import com.ccy.chuchaiyi.check.CheckDetailRsp;
 import com.ccy.chuchaiyi.check.PersonalViewHolder;
+import com.ccy.chuchaiyi.event.EventOfRefreshOrderList;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.util.DiscountUtil;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.util.DateUtil;
+import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.cache.CacheMode;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -107,7 +113,7 @@ public class OrderDetailFragment extends BaseFragment {
     @Bind(R.id.bottom_rl)
     RelativeLayout bottomRl;
     int orderId;
-
+    private OrderInfo.OrdersBean ordersBean;
     @Override
     public int getContentViewLayout() {
         return R.layout.fragment_order_detail;
@@ -115,7 +121,9 @@ public class OrderDetailFragment extends BaseFragment {
 
     @Override
     public void initView() {
-        orderId = getArguments().getInt("orderId");
+        Bundle bundle = getArguments();
+        orderId = bundle.getInt("orderId");
+        ordersBean = new OrderInfo.OrdersBean();
         showLoadingDialog(R.string.submitting, false);
         OkHttpUtils.get(ApiConstants.GET_ORDER_DETAIL)
                 .tag(this)
@@ -129,6 +137,9 @@ public class OrderDetailFragment extends BaseFragment {
                             public void run() {
                                 dismissLoadingDialog();
                                 AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean orderBean = orderDetailRsp.Order;
+                                if(orderBean == null)
+                                    return;
+                                setOrder(orderBean);
                                 checkStateTv.setText(orderBean.getStatus());
                                 AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean.PassengerBean.TravelPolicyInfoBean policy = orderBean.getPassenger().getTravelPolicyInfo();
                                 StringBuilder lowPriceMsg = Util.getThreadSafeStringBuilder();
@@ -258,15 +269,44 @@ public class OrderDetailFragment extends BaseFragment {
 
     }
 
-
+private void setOrder(AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean orderBean) {
+    ordersBean.setOrderId(orderBean.getOrderId());
+    ordersBean.setOrderNo(orderBean.getOrderNo());
+    ordersBean.setTravelType(orderBean.getTravelType());
+    ordersBean.setPayMode(orderBean.getPayMode());
+    ordersBean.setStatus(orderBean.getStatus());
+    ordersBean.setPaymentStatus(orderBean.getPaymentStatus());
+    ordersBean.setApprovalStatus(orderBean.getApprovalStatus());
+    ordersBean.setAuthorizeStatus(orderBean.getAuthorizeStatus());
+    ordersBean.setBookingEmployeeName(orderBean.getBookingEmployeeName());
+    ordersBean.setPassengerName(orderBean.getPassenger().getPassengerName());
+    ordersBean.setDepartureDateTime(orderBean.getRoute().getDeparture().getDateTime());
+    ordersBean.setFlightNo(orderBean.getRoute().getFlightNo());
+    ordersBean.setAirlineName(orderBean.getRoute().getAirlineName());
+    ordersBean.setBunkName(orderBean.getRoute().getBunkName());
+    ordersBean.setDiscount(orderBean.getRoute().getDiscount());
+    ordersBean.setDepartureAirportCode(orderBean.getRoute().getDeparture().getAirportCode());
+    ordersBean.setDepartureCityName(orderBean.getRoute().getDeparture().getCityName());
+    ordersBean.setDepartureAirportName(orderBean.getRoute().getDeparture().getAirportName());
+    ordersBean.setDepartureCityCode(orderBean.getRoute().getDeparture().getCityCode());
+    ordersBean.setArrivalAirportCode(orderBean.getRoute().getArrival().getAirportCode());
+    ordersBean.setArrivalAirportName(orderBean.getRoute().getArrival().getAirportName());
+    ordersBean.setArrivalCityCode(orderBean.getRoute().getArrival().getCityCode());
+    ordersBean.setArrivalCityName(orderBean.getRoute().getArrival().getCityName());
+    ordersBean.setFactTicketPrice(orderBean.getFeeInfo().getTicketFee());
+    ordersBean.setPaymentAmount(orderBean.getFeeInfo().getPaymentAmount());
+}
     @OnClick({R.id.handle_btn_1, R.id.handle_btn_2, R.id.handle_btn_3})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.handle_btn_1:
+                handleBtn(handleBtn1);
                 break;
             case R.id.handle_btn_2:
+                handleBtn(handleBtn2);
                 break;
             case R.id.handle_btn_3:
+                handleBtn(handleBtn3);
                 break;
         }
     }
@@ -315,6 +355,65 @@ public class OrderDetailFragment extends BaseFragment {
             bottomRl.setVisibility(View.GONE);
         } else {
             bottomRl.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void handleBtn(Button button) {
+        String str = button.getText().toString();
+        if(str.equals(getString(R.string.dialog_default_cancel_title))) {
+            StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+            stringBuilder.append(ApiConstants.CANCEL_ORDER).append("?").append("orderId=").append(ordersBean.getOrderId());
+            OkHttpUtils.post(stringBuilder.toString())
+                    .tag(this)
+                    .cacheMode(CacheMode.NO_CACHE)
+                    .execute(new JsonCallback<String>(String.class) {
+
+                        @Override
+                        public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
+                            EventOfRefreshOrderList eventOfRefreshOrderList = new EventOfRefreshOrderList();
+                            EventBus.getDefault().post(eventOfRefreshOrderList);
+                            ToastUtil.shortToast(R.string.success);
+                        }
+
+                        @Override
+                        public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                            super.onError(isFromCache, call, response, e);
+                        }
+
+                    });
+        } else if(str.equals(getString(R.string.pay))) {
+            StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+            stringBuilder.append(ApiConstants.CONFIRM_ORDER_BY_LIST).append("?").append("orderId=").append(ordersBean.getOrderId());
+            OkHttpUtils.post(stringBuilder.toString())
+                    .tag(getActivity())
+                    .cacheMode(CacheMode.NO_CACHE)
+                    .execute(new JsonCallback<String>(String.class) {
+
+                        @Override
+                        public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
+                            EventOfRefreshOrderList eventOfRefreshOrderList = new EventOfRefreshOrderList();
+                            EventBus.getDefault().post(eventOfRefreshOrderList);
+                            ToastUtil.shortToast(R.string.success);
+                        }
+
+                        @Override
+                        public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                            super.onError(isFromCache, call, response, e);
+                        }
+
+                    });
+        } else if(str.equals(getString(R.string.returnPolicy))) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("order", ordersBean);
+            PageSwitcher.switchToTopNavPage(getActivity(), ReturnOrderFragment.class, bundle, getString(R.string.returnPolicy),null);
+        } else if(str.equals(getString(R.string.changePolicy))) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("order", ordersBean);
+            PageSwitcher.switchToTopNavPage(getActivity(), ChooseChangeFliReasonFragment.class, bundle, getString(R.string.changePolicy),null);
+        } else if(str.equals(getString(R.string.dai_ban_zhi_ji))) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("order", ordersBean);
+            PageSwitcher.switchToTopNavPage(getActivity(), NetCheckInFragment.class, bundle, getString(R.string.dai_ban_zhi_ji),null);
         }
     }
 }

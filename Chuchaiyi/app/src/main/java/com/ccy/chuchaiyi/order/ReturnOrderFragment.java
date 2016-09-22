@@ -107,6 +107,8 @@ public class ReturnOrderFragment extends BaseFragment {
                         bundle.putString("orderNum",ordersBean.getOrderNo());
                         bundle.putInt("orderId", ordersBean.getOrderId());
                         bundle.putString("tip", getString(R.string.return_order_success_tip));
+                        EventOfRefreshOrderList eventOfRefreshOrderList = new EventOfRefreshOrderList();
+                        EventBus.getDefault().post(eventOfRefreshOrderList);
                         PageSwitcher.switchToTopNavPage(getActivity(), ReturnOrderSuccessFragment.class, bundle, getString(R.string.returnPolicy),getString(R.string.index));
 
                     }

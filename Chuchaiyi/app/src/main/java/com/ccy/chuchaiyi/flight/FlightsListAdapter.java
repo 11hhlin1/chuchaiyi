@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.PageSwitcher;
+import com.ccy.chuchaiyi.event.EventOfRefreshOrderList;
 import com.ccy.chuchaiyi.login.ForgetPswFragment;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.order.ChooseChangeFliReasonFragment;
@@ -519,9 +520,8 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
             bunksBeanList.add(bunks);
             flight.setBunks(bunksBeanList);
             changeFlightReq.ChangeRoute = flight;
-            bunks.getBunkPrice().getFactBunkPrice();
-            mOrdersBean.getPaymentAmount();
-            changeFlightReq.ChangeDifferencePrice = 0;
+            int price = bunks.getBunkPrice().getFactBunkPrice() - mOrdersBean.getFactTicketPrice();
+            changeFlightReq.ChangeDifferencePrice = price > 0 ? price : 0;
             OkHttpUtils.post(ApiConstants.CHANGE_ORDER)
                     .tag(this)
                     .cacheMode(CacheMode.NO_CACHE)
@@ -535,10 +535,13 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
                             StringBuilder city = Util.getThreadSafeStringBuilder();
                             city.append(mOrdersBean.getDepartureCityName()).append("-").append(mOrdersBean.getArrivalCityName());
                             bundle.putString("city", city.toString());
-                            bundle.putString("orderNum",mOrdersBean.getOrderNo());
-                            bundle.putInt("orderId", mOrdersBean.getOrderId());
+                            bundle.putString("orderNum", mOrdersBean.getOrderNo());
+                            com.alibaba.fastjson.JSONObject jsonObject = JSON.parseObject(s);
+                            bundle.putInt("orderId", jsonObject.getIntValue("ChangeOrderId"));
                             bundle.putString("tip", mContext.getString(R.string.change_order_success_tip));
-                            PageSwitcher.switchToTopNavPage((Activity) mContext, ReturnOrderSuccessFragment.class, bundle, mContext.getString(R.string.returnPolicy),mContext.getString(R.string.index));
+                            EventOfRefreshOrderList eventOfRefreshOrderList = new EventOfRefreshOrderList();
+                            EventBus.getDefault().post(eventOfRefreshOrderList);
+                            PageSwitcher.switchToTopNavPage((Activity) mContext, ReturnOrderSuccessFragment.class, bundle, mContext.getString(R.string.changePolicy),mContext.getString(R.string.index));
 
                         }
 

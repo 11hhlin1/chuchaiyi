@@ -10,6 +10,15 @@ public class OrderInfo implements Serializable{
     private static final long serialVersionUID = 2448947305691347980L;
 
 
+    /**
+     * Code : 0
+     * Message : string
+     * TotalCount : 0
+     * Orders : [{"OrderId":0,"OrderNo":"string","TravelType":"string","PayMode":"string","Status":"string","PaymentStatus":"string","ApprovalStatus":"string","AuthorizeStatus":"string","BookingEmployeeName":"string","PassengerName":"string","CreateTime":"string","DepartureDateTime":"string","FlightNo":"string","AirlineName":"string","BunkName":"string","Discount":0,"DepartureCityCode":"string","DepartureCityName":"string","DepartureAirportCode":"string","DepartureAirportName":"string","ArrivalCityCode":"string","ArrivalCityName":"string","ArrivalAirportCode":"string","ArrivalAirportName":"string","FactTicketPrice":0,"PaymentAmount":0,"CanCancel":true,"CanPayment":true,"CanReturn":true,"CanChange":true,"CanNetCheckIn":true}]
+     */
+
+    private int Code;
+    private String Message;
     private int TotalCount;
     /**
      * OrderId : 0
@@ -36,6 +45,7 @@ public class OrderInfo implements Serializable{
      * ArrivalCityName : string
      * ArrivalAirportCode : string
      * ArrivalAirportName : string
+     * FactTicketPrice : 0
      * PaymentAmount : 0
      * CanCancel : true
      * CanPayment : true
@@ -46,6 +56,21 @@ public class OrderInfo implements Serializable{
 
     private List<OrdersBean> Orders;
 
+    public int getCode() {
+        return Code;
+    }
+
+    public void setCode(int Code) {
+        this.Code = Code;
+    }
+
+    public String getMessage() {
+        return Message;
+    }
+
+    public void setMessage(String Message) {
+        this.Message = Message;
+    }
 
     public int getTotalCount() {
         return TotalCount;
@@ -64,7 +89,7 @@ public class OrderInfo implements Serializable{
     }
 
     public static class OrdersBean implements Serializable{
-        private static final long serialVersionUID = 5515656549322905583L;
+        private static final long serialVersionUID = 8736054381564733075L;
         private int OrderId;
         private String OrderNo;
         private String TravelType;
@@ -89,6 +114,7 @@ public class OrderInfo implements Serializable{
         private String ArrivalCityName;
         private String ArrivalAirportCode;
         private String ArrivalAirportName;
+        private int FactTicketPrice;
         private int PaymentAmount;
         private boolean CanCancel;
         private boolean CanPayment;
@@ -286,6 +312,14 @@ public class OrderInfo implements Serializable{
 
         public void setArrivalAirportName(String ArrivalAirportName) {
             this.ArrivalAirportName = ArrivalAirportName;
+        }
+
+        public int getFactTicketPrice() {
+            return FactTicketPrice;
+        }
+
+        public void setFactTicketPrice(int FactTicketPrice) {
+            this.FactTicketPrice = FactTicketPrice;
         }
 
         public int getPaymentAmount() {
