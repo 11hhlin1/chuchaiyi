@@ -59,4 +59,65 @@ public class DateUtil {
         dateTitle.append(simpleDateFormat.format(calendar.getTime()));
         return dateTitle.toString();
     }
+
+
+
+    /**
+     *
+     * @param date 2011-03-06
+     * @return
+     */
+    public static String getYYYYMMDDDate(String date) {
+        String[] dates = date.split("-");
+        Calendar calendar = Calendar.getInstance();
+        if(TextUtils.isEmpty(dates[0]) || TextUtils.isEmpty(dates[1])|| TextUtils.isEmpty(dates[2]))
+            return "";
+        calendar.set(Integer.valueOf(dates[0]), Integer.valueOf(dates[1]) - 1, Integer.valueOf(dates[2]));
+        StringBuilder dateTitle = Util.getThreadSafeStringBuilder();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        dateTitle.append(simpleDateFormat.format(calendar.getTime()));
+        return dateTitle.toString();
+    }
+
+    /**
+     *
+     * @param date 2011-03-06 12:00
+     * @return
+     */
+    public static String getYYYYMMDDHHMMDate(String date) {
+        String[] before = date.split(" ");
+        String[] dates = before[0].split("-");
+        Calendar calendar = Calendar.getInstance();
+        if(TextUtils.isEmpty(dates[0]) || TextUtils.isEmpty(dates[1])|| TextUtils.isEmpty(dates[2]))
+            return "";
+        calendar.set(Integer.valueOf(dates[0]), Integer.valueOf(dates[1]) - 1, Integer.valueOf(dates[2]));
+        StringBuilder dateTitle = Util.getThreadSafeStringBuilder();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        dateTitle.append(simpleDateFormat.format(calendar.getTime()));
+        String dateBefore = dateTitle.toString();
+        StringBuilder finalStr = Util.getThreadSafeStringBuilder();
+        finalStr.append(dateBefore).append(" ").append(before[1]);
+        return finalStr.toString();
+    }
+
+    /**
+     *
+     * @param date 2011-03-06 12:00
+     * @return
+     */
+    public static String getMMDDHHMMDate(String date) {
+        String[] before = date.split(" ");
+        String[] dates = before[0].split("-");
+        Calendar calendar = Calendar.getInstance();
+        if(TextUtils.isEmpty(dates[0]) || TextUtils.isEmpty(dates[1])|| TextUtils.isEmpty(dates[2]))
+            return "";
+        calendar.set(Integer.valueOf(dates[0]), Integer.valueOf(dates[1]) - 1, Integer.valueOf(dates[2]));
+        StringBuilder dateTitle = Util.getThreadSafeStringBuilder();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM月dd日");
+        dateTitle.append(simpleDateFormat.format(calendar.getTime()));
+        String dateBefore = dateTitle.toString();
+        StringBuilder finalStr = Util.getThreadSafeStringBuilder();
+        finalStr.append(dateBefore).append(" ").append(before[1]);
+        return finalStr.toString();
+    }
 }

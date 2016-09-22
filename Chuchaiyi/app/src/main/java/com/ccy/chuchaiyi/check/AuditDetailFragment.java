@@ -226,7 +226,7 @@ public class AuditDetailFragment extends BaseFragment {
                                            AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean.RouteBean.DepartureBean departure = route.getDeparture();
                                            AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean.RouteBean.ArrivalBean arrival = route.getArrival();
                                            AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean.FeeInfoBean feeInfo = order.getFeeInfo();
-                                           city.append(departure.getCityName()).append("-").append(arrival.getCityName());
+                                           city.append(departure.getCityName()).append(" - ").append(arrival.getCityName());
                                            flightCity.setText(city.toString());
                                            StringBuilder bunk = Util.getThreadSafeStringBuilder();
                                            bunk.append(DiscountUtil.getDis(route.getDiscount())).append(route.getBunkName());
@@ -282,7 +282,7 @@ public class AuditDetailFragment extends BaseFragment {
                                                viewHolder.checkStateIcon.setImageResource(R.mipmap.icon_order_approve2);
                                            }
                                            viewHolder.checkDetailTv.setText(detail.getStatus());
-                                           viewHolder.checkTime.setText(detail.getAuditDate());
+                                           viewHolder.checkTime.setText(DateUtil.getYYYYMMDDHHMMDate(detail.getAuditDate()));
                                            checkStateLl.addView(viewHolder.parent);
                                        }
                                    }

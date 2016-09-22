@@ -18,6 +18,7 @@ import com.ccy.chuchaiyi.event.EventOfAgreeCheck;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.util.DiscountUtil;
 import com.gjj.applibrary.http.callback.JsonCallback;
+import com.gjj.applibrary.util.DateUtil;
 import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 import com.lzy.okhttputils.OkHttpUtils;
@@ -113,10 +114,13 @@ public class CheckDetailFragment extends BaseFragment {
                                 tripReason.setText(detail.getTravelReason());
                                 travelCity.setText(detail.getTravelDestination());
                                 travelPerson.setText(detail.getEmployeeName());
+                                String travelStartTime = DateUtil.getYYYYMMDDDate(detail.getTravelDateStart());
+                                String travelEndTime = DateUtil.getYYYYMMDDDate(detail.getTravelDateEnd());
                                 StringBuilder travelTimeStr = Util.getThreadSafeStringBuilder();
-                                travelTimeStr.append(detail.getTravelDateStart()).append("-").append(detail.getTravelDateEnd());
+                                travelTimeStr.append(travelStartTime).append(" - ").append(travelEndTime);
                                 travelTime.setText(travelTimeStr);
-                                applyTime.setText(detail.getCreateTime());
+                                String applyTimeStr = DateUtil.getYYYYMMDDHHMMDate(detail.getCreateTime());
+                                applyTime.setText(applyTimeStr);
                                 checkNum.setText(detail.getApprovalNo());
                                 if(TextUtils.isEmpty(detail.getTransport())) {
                                     travelWay.setText(R.string.plane);
@@ -130,10 +134,11 @@ public class CheckDetailFragment extends BaseFragment {
                                     FlightViewHolder viewHolder = inflateFlightView(inflater);
                                     viewHolder.detailIcon.setImageResource(R.mipmap.icon_order_flight);
                                     StringBuilder title = Util.getThreadSafeStringBuilder();
-                                    title.append(flightOrdersBean.getDepartureCityName()).append("-").append(flightOrdersBean.getArrivalCityName()).append(" ").append(DiscountUtil.getDis(flightOrdersBean.getDiscount())).append(flightOrdersBean.getBunkName());
+                                    title.append(flightOrdersBean.getDepartureCityName()).append(" - ").append(flightOrdersBean.getArrivalCityName()).append(" ").append(DiscountUtil.getDis(flightOrdersBean.getDiscount())).append(flightOrdersBean.getBunkName());
                                     viewHolder.detailTitle.setText(title.toString());
+                                    String flightTime = DateUtil.getDate(flightOrdersBean.getFlightDate());
                                     StringBuilder checkDetail = Util.getThreadSafeStringBuilder();
-                                    checkDetail.append(flightOrdersBean.getAirlineName()).append(flightOrdersBean.getFlightNo()).append(flightOrdersBean.getFlightDate());
+                                    checkDetail.append(flightOrdersBean.getAirlineName()).append(flightOrdersBean.getFlightNo()).append("   ").append(flightTime);
                                     viewHolder.detailTv.setText(checkDetail.toString());
                                     viewHolder.amountTv.setText(getString(R.string.money_no_end, flightOrdersBean.getAmount()));
                                     orderDetailLl.addView(viewHolder.parent);
@@ -144,7 +149,7 @@ public class CheckDetailFragment extends BaseFragment {
                                     viewHolder.detailIcon.setImageResource(R.mipmap.icon_order_hotel);
                                     viewHolder.detailTitle.setText(hotelOrdersBean.getHotelName());
                                     StringBuilder checkDetail = Util.getThreadSafeStringBuilder();
-                                    checkDetail.append(hotelOrdersBean.getRoomTypeName()).append("  ").append(hotelOrdersBean.getCheckInDate()).append(hotelOrdersBean.getCheckOutDate());
+                                    checkDetail.append(hotelOrdersBean.getRoomTypeName()).append("  ").append(DateUtil.getDate(hotelOrdersBean.getCheckInDate())).append(" - ").append(DateUtil.getDate(hotelOrdersBean.getCheckOutDate()));
                                     viewHolder.detailTv.setText(checkDetail.toString());
                                     viewHolder.amountTv.setText(getString(R.string.money_no_end, hotelOrdersBean.getAmount()));
                                     orderDetailLl.addView(viewHolder.parent);
@@ -175,7 +180,7 @@ public class CheckDetailFragment extends BaseFragment {
                                         viewHolder.checkStateIcon.setImageResource(R.mipmap.icon_order_approve2);
                                     }
                                     viewHolder.checkDetailTv.setText(hiStatus);
-                                    viewHolder.checkTime.setText(approvalHisBean.getAuditDate());
+                                    viewHolder.checkTime.setText(DateUtil.getYYYYMMDDHHMMDate(approvalHisBean.getAuditDate()));
                                     checkStateLl.addView(viewHolder.parent);
                                 }
 

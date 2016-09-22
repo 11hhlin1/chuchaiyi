@@ -19,6 +19,7 @@ import com.ccy.chuchaiyi.event.EventOfRefreshOrderList;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.util.DiscountUtil;
 import com.gjj.applibrary.http.callback.JsonCallback;
+import com.gjj.applibrary.util.DateUtil;
 import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 import com.lzy.okhttputils.OkHttpUtils;
@@ -72,9 +73,7 @@ public class OrderListAdapter extends SimpleRecyclerViewAdapter<OrderInfo.Orders
         discount.append(DiscountUtil.getDis(ordersBean.getDiscount())).append(ordersBean.getBunkName());
         viewHolderHeader.flightDiscount.setText(discount.toString());
         viewHolderHeader.flightMoney.setText(mContext.getString(R.string.money_no_end,ordersBean.getPaymentAmount()));
-        StringBuilder time = Util.getThreadSafeStringBuilder();
-        //TODO
-        viewHolderHeader.flightTime.setText(ordersBean.getDepartureDateTime());
+        viewHolderHeader.flightTime.setText(DateUtil.getMMDDHHMMDate(ordersBean.getDepartureDateTime()));
         viewHolderHeader.passenger.setText(ordersBean.getPassengerName());
         viewHolderHeader.passenger.setTag(ordersBean);
         setBtnText(viewHolderHeader);

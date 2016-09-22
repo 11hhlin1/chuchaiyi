@@ -399,7 +399,7 @@ public class EditOrderFragment extends BaseFragment {
                         }
                         bundle.putString("city",city.toString());
                         StringBuilder airplane = Util.getThreadSafeStringBuilder();
-                        airplane.append(mFlightInfo.getDeparture().getDateTime()).append(mFlightInfo.getFlightNo());
+                        airplane.append(mFlightInfo.getDeparture().getDateTime()).append(" ").append(mFlightInfo.getFlightNo());
                         if(mReturnFlightInfo != null) {
                             airplane.append("\n").append(mReturnFlightInfo.getDeparture().getDateTime()).append(mReturnFlightInfo.getFlightNo()).append("(往返)");
                         }
