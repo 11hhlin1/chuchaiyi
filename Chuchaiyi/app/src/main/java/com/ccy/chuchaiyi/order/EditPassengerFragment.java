@@ -73,8 +73,8 @@ public class EditPassengerFragment extends BaseFragment {
 
     private String startTime;
     private String endTime;
-    Approval mApproval;
-    ProjectInfo.ProjectsBean mProjectsBean;
+    private Approval mApproval;
+    private ProjectInfo.ProjectsBean mProjectsBean;
     @OnClick(R.id.choose_check_num)
     void chooseNum() {
         Bundle bundle = new Bundle();
@@ -96,6 +96,14 @@ public class EditPassengerFragment extends BaseFragment {
 
         EventOfSelPassenger eventOfSelPassenger = new EventOfSelPassenger();
         eventOfSelPassenger.mPassenger = mPassengerInfo;
+        if(mApproval == null) {
+            ToastUtil.shortToast(R.string.choose_check_num);
+            return;
+        }
+        if(mProjectsBean == null) {
+            ToastUtil.shortToast(R.string.choose_project);
+            return;
+        }
         eventOfSelPassenger.ApprovalId = mApproval.getApprovalId();
         eventOfSelPassenger.ProjectId = mProjectsBean.getProjectId();
         eventOfSelPassenger.ProjectName = mProjectsBean.getProjectName();
@@ -103,7 +111,10 @@ public class EditPassengerFragment extends BaseFragment {
         EventBus.getDefault().post(eventOfSelPassenger);
 
         TopNavSubActivity activity = (TopNavSubActivity) getActivity();
-        PageSwitcher.goBackTopNavPage(activity, EditOrderFragment.class, false);
+        Bundle bundle = new Bundle();
+        bundle.putString(TopNavSubActivity.PARAM_TOP_TITLE, getArguments().getString("title"));
+        bundle.putString(TopNavSubActivity.PARAM_TOP_RIGHT, getString(R.string.reason_private));
+        PageSwitcher.goBackTopNavPage(activity, EditOrderFragment.class,bundle, false);
 
     }
 

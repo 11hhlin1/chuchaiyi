@@ -140,7 +140,7 @@ public class BaseSubActivity extends FragmentActivity {
      * @param fragmentName 页面类名
      * @param include 标识指定页面是否弹出
      */
-    protected void goBackToFragment(String fragmentName, boolean include) {
+    protected void goBackToFragment(String fragmentName,Bundle bundle, boolean include) {
         FragmentManager fm = getSupportFragmentManager();
         fm.popBackStack(fragmentName, include ? FragmentManager.POP_BACK_STACK_INCLUSIVE : 0);
         if (fm.getBackStackEntryCount() <= 0) {
@@ -148,7 +148,7 @@ public class BaseSubActivity extends FragmentActivity {
         } else {
             Fragment f = fm.findFragmentById(R.id.content);
             if (f != null) {
-                handleArgs(f.getArguments());
+                handleArgs(bundle);
             }
         }
     }
@@ -204,9 +204,10 @@ public class BaseSubActivity extends FragmentActivity {
                 L.e(e);
             }
         } else if (intent.hasExtra(INTENT_EXTRA_FRAGMENT_ACTION_POP_PAGE)) {
+            Bundle args = intent.getParcelableExtra(INTENT_EXTRA_FRAGMENT_ARGS);
             if (intent.hasExtra(INTENT_EXTRA_FRAGMENT_CLASS_NAME)) {
                 String className = intent.getStringExtra(INTENT_EXTRA_FRAGMENT_CLASS_NAME);
-                goBackToFragment(className, intent.getBooleanExtra(INTENT_EXTRA_FRAGMENT_CLASS_INCLUDE, false));
+                goBackToFragment(className, args, intent.getBooleanExtra(INTENT_EXTRA_FRAGMENT_CLASS_INCLUDE, false));
             } else if (intent.hasExtra(INTENT_EXTRA_FRAGMENT_POP_PAGE_COUNT)) {
                 goBackForCount(intent.getIntExtra(INTENT_EXTRA_FRAGMENT_POP_PAGE_COUNT, 0));
             }

@@ -72,6 +72,8 @@
             android:layout_marginRight="@dimen/margin_30p"
             android:src="@mipmap/icon_enter" />
     </RelativeLayout>
+    <View
+        style="@style/horizontal_line"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:background="@color/white"
@@ -86,7 +88,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/color_222222"
             android:textSize="@dimen/textsize_13sp"
-            android:text="@string/card_type"/>
+            android:text="@string/card_num"/>
         <EditText
             android:id="@+id/et_card"
             android:layout_centerVertical="true"

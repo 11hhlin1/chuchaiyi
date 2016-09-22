@@ -151,14 +151,19 @@ public class ChoosePassengerFragment extends BaseFragment implements ChoosePasse
             editPassenger(passengerInfo);
         } else if (flag == ChoosePassengerFragment.IS_FROM_CHECK) {
             onBackPressed();
+            EventOfSelPerson eventOfSelPerson = new EventOfSelPerson();
+            eventOfSelPerson.mPassengerInfo = passengerInfo;
+            EventBus.getDefault().post(eventOfSelPerson);
         }
-        EventOfSelPerson eventOfSelPerson = new EventOfSelPerson();
-        eventOfSelPerson.mPassengerInfo = passengerInfo;
-        EventBus.getDefault().post(eventOfSelPerson);
+
     }
     void editPassenger(PassengerInfo passengerInfo) {
-//        Bundle bundle = new Bundle();
-        mBundle.putSerializable("passenger", passengerInfo);
-        PageSwitcher.switchToTopNavPage(getActivity(), EditPassengerFragment.class, mBundle, getString(R.string.edit),getString(R.string.sure));
+        Bundle bundle = new Bundle();
+        bundle.putInt("flag", mBundle.getInt("flag"));
+        bundle.putString("start", mBundle.getString("start"));
+        bundle.putString("end", mBundle.getString("end"));
+        bundle.putString("title", mBundle.getString("title"));
+        bundle.putSerializable("passenger", passengerInfo);
+        PageSwitcher.switchToTopNavPage(getActivity(), EditPassengerFragment.class, bundle, getString(R.string.edit),getString(R.string.sure));
     }
 }

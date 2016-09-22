@@ -64,12 +64,14 @@ public class PageSwitcher {
      * @param fragment
      * @param include
      */
-    public static void goBackTopNavPage(Activity act, Class<? extends Fragment> fragment, boolean include) {
+    public static void goBackTopNavPage(Activity act, Class<? extends Fragment> fragment, Bundle bundle, boolean include) {
         Context ctx = AppLib.getContext();
         Intent intent = new Intent(ctx, TopNavSubActivity.class);
         intent.putExtra(BaseSubActivity.INTENT_EXTRA_FRAGMENT_ACTION_POP_PAGE, 1);
         intent.putExtra(BaseSubActivity.INTENT_EXTRA_FRAGMENT_CLASS_NAME, fragment.getName());
         intent.putExtra(BaseSubActivity.INTENT_EXTRA_FRAGMENT_CLASS_INCLUDE, include);
+        intent.putExtra(BaseSubActivity.INTENT_EXTRA_FRAGMENT_ARGS, bundle);
+
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(act, intent);
     }

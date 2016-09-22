@@ -142,8 +142,7 @@ public class EditOrderFragment extends BaseFragment {
     @Override
     public void initView() {
         Bundle bundle = getArguments();
-        TopNavSubActivity act = (TopNavSubActivity) getActivity();
-        title = act.getTitleText();
+
         mFlightInfo = (FlightInfo) bundle.getSerializable("SetOutFlightInfo");
         mBunksBean = (FlightInfo.BunksBean) bundle.getSerializable("SetOutBunksBean");
         mReturnFlightInfo = (FlightInfo) bundle.getSerializable("ReturnFlightInfo");
@@ -205,6 +204,13 @@ public class EditOrderFragment extends BaseFragment {
             }
         });
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        TopNavSubActivity act = (TopNavSubActivity) getActivity();
+        title = act.getTitleText();
     }
 
     private void setAmountTv() {
@@ -275,6 +281,7 @@ public class EditOrderFragment extends BaseFragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("start", mFlightInfo.getDeparture().getDateTime());
                 bundle.putString("end", mFlightInfo.getArrival().getDateTime());
+                bundle.putString("title", title);
                 bundle.putInt("flag", ChoosePassengerFragment.IS_FROM_ORDER);
                 PageSwitcher.switchToTopNavPage(getActivity(), ChoosePassengerFragment.class, bundle, getString(R.string.choose_passenger), null);
                 break;
@@ -582,9 +589,9 @@ public class EditOrderFragment extends BaseFragment {
         }
         setSafeFeeValue();
         setAmountTv();
-        TopNavSubActivity act = (TopNavSubActivity) getActivity();
-        act.setTopTitleTV(title);
-        act.setRightBtnText(getString(R.string.reason_private));
+//        TopNavSubActivity act = (TopNavSubActivity) getActivity();
+//        act.setTopTitleTV(title);
+//        act.setRightBtnText(getString(R.string.reason_private));
 
     }
 
@@ -636,6 +643,7 @@ public class EditOrderFragment extends BaseFragment {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("passenger", passengerInfo);
                     bundle.putString("start",mFlightInfo.getDeparture().getDateTime());
+                    bundle.putString("title", title);
                     PageSwitcher.switchToTopNavPage(getActivity(), EditPassengerFragment.class, bundle, getString(R.string.edit),getString(R.string.sure));
 
                 }
