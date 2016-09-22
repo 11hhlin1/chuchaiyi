@@ -96,10 +96,10 @@ public class CheckDetailFragment extends BaseFragment {
                                 dismissLoadingDialog();
                                 CheckDetailRsp.ApprovalDetailBean detail = checkDetailRsp.getApprovalDetail();
                                 String status = detail.getStatus();
-                                if (status.equals("审批通过") || status.equals("审批拒绝")) {
-                                    bottomRl.setVisibility(View.GONE);
-                                } else {
+                                if (status.equals("待审批")) {
                                     bottomRl.setVisibility(View.VISIBLE);
+                                } else {
+                                    bottomRl.setVisibility(View.GONE);
                                 }
                                 if(status.equals("审批通过")) {
                                     stateIcon.setImageResource(R.mipmap.icon_approve_agree);
