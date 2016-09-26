@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_88p"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/margin_20p"
         android:background="@color/white">
 
         <TextView
@@ -18,7 +18,7 @@
             android:layout_marginLeft="@dimen/margin_30p"
             android:text="@string/received_new"
             android:textColor="@color/color_222222"
-            android:textSize="@dimen/textsize_16sp" />
+            android:textSize="@dimen/textsize_14sp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,12 +34,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/margin_20p"
         android:paddingLeft="@dimen/margin_30p"
         android:paddingRight="@dimen/margin_30p"
         android:gravity="left"
         android:textColor="@color/color_aaaaaa"
-        android:textSize="@dimen/textsize_12sp"
+        android:textSize="@dimen/textsize_11sp"
         android:text="@string/news_setting_tip"/>
 
     <RelativeLayout
@@ -55,7 +55,7 @@
             android:layout_marginLeft="@dimen/margin_30p"
             android:text="@string/voice"
             android:textColor="@color/color_222222"
-            android:textSize="@dimen/textsize_16sp" />
+            android:textSize="@dimen/textsize_14sp" />
 
         <com.ccy.chuchaiyi.widget.EaseSwitchButton
             android:id="@+id/voice_switch_btn"
@@ -81,7 +81,7 @@
             android:layout_marginLeft="@dimen/margin_30p"
             android:text="@string/vibrate"
             android:textColor="@color/color_222222"
-            android:textSize="@dimen/textsize_16sp" />
+            android:textSize="@dimen/textsize_14sp" />
 
         <com.ccy.chuchaiyi.widget.EaseSwitchButton
             android:id="@+id/vibrate_switch_btn"

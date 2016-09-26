@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -112,6 +113,8 @@ public class OrderDetailFragment extends BaseFragment {
     Button handleBtn3;
     @Bind(R.id.bottom_rl)
     RelativeLayout bottomRl;
+    @Bind(R.id.warning_ll)
+    LinearLayout warningLl;
     int orderId;
     private OrderInfo.OrdersBean ordersBean;
     @Override
@@ -172,6 +175,11 @@ public class OrderDetailFragment extends BaseFragment {
                                     cabin.setVisibility(View.VISIBLE);
                                     cabin.setText(policy.getTwoCabinWarningMsg());
                                 }
+                                if(TextUtils.isEmpty(policy.getPreNDaysWarningMsg()) && TextUtils.isEmpty(policy.getDiscountLimitWarningMsg()) && TextUtils.isEmpty(policy.getTwoCabinWarningMsg()) && TextUtils.isEmpty(policy.getTwoCabinWarningMsg())) {
+                                    warningLl.setVisibility(View.GONE);
+                                } else {
+                                    warningLl.setVisibility(View.VISIBLE);
+                                }
                                 StringBuilder city = Util.getThreadSafeStringBuilder();
                                 AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean.RouteBean route = orderBean.getRoute();
                                 AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean.RouteBean.DepartureBean departure = route.getDeparture();
@@ -217,7 +225,7 @@ public class OrderDetailFragment extends BaseFragment {
                                 name.append(orderBean.getContactName()).append("  ").append(orderBean.getContactMobile());
                                 contactName.setText(name.toString());
                                 StringBuilder safeFee = Util.getThreadSafeStringBuilder();
-                                safeFee.append("航意险").append(getString(R.string.money_no_end,orderBean.getFeeInfo().getInsuranceFee())).append("份 *").append(passengerBean.getInsuranceCount());
+                                safeFee.append("航意险  ").append(getString(R.string.money_no_end,orderBean.getFeeInfo().getInsuranceFee())).append("  / 份 X ").append(passengerBean.getInsuranceCount());
                                 safeFeeTv.setText(safeFee.toString());
 
                                 orderAudit.setText(orderBean.getApprovalStatus());

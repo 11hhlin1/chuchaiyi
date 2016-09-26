@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_marginLeft="@dimen/margin_30p"
-            android:textSize="@dimen/textsize_15sp"
+            android:textSize="@dimen/textsize_13sp"
             android:textColor="@color/color_222222"
             android:text="@string/old_psw"
             />
@@ -26,6 +26,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/margin_200p"
             style="@style/login_edittext"
+            android:textSize="@dimen/textsize_13sp"
             android:digits="\@-+._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ"
             android:hint="@string/hint_old_psw"
             android:imeOptions="actionNext"/>
@@ -43,7 +44,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_marginLeft="@dimen/margin_30p"
-            android:textSize="@dimen/textsize_15sp"
+            android:textSize="@dimen/textsize_13sp"
             android:textColor="@color/color_222222"
             android:text="@string/password"
             />
@@ -55,6 +56,7 @@
             style="@style/login_edittext"
             android:digits="\@-+._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ"
             android:hint="@string/hint_new_psw"
+            android:textSize="@dimen/textsize_13sp"
             android:imeOptions="actionNext"/>
     </FrameLayout>
 
@@ -71,7 +73,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_marginLeft="@dimen/margin_30p"
-            android:textSize="@dimen/textsize_15sp"
+            android:textSize="@dimen/textsize_13sp"
             android:textColor="@color/color_222222"
             android:text="@string/check_psw"
             />
@@ -83,6 +85,7 @@
             style="@style/login_edittext"
             android:digits="\@-+._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ"
             android:hint="@string/hint_check_psw"
+            android:textSize="@dimen/textsize_13sp"
             android:imeOptions="actionNext"/>
     </FrameLayout>
 

@@ -20,24 +20,24 @@
                 android:id="@+id/avatar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/gerenzhongxin_morentouxiang" />
+                android:layout_gravity="center_horizontal"
+                android:src="@mipmap/icon_user" />
 
             <TextView
                 android:id="@+id/username"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:text="小七"
+                android:layout_gravity="center_horizontal"
                 android:textColor="@color/white"
-                android:textSize="@dimen/textsize_14sp" />
+                android:textSize="@dimen/textsize_15sp" />
         </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/personal_item"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/margin_88p"
+        android:layout_height="@dimen/margin_80p"
         android:layout_below="@+id/first_item"
         android:background="@drawable/personal_item">
 
@@ -49,7 +49,7 @@
             android:layout_marginLeft="@dimen/margin_30p"
             android:text="@string/apartment"
             android:textColor="@color/color_222222"
-            android:textSize="@dimen/textsize_16sp" />
+            android:textSize="@dimen/textsize_13sp" />
 
         <TextView
             android:id="@+id/apartment_tv"
@@ -59,14 +59,14 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_30p"
             android:textColor="@color/color_222222"
-            android:textSize="@dimen/textsize_16sp" />
+            android:textSize="@dimen/textsize_13sp" />
 
         <View style="@style/personal_page_bottom_line" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/margin_88p"
+        android:layout_height="@dimen/margin_80p"
         android:background="@drawable/personal_item">
 
         <TextView
@@ -76,7 +76,7 @@
             android:layout_marginLeft="@dimen/margin_30p"
             android:text="@string/company"
             android:textColor="@color/color_222222"
-            android:textSize="@dimen/textsize_16sp" />
+            android:textSize="@dimen/textsize_13sp" />
 
         <TextView
             android:id="@+id/company_tv"
@@ -86,7 +86,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_30p"
             android:textColor="@color/color_222222"
-            android:textSize="@dimen/textsize_16sp" />
+            android:textSize="@dimen/textsize_13sp" />
 
     </RelativeLayout>
 
@@ -94,16 +94,17 @@
         android:id="@+id/change_psw_item"
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/margin_30p"
         android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:drawableLeft="@mipmap/progress_img_popbg"
-            android:drawablePadding="12dp"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:drawableLeft="@mipmap/icon_edit"
+            android:drawablePadding="@dimen/margin_20p"
+            android:gravity="center_vertical"
             android:text="@string/set_psw"
             android:textColor="@color/color_222222"
             android:textSize="14sp" />
@@ -132,9 +133,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:drawableLeft="@mipmap/progress_img_popbg"
-            android:drawablePadding="12dp"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:drawableLeft="@mipmap/icon_set"
+            android:drawablePadding="@dimen/margin_20p"
+            android:gravity="center_vertical"
             android:text="@string/setting"
             android:textColor="@color/color_222222"
             android:textSize="14sp" />
@@ -152,10 +154,10 @@
         android:id="@+id/logout_btn"
         android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/single_line_height_132px"
+        android:layout_height="@dimen/margin_88p"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/margin_30p"
         android:textColor="@color/black"
-        android:textSize="@dimen/textsize_18sp"
+        android:textSize="@dimen/textsize_16sp"
         android:text="@string/logout" />
 </LinearLayout>

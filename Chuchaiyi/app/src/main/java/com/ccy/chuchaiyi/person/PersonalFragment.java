@@ -12,9 +12,11 @@ import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.app.BaseApplication;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.PageSwitcher;
+import com.ccy.chuchaiyi.db.UserInfo;
 import com.ccy.chuchaiyi.login.LoginActivity;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.gjj.applibrary.http.callback.JsonCallback;
+import com.gjj.applibrary.util.Util;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.cache.CacheMode;
 
@@ -80,6 +82,15 @@ public class PersonalFragment extends BaseFragment {
 
     @Override
     public void initView() {
+        UserInfo userInfo = BaseApplication.getUserMgr().getUser();
+        if(userInfo != null) {
+            companyTv.setText(userInfo.getCorpName());
+            if(userInfo.getIsAdmin()) {
+                username.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.icon_user_vip, 0);
+                username.setCompoundDrawablePadding(Util.dip2px(8));
+            }
+            username.setText(userInfo.getEmployeeName());
 
+        }
     }
 }

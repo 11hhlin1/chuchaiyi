@@ -30,6 +30,7 @@
                         android:paddingLeft="@dimen/margin_30p"
                         android:gravity="center_vertical|left"/>
                     <LinearLayout
+                        android:id="@+id/warning_ll"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
@@ -466,17 +467,17 @@
                     android:layout_marginLeft="@dimen/margin_30p"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/color_222222"
-                    android:textSize="@dimen/textsize_13sp"
-                    android:text="@string/contact"/>
+                    android:textColor="@color/color_aaaaaa"
+                    android:textSize="@dimen/textsize_12sp"
+                    android:text="@string/passenger"/>
                 <TextView
                     android:id="@+id/passenger_name"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="100dp"
+                    android:layout_marginLeft="@dimen/margin_160p"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_222222"
-                    android:textSize="@dimen/textsize_13sp"
+                    android:textSize="@dimen/textsize_15sp"
                     android:text="小明"/>
             <TextView
                 android:id="@+id/passenger_job"
@@ -484,9 +485,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/passenger_name"
-                android:layout_marginLeft="4dp"
-                android:textColor="@color/color_222222"
-                android:textSize="@dimen/textsize_13sp"/>
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/color_aaaaaa"
+                android:textSize="@dimen/textsize_12sp"/>
             </RelativeLayout>
             <View
                 style="@style/horizontal_line"/>
@@ -501,17 +502,17 @@
                     android:layout_marginLeft="@dimen/margin_30p"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/color_222222"
-                    android:textSize="@dimen/textsize_13sp"
+                    android:textColor="@color/color_aaaaaa"
+                    android:textSize="@dimen/textsize_12sp"
                     android:text="@string/contact"/>
                 <TextView
                     android:id="@+id/contact_name"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="100dp"
+                    android:layout_marginLeft="@dimen/margin_160p"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_222222"
-                    android:textSize="@dimen/textsize_13sp"
+                    android:textSize="@dimen/textsize_12sp"
                     android:text="小明"/>
             </RelativeLayout>
             <View
@@ -527,13 +528,13 @@
                     android:layout_marginLeft="@dimen/margin_30p"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/color_222222"
-                    android:textSize="@dimen/textsize_13sp"
+                    android:textColor="@color/color_aaaaaa"
+                    android:textSize="@dimen/textsize_12sp"
                     android:text="保险"/>
                 <TextView
                     android:id="@+id/safe_fee_tv"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="100dp"
+                    android:layout_marginLeft="@dimen/margin_160p"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_222222"

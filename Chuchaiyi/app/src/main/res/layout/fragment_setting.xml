@@ -18,7 +18,7 @@
             android:layout_marginLeft="@dimen/margin_30p"
             android:text="@string/news"
             android:textColor="@color/color_222222"
-            android:textSize="@dimen/textsize_16sp" />
+            android:textSize="@dimen/textsize_14sp" />
 
         <ImageView style="@style/raw_Button" />
 
@@ -39,7 +39,7 @@
             android:layout_marginLeft="@dimen/margin_30p"
             android:text="@string/check_version"
             android:textColor="@color/color_222222"
-            android:textSize="@dimen/textsize_16sp" />
+            android:textSize="@dimen/textsize_14sp" />
         <TextView
             android:id="@+id/version_tv"
             android:layout_width="wrap_content"
@@ -51,7 +51,7 @@
             android:drawablePadding="10dp"
             android:text="v1.0"
             android:textColor="@color/color_aaaaaa"
-            android:textSize="@dimen/textsize_11sp" />
+            android:textSize="@dimen/textsize_13sp" />
 
     </RelativeLayout>
 </LinearLayout>
