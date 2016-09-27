@@ -85,6 +85,7 @@ public class PersonalFragment extends BaseFragment {
         UserInfo userInfo = BaseApplication.getUserMgr().getUser();
         if(userInfo != null) {
             companyTv.setText(userInfo.getCorpName());
+            apartmentTv.setText(userInfo.getDeptName());
             if(userInfo.getIsAdmin()) {
                 username.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.mipmap.icon_user_vip, 0);
                 username.setCompoundDrawablePadding(Util.dip2px(8));

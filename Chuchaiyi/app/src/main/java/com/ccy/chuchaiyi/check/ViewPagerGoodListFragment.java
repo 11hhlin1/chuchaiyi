@@ -83,7 +83,7 @@ public class ViewPagerGoodListFragment extends BaseFragment implements ViewPager
             CategoryData categoryData = mDataArrayList.get(i);
             textView.setId(categoryData.mCateId);
             textView.setText(categoryData.mCateName);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
             textView.setLayoutParams(layoutParams);
             textView.setGravity(Gravity.CENTER);
             final int finalI = i;
@@ -97,7 +97,7 @@ public class ViewPagerGoodListFragment extends BaseFragment implements ViewPager
         }
         mTextViews[0].setTextColor(mRedColor);
         //mDoneRadioBtn.setTextColor(mSecondaryGrayColor);
-        viewPager.setOffscreenPageLimit(mFragmentCache.length);
+        viewPager.setOffscreenPageLimit(1);
         viewPager.setOnPageChangeListener(this);
         mFragmentAdapter = new ViewPagerFragmentAdapter(getChildFragmentManager(), mFragmentCache, mDataArrayList);
         mPageVp.setAdapter(mFragmentAdapter);

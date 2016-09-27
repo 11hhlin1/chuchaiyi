@@ -32,11 +32,12 @@ public class UserInfoDao extends AbstractDao<UserInfo, Void> {
         public final static Property CanBookingForOthers = new Property(7, Boolean.class, "CanBookingForOthers", false, "CAN_BOOKING_FOR_OTHERS");
         public final static Property CorpId = new Property(8, Integer.class, "CorpId", false, "CORP_ID");
         public final static Property CorpName = new Property(9, String.class, "CorpName", false, "CORP_NAME");
-        public final static Property CorpBusinessTypes = new Property(10, String.class, "CorpBusinessTypes", false, "CORP_BUSINESS_TYPES");
-        public final static Property CorpPayMode = new Property(11, String.class, "CorpPayMode", false, "CORP_PAY_MODE");
-        public final static Property ApprovalRequired = new Property(12, Boolean.class, "ApprovalRequired", false, "APPROVAL_REQUIRED");
-        public final static Property OverrunOption = new Property(13, String.class, "OverrunOption", false, "OVERRUN_OPTION");
-        public final static Property IsProjectRequired = new Property(14, Boolean.class, "IsProjectRequired", false, "IS_PROJECT_REQUIRED");
+        public final static Property DeptName = new Property(10, String.class, "DeptName", false, "DEPT_NAME");
+        public final static Property CorpBusinessTypes = new Property(11, String.class, "CorpBusinessTypes", false, "CORP_BUSINESS_TYPES");
+        public final static Property CorpPayMode = new Property(12, String.class, "CorpPayMode", false, "CORP_PAY_MODE");
+        public final static Property ApprovalRequired = new Property(13, Boolean.class, "ApprovalRequired", false, "APPROVAL_REQUIRED");
+        public final static Property OverrunOption = new Property(14, String.class, "OverrunOption", false, "OVERRUN_OPTION");
+        public final static Property IsProjectRequired = new Property(15, Boolean.class, "IsProjectRequired", false, "IS_PROJECT_REQUIRED");
     };
 
 
@@ -62,11 +63,12 @@ public class UserInfoDao extends AbstractDao<UserInfo, Void> {
                 "'CAN_BOOKING_FOR_OTHERS' INTEGER," + // 7: CanBookingForOthers
                 "'CORP_ID' INTEGER," + // 8: CorpId
                 "'CORP_NAME' TEXT," + // 9: CorpName
-                "'CORP_BUSINESS_TYPES' TEXT," + // 10: CorpBusinessTypes
-                "'CORP_PAY_MODE' TEXT," + // 11: CorpPayMode
-                "'APPROVAL_REQUIRED' INTEGER," + // 12: ApprovalRequired
-                "'OVERRUN_OPTION' TEXT," + // 13: OverrunOption
-                "'IS_PROJECT_REQUIRED' INTEGER);"); // 14: IsProjectRequired
+                "'DEPT_NAME' TEXT," + // 10: DeptName
+                "'CORP_BUSINESS_TYPES' TEXT," + // 11: CorpBusinessTypes
+                "'CORP_PAY_MODE' TEXT," + // 12: CorpPayMode
+                "'APPROVAL_REQUIRED' INTEGER," + // 13: ApprovalRequired
+                "'OVERRUN_OPTION' TEXT," + // 14: OverrunOption
+                "'IS_PROJECT_REQUIRED' INTEGER);"); // 15: IsProjectRequired
     }
 
     /** Drops the underlying database table. */
@@ -130,29 +132,34 @@ public class UserInfoDao extends AbstractDao<UserInfo, Void> {
             stmt.bindString(10, CorpName);
         }
  
+        String DeptName = entity.getDeptName();
+        if (DeptName != null) {
+            stmt.bindString(11, DeptName);
+        }
+ 
         String CorpBusinessTypes = entity.getCorpBusinessTypes();
         if (CorpBusinessTypes != null) {
-            stmt.bindString(11, CorpBusinessTypes);
+            stmt.bindString(12, CorpBusinessTypes);
         }
  
         String CorpPayMode = entity.getCorpPayMode();
         if (CorpPayMode != null) {
-            stmt.bindString(12, CorpPayMode);
+            stmt.bindString(13, CorpPayMode);
         }
  
         Boolean ApprovalRequired = entity.getApprovalRequired();
         if (ApprovalRequired != null) {
-            stmt.bindLong(13, ApprovalRequired ? 1l: 0l);
+            stmt.bindLong(14, ApprovalRequired ? 1l: 0l);
         }
  
         String OverrunOption = entity.getOverrunOption();
         if (OverrunOption != null) {
-            stmt.bindString(14, OverrunOption);
+            stmt.bindString(15, OverrunOption);
         }
  
         Boolean IsProjectRequired = entity.getIsProjectRequired();
         if (IsProjectRequired != null) {
-            stmt.bindLong(15, IsProjectRequired ? 1l: 0l);
+            stmt.bindLong(16, IsProjectRequired ? 1l: 0l);
         }
     }
 
@@ -176,11 +183,12 @@ public class UserInfoDao extends AbstractDao<UserInfo, Void> {
             cursor.isNull(offset + 7) ? null : cursor.getShort(offset + 7) != 0, // CanBookingForOthers
             cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // CorpId
             cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // CorpName
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // CorpBusinessTypes
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // CorpPayMode
-            cursor.isNull(offset + 12) ? null : cursor.getShort(offset + 12) != 0, // ApprovalRequired
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // OverrunOption
-            cursor.isNull(offset + 14) ? null : cursor.getShort(offset + 14) != 0 // IsProjectRequired
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // DeptName
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // CorpBusinessTypes
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // CorpPayMode
+            cursor.isNull(offset + 13) ? null : cursor.getShort(offset + 13) != 0, // ApprovalRequired
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // OverrunOption
+            cursor.isNull(offset + 15) ? null : cursor.getShort(offset + 15) != 0 // IsProjectRequired
         );
         return entity;
     }
@@ -198,11 +206,12 @@ public class UserInfoDao extends AbstractDao<UserInfo, Void> {
         entity.setCanBookingForOthers(cursor.isNull(offset + 7) ? null : cursor.getShort(offset + 7) != 0);
         entity.setCorpId(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
         entity.setCorpName(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setCorpBusinessTypes(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setCorpPayMode(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setApprovalRequired(cursor.isNull(offset + 12) ? null : cursor.getShort(offset + 12) != 0);
-        entity.setOverrunOption(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
-        entity.setIsProjectRequired(cursor.isNull(offset + 14) ? null : cursor.getShort(offset + 14) != 0);
+        entity.setDeptName(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setCorpBusinessTypes(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setCorpPayMode(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setApprovalRequired(cursor.isNull(offset + 13) ? null : cursor.getShort(offset + 13) != 0);
+        entity.setOverrunOption(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setIsProjectRequired(cursor.isNull(offset + 15) ? null : cursor.getShort(offset + 15) != 0);
      }
     
     /** @inheritdoc */
