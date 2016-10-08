@@ -1,28 +1,22 @@
 package com.ccy.chuchaiyi.contact;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.PageSwitcher;
-import com.ccy.chuchaiyi.city.PinyinComparator;
 import com.ccy.chuchaiyi.city.PinyinUtils;
-import com.ccy.chuchaiyi.event.EventOfSelPerson;
+import com.ccy.chuchaiyi.event.EventOfSelPersonFromCheck;
+import com.ccy.chuchaiyi.event.EventSelPersonFromOrder;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.order.EditPassengerFragment;
 import com.ccy.chuchaiyi.widget.EditTextWithDel;
-import com.gjj.applibrary.http.callback.CommonCallback;
 import com.gjj.applibrary.http.callback.JsonCallback;
-import com.gjj.applibrary.http.callback.ListCallback;
 import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 import com.lzy.okhttputils.OkHttpUtils;
@@ -35,7 +29,6 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -148,12 +141,16 @@ public class ChoosePassengerFragment extends BaseFragment implements ChoosePasse
     public void selPerson(PassengerInfo passengerInfo) {
         int flag = mBundle.getInt("flag");
         if (flag == ChoosePassengerFragment.IS_FROM_ORDER) {
-            editPassenger(passengerInfo);
+//            editPassenger(passengerInfo);
+            onBackPressed();
+            EventSelPersonFromOrder eventSelPersonFromOrder = new EventSelPersonFromOrder();
+            eventSelPersonFromOrder.mPassengerInfo = passengerInfo;
+            EventBus.getDefault().post(eventSelPersonFromOrder);
         } else if (flag == ChoosePassengerFragment.IS_FROM_CHECK) {
             onBackPressed();
-            EventOfSelPerson eventOfSelPerson = new EventOfSelPerson();
-            eventOfSelPerson.mPassengerInfo = passengerInfo;
-            EventBus.getDefault().post(eventOfSelPerson);
+            EventOfSelPersonFromCheck eventOfSelPersonFromCheck = new EventOfSelPersonFromCheck();
+            eventOfSelPersonFromCheck.mPassengerInfo = passengerInfo;
+            EventBus.getDefault().post(eventOfSelPersonFromCheck);
         }
 
     }

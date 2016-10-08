@@ -4,26 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/add_company_passenger_ll"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginTop="@dimen/margin_30p"
-        android:background="@drawable/personal_item"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/add_company_passenger"
-            android:textColor="@color/color_0071c4"
-            android:textSize="@dimen/textsize_14sp"
-            android:drawablePadding="4dp"
-            android:layout_marginLeft="@dimen/margin_30p"
-            android:drawableLeft="@mipmap/icon_flight_addpersonal"
-            android:gravity="left|center_vertical"/>
-    </LinearLayout>
-
-
     <RelativeLayout
         android:id="@+id/passenger_rl"
         android:layout_width="match_parent"
@@ -51,6 +31,35 @@
             android:textColor="@color/color_222222"
             android:textSize="@dimen/textsize_13sp"
             android:text=""/>
+
+    </RelativeLayout>
+    <View
+        style="@style/horizontal_line"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="44dp">
+
+        <TextView
+            android:id="@+id/card_type_tv"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_13sp"
+            android:text="@string/card_type"/>
+        <TextView
+            android:id="@+id/card_type_value"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_60p"
+            android:layout_toRightOf="@+id/card_type_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_13sp"
+            android:text="@string/id_card"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,42 +68,6 @@
             android:layout_marginRight="@dimen/margin_30p"
             android:src="@mipmap/icon_enter" />
     </RelativeLayout>
-    <View
-        style="@style/horizontal_line"/>
-    <RelativeLayout
-        android:id="@+id/choose_card_type_rl"
-    android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="44dp">
-
-    <TextView
-        android:id="@+id/card_type_tv"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/margin_30p"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/color_222222"
-        android:textSize="@dimen/textsize_13sp"
-        android:text="@string/card_type"/>
-    <TextView
-        android:id="@+id/card_type_value"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/margin_60p"
-        android:layout_toRightOf="@+id/card_type_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/color_222222"
-        android:textSize="@dimen/textsize_13sp"
-        android:text="@string/id_card"/>
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/margin_30p"
-        android:src="@mipmap/icon_enter" />
-</RelativeLayout>
     <View
         style="@style/horizontal_line"/>
     <RelativeLayout

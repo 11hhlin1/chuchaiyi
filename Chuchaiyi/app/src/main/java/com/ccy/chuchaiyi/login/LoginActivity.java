@@ -23,7 +23,9 @@ import com.ccy.chuchaiyi.user.UserMgr;
 import com.ccy.chuchaiyi.widget.CustomProgressDialog;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.log.L;
+import com.gjj.applibrary.network.NetworkStateMgr;
 import com.gjj.applibrary.task.BackgroundTaskExecutor;
+import com.gjj.applibrary.task.MainTaskExecutor;
 import com.gjj.applibrary.util.AndroidBug5497Workaround;
 import com.gjj.applibrary.util.AndroidUtil;
 import com.gjj.applibrary.util.ToastUtil;
@@ -35,10 +37,13 @@ import com.lzy.okhttputils.cache.CacheMode;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -126,6 +131,8 @@ public class LoginActivity extends Activity implements AndroidBug5497Workaround.
                                     userMgr.saveUserInfo(rspInfo);
                                 }
                             });
+//                            JPushInterface.setAliasAndTags(getApplicationContext(), String.valueOf(rspInfo.getEmployeeId()), null, mAliasCallback);
+
                             Intent intent = new Intent();
                             intent.setClass(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
@@ -143,6 +150,39 @@ public class LoginActivity extends Activity implements AndroidBug5497Workaround.
                 });
     }
 
+    private final TagAliasCallback mAliasCallback = new TagAliasCallback() {
+
+        @Override
+        public void gotResult(int code, final String alias, Set<String> tags) {
+            String logs ;
+            switch (code) {
+                case 0:
+                    logs = "Set tag and alias success";
+                    L.i(logs);
+                    break;
+
+                case 6002:
+                    logs = "Failed to set alias and tags due to timeout. Try again after 60s.";
+                    L.i(logs);
+                    if (NetworkStateMgr.getInstance().isNetworkAvailable()) {
+                        MainTaskExecutor.scheduleTaskOnUiThread(1000 * 60, new Runnable() {
+                            @Override
+                            public void run() {
+                                JPushInterface.setAliasAndTags(getApplicationContext(), alias, null, mAliasCallback);
+                            }
+                        });
+                    } else {
+                        L.i("No network");
+                    }
+                    break;
+
+                default:
+                    logs = "Failed with errorCode = " + code;
+                    L.e(logs);
+            }
+        }
+
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -17,13 +17,12 @@ import com.ccy.chuchaiyi.app.BaseApplication;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.calendar.CalendarSelectorFragment;
-import com.ccy.chuchaiyi.contact.ApprovalList;
 import com.ccy.chuchaiyi.contact.ChoosePassengerFragment;
 import com.ccy.chuchaiyi.contact.PassengerInfo;
 import com.ccy.chuchaiyi.db.UserInfo;
 import com.ccy.chuchaiyi.event.EventOfAddCheck;
 import com.ccy.chuchaiyi.event.EventOfSelDate;
-import com.ccy.chuchaiyi.event.EventOfSelPerson;
+import com.ccy.chuchaiyi.event.EventOfSelPersonFromCheck;
 import com.ccy.chuchaiyi.index.IndexContentFragment;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.gjj.applibrary.http.callback.JsonCallback;
@@ -137,7 +136,7 @@ public class AddCheckFragement extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void addPerson(EventOfSelPerson event) {
+    public void addPerson(EventOfSelPersonFromCheck event) {
         if (getActivity() == null) {
             return;
         }

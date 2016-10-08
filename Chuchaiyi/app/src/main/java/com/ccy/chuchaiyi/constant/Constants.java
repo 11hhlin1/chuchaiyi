@@ -8,5 +8,6 @@ public class Constants {
     public static final String SET_OUT_CITY = "mSetOutCity";
 
     public static final String USER_INFO = "userInfo";
-
+    public String SHARED_KEY_SETTING_SOUND = "shared_key_setting_sound";
+    public String SHARED_KEY_SETTING_VIBRATE = "shared_key_setting_vibrate";
 }

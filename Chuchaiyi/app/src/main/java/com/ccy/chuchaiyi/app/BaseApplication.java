@@ -17,6 +17,7 @@ import com.gjj.applibrary.event.EventOfTokenError;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.http.model.BundleKey;
 import com.gjj.applibrary.log.L;
+import com.gjj.applibrary.network.NetworkStateMgr;
 import com.gjj.applibrary.task.BackgroundTaskExecutor;
 import com.gjj.applibrary.task.ForegroundTaskExecutor;
 import com.gjj.applibrary.util.PreferencesManager;
@@ -29,6 +30,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -60,11 +62,14 @@ public class BaseApplication extends Application {
         OkHttpUtils.getInstance().addCommonHeaders(headers);
         EventBus.getDefault().register(this);
 
+//        JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
+//        JPushInterface.init(this);     		// 初始化 JPush
 
         ForegroundTaskExecutor.executeTask(new Runnable() {
             @Override
             public void run() {
                 initDB();
+                NetworkStateMgr.getInstance();
                 mUserMgr = new UserMgr();
                 refreshUserInfo();
                 AppLib.setInitialized(true);
@@ -96,8 +101,7 @@ public class BaseApplication extends Application {
         getDaoSession(this);
     }
 
-    public static DaoMaster getDaoMaster(Context context)
-    {
+    public static DaoMaster getDaoMaster(Context context) {
         if (daoMaster == null)
         {
             DaoMaster.OpenHelper helper = new DaoMaster.DevOpenHelper(context, DATABASE_NAME, null);
@@ -112,8 +116,7 @@ public class BaseApplication extends Application {
      * @param context
      * @return
      */
-    public static DaoSession getDaoSession(Context context)
-    {
+    public static DaoSession getDaoSession(Context context) {
         if (daoSession == null) {
             if (daoMaster == null)
             {
@@ -123,6 +126,7 @@ public class BaseApplication extends Application {
         }
         return daoSession;
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void goLogin(EventOfTokenError event) {
         Intent intent = new Intent(this, LoginActivity.class);

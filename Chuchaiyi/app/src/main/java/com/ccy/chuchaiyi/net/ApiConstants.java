@@ -28,6 +28,7 @@ public class ApiConstants {
     public static final String GET_EMPLOYEES= host+ "Common/GetEmployees";
     public static final String GET_EMPLOYEE = host+ "Common/GetEmployee";
     public static final String GET_PROJECT = host+ "Common/GetProjects";
+    public static final String GET_CERT_TYPE = host+ "Common/GetCertTypes";
     public static final String GET_APPROVALS = host+ "Approval/GetApprovals";
     public static final String CREATE_APPROVALS = host+ "Approval/CreateAskApproval";
     public static final String GET_MY_APPROVALS = host+ "Approval/GetMyApprovals";

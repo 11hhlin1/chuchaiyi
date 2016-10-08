@@ -39,7 +39,7 @@ public class ChooseCheckNumFragment extends BaseFragment implements RecyclerItem
     @Bind(R.id.ptr_recycler_view)
     PullToRefreshRecyclerView mRecyclerView;
     private ChooseCheckNumAdapter mAdapter;
-    private PassengerInfo mPassengerInfo;
+    private String mEmployeeId;
     private String startTime;
 
     @Override
@@ -59,7 +59,7 @@ public class ChooseCheckNumFragment extends BaseFragment implements RecyclerItem
         ChooseCheckNumAdapter adapter = mAdapter;
         recyclerView.getRefreshableView().setAdapter(adapter);
         Bundle bundle = getArguments();
-        mPassengerInfo = (PassengerInfo) bundle.getSerializable("passenger");
+        mEmployeeId =bundle.getString("EmployeeId");
         startTime = bundle.getString("start");
         mAdapter.setmItemOnclickListener(this);
         doRequest();
@@ -69,7 +69,7 @@ public class ChooseCheckNumFragment extends BaseFragment implements RecyclerItem
         showLoadingDialog(R.string.submitting, false);
         OkHttpUtils.get(ApiConstants.GET_APPROVALS)
                 .tag(this)
-                .params("travelEmployeeId", String.valueOf(mPassengerInfo.getEmployeeId()))
+                .params("travelEmployeeId", mEmployeeId)
                 .params("start",startTime.split(" ")[0])
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new JsonCallback<ApprovalList>(ApprovalList.class) {

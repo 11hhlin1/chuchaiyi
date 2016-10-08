@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -278,12 +279,16 @@ public class EditOrderFragment extends BaseFragment {
             case R.id.return_change_tv:
                 break;
             case R.id.add_passenger:
+
                 Bundle bundle = new Bundle();
+                bundle.putInt("flag", ChoosePassengerFragment.IS_FROM_ORDER);
                 bundle.putString("start", mFlightInfo.getDeparture().getDateTime());
                 bundle.putString("end", mFlightInfo.getArrival().getDateTime());
                 bundle.putString("title", title);
-                bundle.putInt("flag", ChoosePassengerFragment.IS_FROM_ORDER);
-                PageSwitcher.switchToTopNavPage(getActivity(), ChoosePassengerFragment.class, bundle, getString(R.string.choose_passenger), null);
+                UserInfo userInfo = BaseApplication.getUserMgr().getUser();
+                bundle.putString("EmployeeId", String.valueOf(userInfo.getEmployeeId()));
+                PageSwitcher.switchToTopNavPage(getActivity(), EditPassengerFragment.class, bundle, getString(R.string.edit),getString(R.string.sure));
+
                 break;
             case R.id.order_money_detail:
                 showPickupWindow();
@@ -640,11 +645,18 @@ public class EditOrderFragment extends BaseFragment {
                 @Override
                 public void onClick(View v) {
                     PassengerInfo passengerInfo = (PassengerInfo) passengerName.getTag();
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("passenger", passengerInfo);
-                    bundle.putString("start",mFlightInfo.getDeparture().getDateTime());
-                    bundle.putString("title", title);
-                    PageSwitcher.switchToTopNavPage(getActivity(), EditPassengerFragment.class, bundle, getString(R.string.edit),getString(R.string.sure));
+                    String employeeId = String.valueOf(passengerInfo.getEmployeeId());
+                    if(TextUtils.isEmpty(employeeId)) {
+                        PageSwitcher.switchToTopNavPage(getActivity(), EditCompanyPassengerFragment.class, null, getString(R.string.edit),getString(R.string.sure));
+                    } else {
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("passenger", passengerInfo);
+                        bundle.putString("start",mFlightInfo.getDeparture().getDateTime());
+                        bundle.putString("title", title);
+                        bundle.putInt("flag", ChoosePassengerFragment.IS_FROM_ORDER);
+                        PageSwitcher.switchToTopNavPage(getActivity(), EditPassengerFragment.class, bundle, getString(R.string.edit),getString(R.string.sure));
+
+                    }
 
                 }
             });
