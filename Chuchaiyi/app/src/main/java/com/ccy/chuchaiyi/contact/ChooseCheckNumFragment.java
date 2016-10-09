@@ -5,15 +5,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
-import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.base.RecyclerItemOnclickListener;
 import com.ccy.chuchaiyi.event.EventOfSelApproval;
 import com.ccy.chuchaiyi.net.ApiConstants;
-import com.ccy.chuchaiyi.order.EditPassengerFragment;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
@@ -41,6 +40,7 @@ public class ChooseCheckNumFragment extends BaseFragment implements RecyclerItem
     private ChooseCheckNumAdapter mAdapter;
     private String mEmployeeId;
     private String startTime;
+    private String endTime;
 
     @Override
     public int getContentViewLayout() {
@@ -61,6 +61,10 @@ public class ChooseCheckNumFragment extends BaseFragment implements RecyclerItem
         Bundle bundle = getArguments();
         mEmployeeId =bundle.getString("EmployeeId");
         startTime = bundle.getString("start");
+        String end = bundle.getString("end");
+        if(!TextUtils.isEmpty(end)) {
+            endTime = end.split(" ")[0];
+        }
         mAdapter.setmItemOnclickListener(this);
         doRequest();
     }
@@ -71,6 +75,7 @@ public class ChooseCheckNumFragment extends BaseFragment implements RecyclerItem
                 .tag(this)
                 .params("travelEmployeeId", mEmployeeId)
                 .params("start",startTime.split(" ")[0])
+                .params("end",endTime)
                 .cacheMode(CacheMode.NO_CACHE)
                 .execute(new JsonCallback<ApprovalList>(ApprovalList.class) {
                     @Override

@@ -283,7 +283,9 @@ public class EditOrderFragment extends BaseFragment {
                 Bundle bundle = new Bundle();
                 bundle.putInt("flag", ChoosePassengerFragment.IS_FROM_ORDER);
                 bundle.putString("start", mFlightInfo.getDeparture().getDateTime());
-                bundle.putString("end", mFlightInfo.getArrival().getDateTime());
+                if(mReturnFlightInfo != null) {
+                    bundle.putString("end", mReturnFlightInfo.getDeparture().getDateTime());
+                }
                 bundle.putString("title", title);
                 UserInfo userInfo = BaseApplication.getUserMgr().getUser();
                 bundle.putString("EmployeeId", String.valueOf(userInfo.getEmployeeId()));
@@ -570,11 +572,12 @@ public class EditOrderFragment extends BaseFragment {
         passenger.CertType = passengerInfo.getDefaultCertType();
         passenger.EmployeeId = passengerInfo.getEmployeeId();
         passenger.Mobile = passengerInfo.getMobile();
-        passenger.IsEmployee = true;
+        passenger.IsEmployee = passengerInfo.getEmployeeId() != -1;
         passenger.PassengerType = "Adult";
         passenger.ProjectId = event.ProjectId;
         passenger.PassengerName = passengerInfo.getEmployeeName();
         passenger.ReceiveFlightDynamic = true;
+        passenger.InsuranceCount = safeFeeCheckIcon.isChecked() ? 1 : 0;
         if(mPassengers == null) {
             mPassengers = new ArrayList<>();
         }
@@ -588,7 +591,6 @@ public class EditOrderFragment extends BaseFragment {
             holder.deletePassenger.setTag(passenger);
             passengerLl.addView(holder.parent);
             mPassengerNum++;
-            passenger.InsuranceCount = safeFeeCheckIcon.isChecked() ? mPassengerNum : 0;
             mPassengers.add(passenger);
 
         }
@@ -646,16 +648,18 @@ public class EditOrderFragment extends BaseFragment {
                 public void onClick(View v) {
                     PassengerInfo passengerInfo = (PassengerInfo) passengerName.getTag();
                     String employeeId = String.valueOf(passengerInfo.getEmployeeId());
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("passenger", passengerInfo);
+                    bundle.putString("start",mFlightInfo.getDeparture().getDateTime());
+                    bundle.putString("title", title);
+                    if(mReturnFlightInfo != null) {
+                        bundle.putString("end", mReturnFlightInfo.getDeparture().getDateTime());
+                    }
+                    bundle.putInt("flag", ChoosePassengerFragment.IS_FROM_ORDER);
                     if(TextUtils.isEmpty(employeeId)) {
-                        PageSwitcher.switchToTopNavPage(getActivity(), EditCompanyPassengerFragment.class, null, getString(R.string.edit),getString(R.string.sure));
+                        PageSwitcher.switchToTopNavPage(getActivity(), EditCompanyPassengerFragment.class, bundle, getString(R.string.edit),getString(R.string.sure));
                     } else {
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("passenger", passengerInfo);
-                        bundle.putString("start",mFlightInfo.getDeparture().getDateTime());
-                        bundle.putString("title", title);
-                        bundle.putInt("flag", ChoosePassengerFragment.IS_FROM_ORDER);
                         PageSwitcher.switchToTopNavPage(getActivity(), EditPassengerFragment.class, bundle, getString(R.string.edit),getString(R.string.sure));
-
                     }
 
                 }

@@ -16,7 +16,7 @@ android {
         }
         manifestPlaceholders = [
                 JPUSH_PKGNAME : "com.ccy.chuchaiyi",
-                JPUSH_APPKEY : "你的appkey", //JPush上注册的包名对应的appkey.
+                JPUSH_APPKEY : "fa4a1f0c6022e5cd2a7331ea", //JPush上注册的包名对应的appkey.
                 JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
         ]
     }
@@ -54,4 +54,5 @@ dependencies {
     compile files('libs/pinyin4j-2.5.0.jar')
     compile 'de.greenrobot:greendao:2.1.0'
     compile 'cn.jiguang:jpush:2.1.8'
+    compile 'com.github.bmelnychuk:atv:1.2.+'
 }

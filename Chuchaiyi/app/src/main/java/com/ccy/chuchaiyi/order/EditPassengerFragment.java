@@ -34,6 +34,7 @@ import com.ccy.chuchaiyi.contact.ChooseProjectFragment;
 import com.ccy.chuchaiyi.contact.PassengerInfo;
 import com.ccy.chuchaiyi.contact.ProjectInfo;
 import com.ccy.chuchaiyi.db.UserInfo;
+import com.ccy.chuchaiyi.event.EventOfChooseDepart;
 import com.ccy.chuchaiyi.event.EventOfSelApproval;
 import com.ccy.chuchaiyi.event.EventOfSelPassenger;
 import com.ccy.chuchaiyi.event.EventOfSelProject;
@@ -103,8 +104,6 @@ public class EditPassengerFragment extends BaseFragment {
     @Bind(R.id.et_phone)
     EditText etPhone;
 
-    private String startTime;
-    private String endTime;
     private Approval mApproval;
     private ProjectInfo.ProjectsBean mProjectsBean;
     private PopupWindow mPickUpPopWindow;
@@ -116,7 +115,8 @@ public class EditPassengerFragment extends BaseFragment {
     void chooseNum() {
         Bundle bundle = new Bundle();
         bundle.putString("EmployeeId", String.valueOf(mPassengerInfo.getEmployeeId()));
-        bundle.putString("start", startTime);
+        bundle.putString("start", getArguments().getString("start"));
+        bundle.putString("end", getArguments().getString("end"));
         PageSwitcher.switchToTopNavPage(getActivity(), ChooseCheckNumFragment.class, bundle, getString(R.string.choose_check_num), null);
 
     }
@@ -142,6 +142,7 @@ public class EditPassengerFragment extends BaseFragment {
     }
     @OnClick(R.id.depart_rl)
     void onChooseDepart() {
+        PageSwitcher.switchToTopNavPage(getActivity(), ChooseDepartmentFragment.class, null, getString(R.string.choose_department), null);
 
     }
 
@@ -154,6 +155,10 @@ public class EditPassengerFragment extends BaseFragment {
     @Override
     public void onRightBtnClick() {
         super.onRightBtnClick();
+        if(!Util.isMobileNO(etPhone.getText().toString())) {
+            ToastUtil.shortToast(R.string.hint_check_login_phone);
+            return;
+        }
         mPassengerInfo.setDefaultCertNo(etCard.getText().toString());
         mPassengerInfo.setMobile(etPhone.getText().toString());
         EventOfSelPassenger eventOfSelPassenger = new EventOfSelPassenger();
@@ -192,9 +197,7 @@ public class EditPassengerFragment extends BaseFragment {
 
         getCardType();
         Bundle bundle = getArguments();
-        startTime = bundle.getString("start");
         String  employeeId = bundle.getString("EmployeeId");
-        endTime = bundle.getString("end");
         UserInfo userInfo = BaseApplication.getUserMgr().getUser();
 
         if (userInfo.getApprovalRequired()) {
@@ -352,6 +355,15 @@ public class EditPassengerFragment extends BaseFragment {
         projectTv.setText(mProjectsBean.getProjectName());
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void setSelDepart(EventOfChooseDepart event) {
+        if (getActivity() == null) {
+            return;
+        }
+        mPassengerInfo.setDepartmentId(event.departmentBean.getId());
+        mPassengerInfo.setDepartmentName(event.departmentBean.getName());
+        departValue.setText(event.departmentBean.getName());
+    }
     /**
      * 显示选择框
      */

@@ -24,6 +24,7 @@
     <string name="phone">手机号</string>
     <string name="hint_login_username">手机/邮箱/账号</string>
     <string name="hint_login_phone">请输入手机号</string>
+    <string name="hint_check_login_phone">请输入正确的手机号</string>
     <string name="hint_sms_code">请填写验证码</string>
     <string name="sms_code">验证码</string>
     <string name="hint_login_psw">请输入密码</string>
@@ -107,6 +108,7 @@
     <string name="flight_price">机票</string>
     <string name="passenger">乘机人</string>
     <string name="choose_passenger">选择乘机人</string>
+    <string name="choose_department">选择部门</string>
     <string name="add">添加</string>
     <string name="safe_fee">航意险</string>
     <string name="delay_fee">航延险</string>
@@ -165,5 +167,6 @@
     <string name="pre_day_btn"><![CDATA[< 前一天]]></string>
     <string name="next_day_btn"><![CDATA[后一天 >]]></string>
     <string name="add_company_passenger">添加企业用户</string>
+    <string name="ic_person">&#xe105;</string>
 
 </resources>

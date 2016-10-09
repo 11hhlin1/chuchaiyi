@@ -21,7 +21,7 @@ public class PassengerInfo implements Serializable {
      * DefaultCertNo : **************4026
      */
 
-    private int EmployeeId;
+    private int EmployeeId = -1;
     private String EmployeeName;
     private String Gender;
     private int DepartmentId;
