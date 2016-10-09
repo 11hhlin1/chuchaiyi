@@ -130,7 +130,11 @@ public class EditPassengerFragment extends BaseFragment {
 
     @OnClick(R.id.add_company_passenger_ll)
     void setmAddCompanyPassengerRl() {
-        PageSwitcher.switchToTopNavPage(getActivity(), EditCompanyPassengerFragment.class, null, getString(R.string.choose_passenger), null);
+        Bundle bundle = new Bundle();
+        bundle.putString("EmployeeId", String.valueOf(mPassengerInfo.getEmployeeId()));
+        bundle.putString("start", getArguments().getString("start"));
+        bundle.putString("end", getArguments().getString("end"));
+        PageSwitcher.switchToTopNavPage(getActivity(), EditCompanyPassengerFragment.class, bundle, getString(R.string.choose_passenger), getString(R.string.sure));
 
     }
     @OnClick(R.id.passenger_rl)
@@ -143,7 +147,6 @@ public class EditPassengerFragment extends BaseFragment {
     @OnClick(R.id.depart_rl)
     void onChooseDepart() {
         PageSwitcher.switchToTopNavPage(getActivity(), ChooseDepartmentFragment.class, null, getString(R.string.choose_department), null);
-
     }
 
     @OnClick(R.id.choose_project_rl)
@@ -220,8 +223,21 @@ public class EditPassengerFragment extends BaseFragment {
             mAddCompanyPassengerRl.setVisibility(View.GONE);
         }
         if(TextUtils.isEmpty(employeeId)) {
-           mPassengerInfo = (PassengerInfo) bundle.getSerializable("passenger");
-           setPassengerInfo();
+           EventOfSelPassenger eventOfSelPassenger = (EventOfSelPassenger) bundle.getSerializable("passenger");
+           mPassengerInfo = eventOfSelPassenger.mPassenger;
+            if(mApproval == null) {
+                mApproval = new Approval();
+                mApproval.setApprovalId(eventOfSelPassenger.ApprovalId);
+                mApproval.setApprovalNo(eventOfSelPassenger.ApprovalNo);
+            }
+            if(mProjectsBean == null) {
+                mProjectsBean = new ProjectInfo.ProjectsBean();
+                mProjectsBean.setProjectId(eventOfSelPassenger.ProjectId);
+                mProjectsBean.setProjectName(eventOfSelPassenger.ProjectName);
+            }
+            numTv.setText(mApproval.getApprovalNo());
+            projectTv.setText(mProjectsBean.getProjectName());
+            setPassengerInfo();
         } else {
             getEmployeeInfo(employeeId);
         }

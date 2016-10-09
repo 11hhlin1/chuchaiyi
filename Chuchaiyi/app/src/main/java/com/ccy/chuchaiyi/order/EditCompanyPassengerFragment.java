@@ -135,7 +135,12 @@ public class EditCompanyPassengerFragment extends BaseFragment{
             ToastUtil.shortToast(R.string.hint_check_login_phone);
             return;
         }
+        if(TextUtils.isEmpty(cardTypeValue.getText().toString())) {
+            ToastUtil.shortToast(R.string.choose_certType);
+            return;
+        }
         mPassengerInfo.setDefaultCertNo(etCard.getText().toString());
+        mPassengerInfo.setDefaultCertType(cardTypeValue.getText().toString());
         mPassengerInfo.setMobile(etPhone.getText().toString());
         mPassengerInfo.setEmployeeName(passengerValue.getText().toString());
         EventOfSelPassenger eventOfSelPassenger = new EventOfSelPassenger();
@@ -177,11 +182,23 @@ public class EditCompanyPassengerFragment extends BaseFragment{
             chooseCheckNum.setVisibility(View.GONE);
         }
         Bundle bundle = getArguments();
-        mPassengerInfo = (PassengerInfo) bundle.getSerializable("passenger");
-
-        if(mPassengerInfo == null) {
+        EventOfSelPassenger eventOfSelPassenger = (EventOfSelPassenger) bundle.getSerializable("passenger");
+        if(eventOfSelPassenger == null) {
             mPassengerInfo = new PassengerInfo();
         } else {
+            mPassengerInfo = eventOfSelPassenger.mPassenger;
+            if(mApproval == null) {
+                mApproval = new Approval();
+                mApproval.setApprovalId(eventOfSelPassenger.ApprovalId);
+                mApproval.setApprovalNo(eventOfSelPassenger.ApprovalNo);
+            }
+            if(mProjectsBean == null) {
+                mProjectsBean = new ProjectInfo.ProjectsBean();
+                mProjectsBean.setProjectId(eventOfSelPassenger.ProjectId);
+                mProjectsBean.setProjectName(eventOfSelPassenger.ProjectName);
+            }
+            numTv.setText(mApproval.getApprovalNo());
+            projectTv.setText(mProjectsBean.getProjectName());
             setPassengerInfo();
         }
         getCardType();

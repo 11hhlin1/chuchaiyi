@@ -89,6 +89,7 @@
     <string name="time_tab">时间从早到晚</string>
     <string name="choose_city">请选择城市</string>
     <string name="choose_time">请选择日期</string>
+    <string name="choose_certType">请证件类型</string>
     <string name="late_to_early_tab">时间从晚到早</string>
     <string name="low_to_high">价格从低到高</string>
     <string name="high_to_low">价格从高到低</string>

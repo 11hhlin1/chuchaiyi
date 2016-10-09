@@ -128,7 +128,7 @@ public class EditOrderFragment extends BaseFragment {
     private List<Passenger> mPassengers;
     private PayDialog mConfirmDialog;
     private String title;
-
+    private UserInfo userInfo;
     @Override
     public void onRightBtnClick() {
         super.onRightBtnClick();
@@ -151,24 +151,23 @@ public class EditOrderFragment extends BaseFragment {
         mSetoutResonInfo = (PolicyResultInfo) bundle.getSerializable("SetOutWarningInfoBean");
         mReturnResonInfo = (PolicyResultInfo) bundle.getSerializable("ReturnWarningInfoBean");
         getStopInfo();
-        UserInfo user = BaseApplication.getUserMgr().getUser();
-        contactName.setText(user.getEmployeeName());
-        contactPhone.setText(user.getMobile());
-        UserInfo userInfo = BaseApplication.getUserMgr().getUser();
+        userInfo = BaseApplication.getUserMgr().getUser();
+        contactName.setText(userInfo.getEmployeeName());
+        contactPhone.setText(userInfo.getMobile());
         if(userInfo.getCanBookingForOthers()) {
             mPassengerNum = 0 ;
             addPassenger.setVisibility(View.VISIBLE);
         } else {
-            mPassengerNum = 1;
-            addPassenger.setVisibility(View.GONE);
-            PassengerViewHolder holder = inflatePassengerView(getActivity().getLayoutInflater());
-            holder.passengerName.setText(userInfo.getEmployeeName());
-            PassengerInfo passengerInfo = new PassengerInfo();
-            passengerInfo.setEmployeeName(userInfo.getEmployeeName());
-            passengerInfo.setEmployeeId(userInfo.getEmployeeId());
-            holder.passengerName.setTag(passengerInfo);
-            holder.deletePassenger.setVisibility(View.GONE);
-            passengerLl.addView(holder.parent);
+//            mPassengerNum = 1;
+//            addPassenger.setVisibility(View.GONE);
+//            PassengerViewHolder holder = inflatePassengerView(getActivity().getLayoutInflater());
+//            holder.passengerName.setText(userInfo.getEmployeeName());
+//            PassengerInfo passengerInfo = new PassengerInfo();
+//            passengerInfo.setEmployeeName(userInfo.getEmployeeName());
+//            passengerInfo.setEmployeeId(userInfo.getEmployeeId());
+//            holder.passengerName.setTag(passengerInfo);
+//            holder.deletePassenger.setVisibility(View.GONE);
+//            passengerLl.addView(holder.parent);
         }
         if (mReturnFlightInfo == null) {
             arriveTime.setVisibility(View.GONE);
@@ -202,6 +201,9 @@ public class EditOrderFragment extends BaseFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 setAmountTv();
+                for (Passenger passenger: mPassengers) {
+                    passenger.InsuranceCount = safeFeeCheckIcon.isChecked() ? 1 : 0;
+                }
             }
         });
         EventBus.getDefault().register(this);
@@ -584,7 +586,7 @@ public class EditOrderFragment extends BaseFragment {
         if(!mPassengers.contains(passenger)) {
             PassengerViewHolder holder = inflatePassengerView(getActivity().getLayoutInflater());
             holder.passengerName.setText(passengerInfo.getEmployeeName());
-            holder.passengerName.setTag(passengerInfo);
+            holder.passengerName.setTag(event);
             holder.passengerJob.setText(passengerInfo.getDepartmentName());
             holder.orderNum.setText(event.ApprovalNo);
             holder.projectNum.setText(event.ProjectName);
@@ -592,10 +594,14 @@ public class EditOrderFragment extends BaseFragment {
             passengerLl.addView(holder.parent);
             mPassengerNum++;
             mPassengers.add(passenger);
-
+            if(!userInfo.getCanBookingForOthers() && mPassengerNum == 1) {
+                addPassenger.setVisibility(View.GONE);
+                holder.deletePassenger.setVisibility(View.GONE);
+            }
         }
         setSafeFeeValue();
         setAmountTv();
+
 //        TopNavSubActivity act = (TopNavSubActivity) getActivity();
 //        act.setTopTitleTV(title);
 //        act.setRightBtnText(getString(R.string.reason_private));
@@ -646,17 +652,17 @@ public class EditOrderFragment extends BaseFragment {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    PassengerInfo passengerInfo = (PassengerInfo) passengerName.getTag();
-                    String employeeId = String.valueOf(passengerInfo.getEmployeeId());
+                    EventOfSelPassenger eventOfSelPassenger = (EventOfSelPassenger) passengerName.getTag();
+                    PassengerInfo passengerInfo = eventOfSelPassenger.mPassenger;
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("passenger", passengerInfo);
+                    bundle.putSerializable("passenger", eventOfSelPassenger);
                     bundle.putString("start",mFlightInfo.getDeparture().getDateTime());
                     bundle.putString("title", title);
                     if(mReturnFlightInfo != null) {
                         bundle.putString("end", mReturnFlightInfo.getDeparture().getDateTime());
                     }
                     bundle.putInt("flag", ChoosePassengerFragment.IS_FROM_ORDER);
-                    if(TextUtils.isEmpty(employeeId)) {
+                    if(passengerInfo.getEmployeeId() == -1) {
                         PageSwitcher.switchToTopNavPage(getActivity(), EditCompanyPassengerFragment.class, bundle, getString(R.string.edit),getString(R.string.sure));
                     } else {
                         PageSwitcher.switchToTopNavPage(getActivity(), EditPassengerFragment.class, bundle, getString(R.string.edit),getString(R.string.sure));

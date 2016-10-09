@@ -26,8 +26,9 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_60p"
             android:layout_toRightOf="@+id/passenger_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
             android:textColor="@color/color_222222"
             android:textSize="@dimen/textsize_13sp"
             android:hint="必填"
@@ -61,8 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/color_222222"
-            android:textSize="@dimen/textsize_13sp"
-            android:text="@string/id_card"/>
+            android:textSize="@dimen/textsize_13sp" />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
