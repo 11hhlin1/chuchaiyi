@@ -55,7 +55,7 @@ public class BaseApplication extends Application {
         mApp = this;
         mAppLib = AppLib.onCreate(mApp);
 //        PreferencesManager.getInstance().put(BundleKey.TOKEN, "834320403214");
-        OkHttpUtils.init(this);
+        OkHttpUtils.init(mApp);
         HttpHeaders headers = new HttpHeaders();
         headers.put(HttpHeaders.HEAD_KEY_ACCEPT, "application/json");
         headers.put(HttpHeaders.HEAD_KEY_CONTENT_TYPE, "application/json");

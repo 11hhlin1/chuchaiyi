@@ -17,9 +17,7 @@ import com.gjj.applibrary.util.Util;
 
 
 /**
- * @author lvning
- * @version create time:2014-10-29_上午10:05:21
- * @Description 日历列表适配器
+ * @author chuck
  */
 public class CalendarListAdapter extends BaseAdapter {
 

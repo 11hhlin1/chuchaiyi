@@ -1,9 +1,7 @@
 package com.ccy.chuchaiyi.calendar;
 
 /**
- * @author lvning
- * @version create time:2014-10-29_下午3:29:43
- * @Description TODO
+ * @author chuck
  */
 public class Day {
 

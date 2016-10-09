@@ -53,7 +53,7 @@ public class ToastUtil {
         if (context == null){
             return;
         }
-        if (context != null && context instanceof Activity) {
+        if (context instanceof Activity) {
             if(((Activity) context).isFinishing()) {
                 return;
             }

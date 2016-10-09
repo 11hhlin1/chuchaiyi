@@ -15,9 +15,8 @@ import com.ccy.chuchaiyi.R;
 import java.util.List;
 
 /**
- * @author: xiaolijuan
+ * @author: chuck
  * @description:
- * @projectName: SelectCityDome
  * @date: 2016-03-01
  * @time: 17:25
  */

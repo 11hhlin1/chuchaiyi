@@ -12,8 +12,7 @@ import org.greenrobot.eventbus.EventBus;
 import butterknife.Bind;
 
 /**
- * @author lvning
- * @version create time:2014-10-29_上午9:56:45
+ * @author chuck
  * @Description 预订日选择
  */
 public class CalendarSelectorFragment extends BaseFragment {

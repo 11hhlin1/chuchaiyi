@@ -15,8 +15,7 @@ import com.ccy.chuchaiyi.R;
 
 
 /**
- * @author lvning
- * @version create time:2014-10-28_下午5:37:27
+ * @author chuck
  * @Description 日历表格适配器
  */
 public class CalendarAdapter extends BaseAdapter {

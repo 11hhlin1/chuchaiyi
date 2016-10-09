@@ -28,7 +28,7 @@ public class DepartmentRsp implements Serializable{
         this.Department = Department;
     }
 
-    public static class DepartmentBean {
+    public static class DepartmentBean implements Serializable{
         private int Id;
         private String Name;
         private int ParentId;
