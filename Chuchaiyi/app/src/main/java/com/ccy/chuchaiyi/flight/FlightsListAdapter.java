@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.PageSwitcher;
+import com.ccy.chuchaiyi.constant.Constants;
 import com.ccy.chuchaiyi.event.EventOfRefreshOrderList;
 import com.ccy.chuchaiyi.login.ForgetPswFragment;
 import com.ccy.chuchaiyi.net.ApiConstants;
@@ -478,6 +479,7 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
 
                                 StringBuilder title = Util.getThreadSafeStringBuilder();
                                 title.append(flight.getDeparture().getCityName()).append("-").append(flight.getArrival().getCityName()).append(mContext.getString(R.string.reason_common));
+                                PreferencesManager.getInstance().put(Constants.EDIT_ORDER_TITLE,title.toString());
                                 PageSwitcher.switchToTopNavPage((Activity) mContext,EditOrderFragment.class,bundle,title.toString(),mContext.getString(R.string.reason_private));
 
                             } else {

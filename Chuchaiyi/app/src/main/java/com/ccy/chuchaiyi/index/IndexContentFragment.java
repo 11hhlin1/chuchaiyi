@@ -181,7 +181,7 @@ public class IndexContentFragment extends BaseFragment {
                 bundle.putInt("dateType", EventOfSelDate.RETURN_DATE);
                 L.d("@@@@@@" + mSelReturnDate);
                 bundle.putString(CalendarSelectorFragment.ORDER_DAY, mSelReturnDate);
-                PageSwitcher.switchToTopNavPage(getActivity(), CalendarSelectorFragment.class, bundle, getString(R.string.choose_set_out_date),null);
+                PageSwitcher.switchToTopNavPage(getActivity(), CalendarSelectorFragment.class, bundle, getString(R.string.choose_return_date),null);
                 break;
             case R.id.seat_wei:
                 showPickupWindow();

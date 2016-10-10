@@ -87,4 +87,6 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/margin_30p"
         android:src="@mipmap/icon_enter" />
+    <View
+        style="@style/personal_page_bottom_line"/>
 </RelativeLayout>

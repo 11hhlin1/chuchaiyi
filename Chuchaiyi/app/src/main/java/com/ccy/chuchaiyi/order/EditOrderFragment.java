@@ -127,7 +127,7 @@ public class EditOrderFragment extends BaseFragment {
     private FlightInfoDialog mFlightInfoDialog;
     private List<Passenger> mPassengers;
     private PayDialog mConfirmDialog;
-    private String title;
+//    private String title;
     private UserInfo userInfo;
     @Override
     public void onRightBtnClick() {
@@ -201,6 +201,8 @@ public class EditOrderFragment extends BaseFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 setAmountTv();
+                if(mPassengers == null)
+                    return;
                 for (Passenger passenger: mPassengers) {
                     passenger.InsuranceCount = safeFeeCheckIcon.isChecked() ? 1 : 0;
                 }
@@ -212,8 +214,8 @@ public class EditOrderFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        TopNavSubActivity act = (TopNavSubActivity) getActivity();
-        title = act.getTitleText();
+//        TopNavSubActivity act = (TopNavSubActivity) getActivity();
+//        title = act.getTitleText();
     }
 
     private void setAmountTv() {
@@ -288,7 +290,7 @@ public class EditOrderFragment extends BaseFragment {
                 if(mReturnFlightInfo != null) {
                     bundle.putString("end", mReturnFlightInfo.getDeparture().getDateTime());
                 }
-                bundle.putString("title", title);
+//                bundle.putString("title", title);
                 UserInfo userInfo = BaseApplication.getUserMgr().getUser();
                 bundle.putString("EmployeeId", String.valueOf(userInfo.getEmployeeId()));
                 PageSwitcher.switchToTopNavPage(getActivity(), EditPassengerFragment.class, bundle, getString(R.string.edit),getString(R.string.sure));
@@ -657,7 +659,7 @@ public class EditOrderFragment extends BaseFragment {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("passenger", eventOfSelPassenger);
                     bundle.putString("start",mFlightInfo.getDeparture().getDateTime());
-                    bundle.putString("title", title);
+//                    bundle.putString("title", title);
                     if(mReturnFlightInfo != null) {
                         bundle.putString("end", mReturnFlightInfo.getDeparture().getDateTime());
                     }

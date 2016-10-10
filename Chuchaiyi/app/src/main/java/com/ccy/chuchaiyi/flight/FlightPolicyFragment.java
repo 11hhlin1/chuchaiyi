@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.PageSwitcher;
+import com.ccy.chuchaiyi.constant.Constants;
 import com.gjj.applibrary.util.SaveObjUtil;
 import com.ccy.chuchaiyi.order.EditOrderFragment;
 import com.gjj.applibrary.util.PreferencesManager;
@@ -71,6 +72,7 @@ public class FlightPolicyFragment extends BaseFragment {
                 bundle.putSerializable("SetOutBunksBean", mBunksBean);
                 StringBuilder title = Util.getThreadSafeStringBuilder();
                 title.append(mFlightInfo.getDeparture().getCityName()).append("-").append(mFlightInfo.getArrival().getCityName()).append(getString(R.string.reason_common));
+                PreferencesManager.getInstance().put(Constants.EDIT_ORDER_TITLE,title.toString());
                 PageSwitcher.switchToTopNavPage(getActivity(), EditOrderFragment.class, bundle, title.toString(),getString(R.string.reason_private));
             } else {
                 PolicyResultInfo resultInfo = (PolicyResultInfo) SaveObjUtil.unSerialize(PreferencesManager.getInstance().get("SetOutWarningInfoBean"));
@@ -89,6 +91,8 @@ public class FlightPolicyFragment extends BaseFragment {
                 bundle.putSerializable("ReturnBunksBean", mBunksBean);
                 StringBuilder title = Util.getThreadSafeStringBuilder();
                 title.append(mFlightInfo.getDeparture().getCityName()).append("-").append(mFlightInfo.getArrival().getCityName()).append(getString(R.string.reason_common));
+                PreferencesManager.getInstance().put(Constants.EDIT_ORDER_TITLE,title.toString());
+
                 PageSwitcher.switchToTopNavPage(getActivity(), EditOrderFragment.class, bundle, title.toString(),getString(R.string.reason_private));
             }
 

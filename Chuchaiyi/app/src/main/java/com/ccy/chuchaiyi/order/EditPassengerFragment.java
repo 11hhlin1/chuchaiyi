@@ -27,6 +27,7 @@ import com.ccy.chuchaiyi.app.BaseApplication;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.base.TopNavSubActivity;
+import com.ccy.chuchaiyi.constant.Constants;
 import com.ccy.chuchaiyi.contact.Approval;
 import com.ccy.chuchaiyi.contact.ChooseCheckNumFragment;
 import com.ccy.chuchaiyi.contact.ChoosePassengerFragment;
@@ -44,6 +45,7 @@ import com.gjj.applibrary.event.EventOfTokenError;
 import com.gjj.applibrary.http.callback.CommonCallback;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.log.L;
+import com.gjj.applibrary.util.PreferencesManager;
 import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 import com.lzy.okhttputils.OkHttpUtils;
@@ -134,7 +136,7 @@ public class EditPassengerFragment extends BaseFragment {
         bundle.putString("EmployeeId", String.valueOf(mPassengerInfo.getEmployeeId()));
         bundle.putString("start", getArguments().getString("start"));
         bundle.putString("end", getArguments().getString("end"));
-        PageSwitcher.switchToTopNavPage(getActivity(), EditCompanyPassengerFragment.class, bundle, getString(R.string.choose_passenger), getString(R.string.sure));
+        PageSwitcher.switchToTopNavPage(getActivity(), EditCompanyPassengerFragment.class, bundle, getString(R.string.edit), getString(R.string.sure));
 
     }
     @OnClick(R.id.passenger_rl)
@@ -142,7 +144,6 @@ public class EditPassengerFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putInt("flag", ChoosePassengerFragment.IS_FROM_ORDER);
         PageSwitcher.switchToTopNavPage(getActivity(), ChoosePassengerFragment.class, bundle, getString(R.string.choose_passenger), null);
-
     }
     @OnClick(R.id.depart_rl)
     void onChooseDepart() {
@@ -182,7 +183,8 @@ public class EditPassengerFragment extends BaseFragment {
 
         TopNavSubActivity activity = (TopNavSubActivity) getActivity();
         Bundle bundle = new Bundle();
-        bundle.putString(TopNavSubActivity.PARAM_TOP_TITLE, getArguments().getString("title"));
+        String title = PreferencesManager.getInstance().get(Constants.EDIT_ORDER_TITLE);
+        bundle.putString(TopNavSubActivity.PARAM_TOP_TITLE, title);
         bundle.putString(TopNavSubActivity.PARAM_TOP_RIGHT, getString(R.string.reason_private));
         PageSwitcher.goBackTopNavPage(activity, EditOrderFragment.class, bundle, false);
 
