@@ -239,40 +239,23 @@ public class ChooseCityFragment extends BaseFragment {
             mSortList = filterCitySorts;
         } else {
             mSortList.clear();
-            if(Util.isListEmpty(filterCitySorts))
+            if (Util.isListEmpty(filterCitySorts))
                 return;
             for (CitySort sortModel : filterCitySorts) {
                 String name = sortModel.getPinyin();
                 String shortPin = sortModel.getPinyinShort();
                 if (shortPin.toUpperCase().indexOf(filterStr.toString().toUpperCase()) != -1 || PinyinUtils.getPingYin(name).toUpperCase().startsWith(filterStr.toString().toUpperCase())) {
                     mSortList.add(sortModel);
+                } else {
+                    if (sortModel.getName().contains(filterStr)) {
+                        mSortList.add(sortModel);
+                    }
                 }
+
             }
+            // 根据a-z进行排序
+            Collections.sort(mSortList, new PinyinComparator());
         }
-        // 根据a-z进行排序
-        Collections.sort(mSortList, new PinyinComparator());
         adapter.setData(mSortList);
     }
-//
-//    private List<CitySortModel> filledData(String[] date) {
-//        List<CitySortModel> mSortList = new ArrayList<>();
-//        ArrayList<String> indexString = new ArrayList<>();
-//
-//        for (int i = 0; i < date.length; i++) {
-//            CitySortModel sortModel = new CitySortModel();
-//            sortModel.setName(date[i]);
-//            String pinyin = PinyinUtils.getPingYin(date[i]);
-//            String sortString = pinyin.substring(0, 1).toUpperCase();
-//            if (sortString.matches("[A-Z]")) {
-//                sortModel.setSortLetters(sortString.toUpperCase());
-//                if (!indexString.contains(sortString)) {
-//                    indexString.add(sortString);
-//                }
-//            }
-//            mSortList.add(sortModel);
-//        }
-//        Collections.sort(indexString);
-////        sidrbar.setIndexText(indexString);
-//        return mSortList;
-//    }
 }

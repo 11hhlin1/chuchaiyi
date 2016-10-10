@@ -105,7 +105,18 @@ public class ChoosePassengerAdapter extends BaseRecyclerViewAdapter<PassengerDat
                 return super.onCreateViewHolder(parent, viewType);
         }
     }
-
+    public int getPositionForSection(int section) {
+        for (int i = 0; i < getItemCount(); i++) {
+            String sortStr = items.get(i).sortLetters;
+            if(TextUtils.isEmpty(sortStr) || sortStr.length() > 1)
+                return -1;
+            char firstChar = sortStr.toUpperCase().charAt(0);
+            if (firstChar == section) {
+                return i;
+            }
+        }
+        return -1;
+    }
     class ViewHolderHeader extends RecyclerView.ViewHolder {
         @Bind(R.id.common_title)
         TextView commonTitle;
