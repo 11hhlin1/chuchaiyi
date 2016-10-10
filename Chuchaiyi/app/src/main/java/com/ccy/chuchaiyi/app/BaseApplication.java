@@ -20,11 +20,14 @@ import com.gjj.applibrary.log.L;
 import com.gjj.applibrary.network.NetworkStateMgr;
 import com.gjj.applibrary.task.BackgroundTaskExecutor;
 import com.gjj.applibrary.task.ForegroundTaskExecutor;
+import com.gjj.applibrary.util.AndroidUtil;
 import com.gjj.applibrary.util.PreferencesManager;
 import com.gjj.applibrary.util.ToastUtil;
+import com.gjj.applibrary.util.Util;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.cache.CacheMode;
 import com.lzy.okhttputils.model.HttpHeaders;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -61,6 +64,10 @@ public class BaseApplication extends Application {
         headers.put(HttpHeaders.HEAD_KEY_CONTENT_TYPE, "application/json");
         OkHttpUtils.getInstance().addCommonHeaders(headers);
         EventBus.getDefault().register(this);
+        CrashReport.initCrashReport(this, "ae81ed68d6", true);
+        StringBuilder sb = Util.getThreadSafeStringBuilder();
+        sb.append(AndroidUtil.getVersionName(this)).append('_').append(AndroidUtil.getVersionCode(this));
+        CrashReport.setAppVersion(this, sb.toString());
 
 //        JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
 //        JPushInterface.init(this);     		// 初始化 JPush

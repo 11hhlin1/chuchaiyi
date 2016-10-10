@@ -69,3 +69,5 @@ public static final int *;
 }
 -dontwarn android.webkit.WebView
 -dontwarn android.webkit.WebViewClient
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
