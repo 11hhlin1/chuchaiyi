@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/progress_img_popbg">
+    android:background="@drawable/pay_dialog_bg">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -42,6 +42,7 @@
         android:textColorHint="@color/color_aaaaaa"
         android:hint="非必填"
         android:imeOptions="actionNext"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/single_line_height_132px"
@@ -54,6 +55,7 @@
             android:gravity="center"
             android:layout_height="match_parent"
             android:textSize="@dimen/textsize_18sp"
+            android:background="@drawable/pay_cancel_btn_bg"
             android:textColor="@color/color_222222"
             android:text="@string/dialog_default_cancel_title"
             />
@@ -64,7 +66,8 @@
             android:gravity="center"
             android:layout_height="match_parent"
             android:textSize="@dimen/textsize_18sp"
-            android:textColor="@color/orange"
+            android:background="@drawable/pay_sure_btn_bg"
+            android:textColor="@color/white"
             android:text="@string/sure" />
     </LinearLayout>
 </LinearLayout>
