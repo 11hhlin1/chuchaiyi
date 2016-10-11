@@ -29,12 +29,10 @@
 
 #预校验
 -dontpreverify
-
- # 混淆时所采用的算法
--optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
-
- #保护注解
--keepattributes *Annotation*
+-dontshrink
+-dontnote
+-renamesourcefileattribute ProGuard
+-keepattributes SourceFile,LineNumberTable
 -dontwarn java.nio.file.**
 
 -dontwarn cn.jpush.**
@@ -48,17 +46,17 @@
 -keepclassmembers class * {
    public <init> (org.json.JSONObject);
 }
--keep public class * implements butterknife.internal.ViewBinder { public <init>(); }
-# Prevent obfuscation of types which use ButterKnife annotations since the simple name
-# is used to reflectively look up the generated ViewBinder.
--keep class butterknife.*
--keepclasseswithmembernames class * { @butterknife.* <methods>; }
--keepclasseswithmembernames class * { @butterknife.* <fields>; }
--dontwarn butterknife.internal.*
--dontshrink
--dontnote
--renamesourcefileattribute ProGuard
--keepattributes SourceFile,LineNumberTable
+-keep class butterknife.** { *; }
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder { *; }
+-keepclasseswithmembernames class * {
+@butterknife.* <fields>;
+}
+
+-keepclasseswithmembernames class * {
+@butterknife.* <methods>;
+}
+
 -keepclassmembers class * implements android.os.Parcelable {
     static ** CREATOR;
 }
@@ -127,4 +125,18 @@ public static final int *;
 #保持 native 方法不被混淆
 -keepclasseswithmembernames class * {
         native <methods>;
+}
+
+-keep class de.greenrobot.dao.** {*;}
+#保持greenDao的方法不被混淆
+#用来保持生成的表名不被混淆
+-keepclassmembers class * extends de.greenrobot.dao.AbstractDao {
+  public static java.lang.String TABLENAME; }
+-keep class **$Properties
+
+-keep public class * extends android.view.View {
+    public <init>(android.content.Context);
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+    public void set*(...);
 }
