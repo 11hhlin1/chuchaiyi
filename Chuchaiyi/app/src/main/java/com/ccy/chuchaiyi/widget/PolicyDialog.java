@@ -106,6 +106,10 @@ public class PolicyDialog extends AlertDialog {
         });
 
     }
+
+    public void setConfirmGone() {
+        bookBtn.setVisibility(View.GONE);
+    }
     public void setConfirmClickListener(View.OnClickListener confirmClickListener) {
         this.confirmClickListener = confirmClickListener;
     }

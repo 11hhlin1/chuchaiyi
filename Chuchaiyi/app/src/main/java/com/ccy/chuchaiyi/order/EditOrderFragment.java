@@ -34,9 +34,11 @@ import com.ccy.chuchaiyi.event.EventOfChangeTab;
 import com.ccy.chuchaiyi.event.EventOfSelPassenger;
 import com.ccy.chuchaiyi.flight.FlightInfo;
 import com.ccy.chuchaiyi.flight.PolicyResultInfo;
+import com.ccy.chuchaiyi.flight.ReturnFlightPolicy;
 import com.ccy.chuchaiyi.flight.StopInfoRsp;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.util.CallUtil;
+import com.ccy.chuchaiyi.widget.PolicyDialog;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.util.DateUtil;
 import com.gjj.applibrary.util.ToastUtil;
@@ -127,6 +129,7 @@ public class EditOrderFragment extends BaseFragment {
     private FlightInfoDialog mFlightInfoDialog;
     private List<Passenger> mPassengers;
     private PayDialog mConfirmDialog;
+    private PolicyDialog mPolicyDialog;
 //    private String title;
     private UserInfo userInfo;
     @Override
@@ -281,6 +284,40 @@ public class EditOrderFragment extends BaseFragment {
                 showPlanDetailDialog();
                 break;
             case R.id.return_change_tv:
+                OkHttpUtils.get(ApiConstants.GET_FLIGHT_POLICY)
+                        .tag(getActivity())
+                        .cacheMode(CacheMode.NO_CACHE)
+                        .params("airlineCode",mFlightInfo.getAirline())
+                        .params("bunkCode",mBunksBean.getBunkCode())
+                        .params("departureDate",mFlightInfo.getDeparture().getDateTime().split(" ")[0])
+                        .params("departureAirportCode",mFlightInfo.getDeparture().getAirportCode())
+                        .params("arrivalAirportCode",mFlightInfo.getArrival().getAirportCode())
+                        .execute(new JsonCallback<ReturnFlightPolicy>(ReturnFlightPolicy.class) {
+                            @Override
+                            public void onResponse(boolean isFromCache, ReturnFlightPolicy returnFlightPolicy, Request request, @Nullable Response response) {
+                                if(mPolicyDialog == null) {
+                                    PolicyDialog policyDialog = new PolicyDialog(getActivity());
+                                    mPolicyDialog = policyDialog;
+                                    policyDialog.setCanceledOnTouchOutside(true);
+                                    policyDialog.setCancelClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            dismissConfirmDialog();
+                                        }
+                                    });
+                                }
+                                mPolicyDialog.show();
+                                mPolicyDialog.setContent(mFlightInfo,mBunksBean);
+                                mPolicyDialog.setConfirmGone();
+                                mPolicyDialog.setContent(returnFlightPolicy.getReturnPolicyDesc(), returnFlightPolicy.getChangePolicyDesc(),returnFlightPolicy.getSignPolicyDesc());
+                            }
+
+                            @Override
+                            public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                                super.onError(isFromCache, call, response, e);
+                                ToastUtil.shortToast(R.string.load_fail);
+                            }
+                        });
                 break;
             case R.id.add_passenger:
 

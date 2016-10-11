@@ -26,6 +26,7 @@ import com.ccy.chuchaiyi.calendar.CalendarSelectorFragment;
 import com.ccy.chuchaiyi.city.ChooseCityFragment;
 import com.ccy.chuchaiyi.city.CitySort;
 import com.ccy.chuchaiyi.flight.FlightInfo;
+import com.gjj.applibrary.util.DateUtil;
 import com.gjj.applibrary.util.SaveObjUtil;
 import com.ccy.chuchaiyi.constant.Constants;
 import com.ccy.chuchaiyi.event.EventOfSelCity;
@@ -121,10 +122,10 @@ public class IndexContentFragment extends BaseFragment {
 //        mItemList.add("经济舱");
 //        mItemList.add("公务舱/头等舱");
         seatTv.setText(mItemList.get(mSeatIndex).mName);
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM月dd日");
-        setOutDateTv.setText(simpleDateFormat.format(calendar.getTime()));
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM月dd日");
+        setOutDateTv.setText(DateUtil.getDateTitleByCalendar());
 
+        Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy#MM#dd");
         mSelSetOutDate = simpleDateFormat1.format(calendar.getTime());
         EventBus.getDefault().register(this);
@@ -222,17 +223,20 @@ public class IndexContentFragment extends BaseFragment {
             return;
         }
             if(event.mDateType == EventOfSelDate.SET_OUT_DATE) {
-                String [] dates = event.mDate.split("#");
-                StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
-                stringBuilder.append(dates[1]).append(getString(R.string.month)).append(dates[2]).append(getString(R.string.sunday));
-                setOutDateTv.setText(stringBuilder.toString());
+//                String [] dates = event.mDate.split("#");
+//                StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+//                stringBuilder.append(dates[1]).append(getString(R.string.month)).append(dates[2]).append(getString(R.string.sunday));
+                String date = event.mDate.replace("#", "-");
+                setOutDateTv.setText(DateUtil.getDateTitleWithoutEnd(date));
                 mSelSetOutDate = event.mDate;
             } else if(event.mDateType == EventOfSelDate.RETURN_DATE){
                 if(1 == mIndex) {
-                    String[] dates = event.mDate.split("#");
-                    StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
-                    stringBuilder.append(dates[1]).append(getString(R.string.month)).append(dates[2]).append(getString(R.string.sunday));
-                    returnDateTv.setText(stringBuilder.toString());
+//                    String[] dates = event.mDate.split("#");
+//                    StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+//                    stringBuilder.append(dates[1]).append(getString(R.string.month)).append(dates[2]).append(getString(R.string.sunday));
+//                    returnDateTv.setText(stringBuilder.toString());
+                    String date = event.mDate.replace("#", "-");
+                    returnDateTv.setText(DateUtil.getDateTitleWithoutEnd(date));
                     mSelReturnDate = event.mDate;
                 }
             }

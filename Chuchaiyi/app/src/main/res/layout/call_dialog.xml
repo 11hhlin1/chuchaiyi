@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/progress_img_popbg">
+    android:orientation="vertical">
 
+    <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/pay_dialog_bg">
     <TextView
         android:id="@+id/dialog_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/margin_60px"
         android:text=""
         android:gravity="center"
         android:textColor="@color/black"
         android:textSize="@dimen/textsize_16sp" />
+    </LinearLayout>
 
-    <View
-        android:id="@+id/line_mid"
-        style="@style/horizontal_line"
-        android:layout_height="@dimen/dialog_line_height"
-        android:layout_below="@+id/dialog_content" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/line_mid"
         android:orientation="horizontal" >
         <TextView
             android:id="@+id/btn_cancel"
@@ -32,15 +32,10 @@
             android:layout_height="@dimen/single_line_height_132px"
             android:layout_weight="1"
             android:gravity="center"
+            android:background="@drawable/pay_cancel_btn_bg"
             android:text="@string/dialog_default_cancel_title"
             android:textColor="@color/color_222222"
             android:textSize="@dimen/textsize_16sp" />
-
-        <View
-            android:id="@+id/line_btn_split"
-            style="@style/vertical_line"
-            android:layout_width="@dimen/dialog_line_height" >
-        </View>
 
         <TextView
             android:id="@+id/btn_confirm"
@@ -48,10 +43,11 @@
             android:layout_height="@dimen/single_line_height_132px"
             android:layout_weight="1"
             android:gravity="center"
+            android:background="@drawable/pay_sure_btn_bg"
             android:text="@string/dialog_default_confirm_title"
-            android:textColor="@color/orange"
+            android:textColor="@color/white"
             android:textSize="@dimen/textsize_16sp" />
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
