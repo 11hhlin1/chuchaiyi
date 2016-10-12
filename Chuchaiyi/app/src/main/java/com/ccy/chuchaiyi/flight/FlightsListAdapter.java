@@ -213,8 +213,12 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
         String setOutTime = flightInfo.getDeparture().getDateTime();
         int len1 = arrival.length();
         holder.setOutTime.setText(setOutTime.substring(len1 - 5, len1));
-        holder.setOutAirport.setText(flightInfo.getDeparture().getAirportName());
-        holder.arriveAirport.setText(flightInfo.getArrival().getAirportName());
+        StringBuilder setoutAir = Util.getThreadSafeStringBuilder();
+        setoutAir.append(flightInfo.getDeparture().getAirportName()).append(" ").append(flightInfo.getDeparture().getTerminal());
+        holder.setOutAirport.setText(setoutAir);
+        StringBuilder arriveAir = Util.getThreadSafeStringBuilder();
+        setoutAir.append(flightInfo.getArrival().getAirportName()).append(" ").append(flightInfo.getArrival().getTerminal());
+        holder.arriveAirport.setText(arriveAir.toString());
         if(flightInfo.getStopInfo() == null) {
             holder.stopTip.setVisibility(View.INVISIBLE);
         } else {

@@ -133,10 +133,10 @@ public class EditCompanyPassengerFragment extends BaseFragment{
     public void onRightBtnClick() {
         super.onRightBtnClick();
 
-        if(!Util.isMobileNO(etPhone.getText().toString())) {
-            ToastUtil.shortToast(R.string.hint_check_login_phone);
-            return;
-        }
+//        if(!Util.isMobileNO(etPhone.getText().toString())) {
+//            ToastUtil.shortToast(R.string.hint_check_login_phone);
+//            return;
+//        }
         if(TextUtils.isEmpty(cardTypeValue.getText().toString())) {
             ToastUtil.shortToast(R.string.choose_certType);
             return;

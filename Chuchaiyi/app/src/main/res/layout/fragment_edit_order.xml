@@ -267,14 +267,18 @@
                     android:textColor="@color/color_222222"
                     android:textSize="@dimen/textsize_13sp"
                     android:text="@string/contact"/>
-                <TextView
+                <EditText
                     android:id="@+id/contact_name"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="100dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
                     android:textColor="@color/color_222222"
                     android:textSize="@dimen/textsize_13sp"
+                    android:background="@null"
+                    android:hint="必填"
+                    android:textColorHint="@color/color_aaaaaa"
                     android:text="小明"/>
             </RelativeLayout>
             <View
@@ -293,14 +297,18 @@
                     android:textColor="@color/color_222222"
                     android:textSize="@dimen/textsize_13sp"
                     android:text="@string/contact_phone"/>
-                <TextView
+                <EditText
                     android:id="@+id/contact_phone"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="100dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
                     android:textColor="@color/color_222222"
                     android:textSize="@dimen/textsize_13sp"
+                    android:background="@null"
+                    android:hint="必填"
+                    android:textColorHint="@color/color_aaaaaa"
                     android:text="13255555"/>
             </RelativeLayout>
             <RelativeLayout

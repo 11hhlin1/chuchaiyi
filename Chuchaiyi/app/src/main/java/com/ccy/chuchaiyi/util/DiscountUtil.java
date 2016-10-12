@@ -8,8 +8,10 @@ public class DiscountUtil {
         float dis = discount / 10.0f;
         if(dis == 10) {
             return "全价";
-        } else {
+        } else if(dis < 10){
             return dis + "折";
+        } else {
+            return "";
         }
     }
 }

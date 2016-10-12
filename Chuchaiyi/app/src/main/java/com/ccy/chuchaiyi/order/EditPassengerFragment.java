@@ -159,10 +159,10 @@ public class EditPassengerFragment extends BaseFragment {
     @Override
     public void onRightBtnClick() {
         super.onRightBtnClick();
-        if(!Util.isMobileNO(etPhone.getText().toString())) {
-            ToastUtil.shortToast(R.string.hint_check_login_phone);
-            return;
-        }
+//        if(!Util.isMobileNO(etPhone.getText().toString())) {
+//            ToastUtil.shortToast(R.string.hint_check_login_phone);
+//            return;
+//        }
         mPassengerInfo.setDefaultCertNo(etCard.getText().toString());
         mPassengerInfo.setMobile(etPhone.getText().toString());
         EventOfSelPassenger eventOfSelPassenger = new EventOfSelPassenger();

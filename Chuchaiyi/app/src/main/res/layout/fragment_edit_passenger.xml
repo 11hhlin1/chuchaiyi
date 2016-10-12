@@ -183,7 +183,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_60p"
             android:layout_toRightOf="@+id/phone_num"
-            android:hint="必填"
+            android:hint="选填"
             android:textColorHint="@color/color_aaaaaa"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

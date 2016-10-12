@@ -14,6 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -101,9 +102,9 @@ public class EditOrderFragment extends BaseFragment {
 //    @Bind(R.id.delay_fee_check_icon)
 //    CheckBox delayFeeCheckIcon;
     @Bind(R.id.contact_name)
-    TextView contactName;
+    EditText contactName;
     @Bind(R.id.contact_phone)
-    TextView contactPhone;
+    EditText contactPhone;
     @Bind(R.id.pay_type)
     TextView payType;
     @Bind(R.id.order_money)
@@ -650,10 +651,10 @@ public class EditOrderFragment extends BaseFragment {
     void setSafeFeeValue() {
         StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
         if(mReturnFlightInfo == null) {
-            stringBuilder.append(getString(R.string.money_no_end, safeFeeMoney)).append(" * ").append(mPassengerNum).append("份");
+            stringBuilder.append(getString(R.string.money_no_end, safeFeeMoney)).append("/人份");
             safeFeeValue.setText(stringBuilder.toString());
         } else {
-            stringBuilder.append(getString(R.string.money_no_end, safeFeeMoney)).append(" * ").append(mPassengerNum * 2).append("份");
+            stringBuilder.append(getString(R.string.money_no_end, safeFeeMoney)).append("/人份");
             safeFeeValue.setText(stringBuilder.toString());
         }
 
