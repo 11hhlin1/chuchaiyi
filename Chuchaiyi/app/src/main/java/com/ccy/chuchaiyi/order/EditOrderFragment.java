@@ -158,6 +158,7 @@ public class EditOrderFragment extends BaseFragment {
         userInfo = BaseApplication.getUserMgr().getUser();
         contactName.setText(userInfo.getEmployeeName());
         contactPhone.setText(userInfo.getMobile());
+
         if(userInfo.getCanBookingForOthers()) {
             mPassengerNum = 0 ;
             addPassenger.setVisibility(View.VISIBLE);
@@ -201,17 +202,27 @@ public class EditOrderFragment extends BaseFragment {
         }
         setSafeFeeValue();
         setAmountTv();
-        safeFeeCheckIcon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                setAmountTv();
-                if(mPassengers == null)
-                    return;
-                for (Passenger passenger: mPassengers) {
-                    passenger.InsuranceCount = safeFeeCheckIcon.isChecked() ? 1 : 0;
+        if(userInfo.getAirInsuranceRequired()) {
+            safeFeeCheckIcon.setChecked(true);
+            safeFeeCheckIcon.setClickable(false);
+            safeFeeCheckIcon.setEnabled(false);
+        } else {
+            safeFeeCheckIcon.setClickable(true);
+            safeFeeCheckIcon.setEnabled(true);
+            safeFeeCheckIcon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    setAmountTv();
+                    if(mPassengers == null)
+                        return;
+                    for (Passenger passenger: mPassengers) {
+                        passenger.InsuranceCount = safeFeeCheckIcon.isChecked() ? 1 : 0;
+                    }
                 }
-            }
-        });
+            });
+        }
+
+
         EventBus.getDefault().register(this);
     }
 

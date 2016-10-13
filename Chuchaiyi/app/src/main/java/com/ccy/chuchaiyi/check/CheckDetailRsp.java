@@ -475,6 +475,15 @@ public class CheckDetailRsp implements Serializable{
             private String AuditEmployeeName;
             private String AuditDate;
             private String Status;
+            private String AuditOpinion;
+
+            public String getAuditOpinion() {
+                return AuditOpinion;
+            }
+
+            public void setAuditOpinion(String auditOpinion) {
+                AuditOpinion = auditOpinion;
+            }
 
             public int getAuditLevel() {
                 return AuditLevel;

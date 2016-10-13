@@ -27,7 +27,10 @@
     <string name="hint_check_login_phone">请输入正确的手机号</string>
     <string name="hint_sms_code">请填写验证码</string>
     <string name="sms_code">验证码</string>
+    <string name="new_psw">新密码</string>
     <string name="hint_login_psw">请输入密码</string>
+    <string name="hint_login_new_psw">请输入新密码</string>
+    <string name="send_sms_again">重新发送</string>
     <string name="enter_mobile_error">请输入正确的账号</string>
     <string name="login_ing_tip">正在登录...</string>
     <string name="password">密码</string>
@@ -55,6 +58,7 @@
     <string name="choose_date">选择日期</string>
     <string name="choose_set_out_city">选择出发城市</string>
     <string name="choose_arrive_city">选择到达城市</string>
+    <string name="choose_reason">请选择原因</string>
     <string name="year">年</string>
     <string name="month">月</string>
     <string name="monday">一</string>
@@ -170,5 +174,7 @@
     <string name="next_day_btn"><![CDATA[后一天 >]]></string>
     <string name="add_company_passenger">添加企业用户</string>
     <string name="ic_person">&#xe105;</string>
+    <string name="get_sms_code_fail">获取验证码失败</string>
+    <string name="check_sms_code_fail">验证码不一致</string>
 
 </resources>

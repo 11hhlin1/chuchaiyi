@@ -96,8 +96,12 @@ public class ChoosePassengerFragment extends BaseFragment implements ChoosePasse
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //当输入框里面的值为空，更新为原来的列表，否则为过滤数据列表
-                filterData(s.toString());
+                if(s.toString().length() > 0) {
+                    filterData(s.toString());
+                } else {
+//                    Collections.sort(dataList, new PassengerListComparator());
+                    mAdapter.setData(dataList);
+                }
             }
 
             @Override
@@ -117,7 +121,6 @@ public class ChoosePassengerFragment extends BaseFragment implements ChoosePasse
         if (TextUtils.isEmpty(filterStr)) {
             mSortList = dataList;
         } else {
-            mSortList.clear();
             for (PassengerData sortModel : dataList) {
                 if(sortModel.mStoreUser == null) {
                     String name = sortModel.name;

@@ -67,9 +67,9 @@ public class BaseRecyclerViewAdapter<T extends BaseRecyclerItemData> extends Rec
 
     public void setData(List<T> msg) {
         if (msg != items) {
-            if (items != null) {
-                items.clear();
-            }
+//            if (items != null) {
+//                items.clear();
+//            }
             this.items = msg;
         }
         notifyDataSetChanged();

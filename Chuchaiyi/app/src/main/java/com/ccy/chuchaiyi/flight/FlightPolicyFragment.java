@@ -14,6 +14,7 @@ import com.ccy.chuchaiyi.constant.Constants;
 import com.gjj.applibrary.util.SaveObjUtil;
 import com.ccy.chuchaiyi.order.EditOrderFragment;
 import com.gjj.applibrary.util.PreferencesManager;
+import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 
 import java.util.ArrayList;
@@ -49,8 +50,10 @@ public class FlightPolicyFragment extends BaseFragment {
     private int dividePos;
     @OnClick(R.id.policy_btn_sure)
     void goBook() {
-        if(mAdapter.getFirstReasonPos() == 0 || mAdapter.getSecondReasonPos() == 0)
+        if(mAdapter.getFirstReasonPos() == 0 || mAdapter.getSecondReasonPos() == 0) {
+            ToastUtil.shortToast(R.string.choose_reason);
             return;
+        }
         if(TextUtils.isEmpty(mReturnDateString)) {
             Bundle bundle = new Bundle();
 //            bundle.putSerializable("DiscountLimitWarningMsg",warningInfo.getDiscountLimitWarningMsg());

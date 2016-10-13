@@ -147,11 +147,11 @@ public class EditCompanyPassengerFragment extends BaseFragment{
         mPassengerInfo.setEmployeeName(passengerValue.getText().toString());
         EventOfSelPassenger eventOfSelPassenger = new EventOfSelPassenger();
         eventOfSelPassenger.mPassenger = mPassengerInfo;
-        if (mApproval == null) {
+        if (mApproval == null && userInfo.getApprovalRequired()) {
             ToastUtil.shortToast(R.string.choose_check_num);
             return;
         }
-        if (mProjectsBean == null) {
+        if (mProjectsBean == null && userInfo.getIsProjectRequired()) {
             ToastUtil.shortToast(R.string.choose_project);
             return;
         }
@@ -170,7 +170,7 @@ public class EditCompanyPassengerFragment extends BaseFragment{
 
     }
     private PassengerInfo mPassengerInfo;
-
+    private UserInfo userInfo;
     @Override
     public int getContentViewLayout() {
         return R.layout.fragment_edit_company_passenger;
@@ -178,7 +178,7 @@ public class EditCompanyPassengerFragment extends BaseFragment{
 
     @Override
     public void initView() {
-        UserInfo userInfo = BaseApplication.getUserMgr().getUser();
+        userInfo = BaseApplication.getUserMgr().getUser();
         if (userInfo.getApprovalRequired()) {
             chooseCheckNum.setVisibility(View.VISIBLE);
         } else {
@@ -210,7 +210,18 @@ public class EditCompanyPassengerFragment extends BaseFragment{
         } else {
             chooseProjectRl.setVisibility(View.GONE);
         }
-
+        if (userInfo.getApprovalRequired()) {
+            chooseCheckNum.setVisibility(View.VISIBLE);
+        } else {
+            chooseCheckNum.setVisibility(View.GONE);
+        }
+        if(userInfo.getIsGreenChannel()) {
+            chooseCheckNum.setVisibility(View.GONE);
+            chooseProjectRl.setVisibility(View.GONE);
+        } else {
+            chooseProjectRl.setVisibility(View.VISIBLE);
+            chooseCheckNum.setVisibility(View.VISIBLE);
+        }
         EventBus.getDefault().register(this);
 
     }

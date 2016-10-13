@@ -37,7 +37,8 @@ public class UserInfoDao extends AbstractDao<UserInfo, Void> {
         public final static Property CorpPayMode = new Property(12, String.class, "CorpPayMode", false, "CORP_PAY_MODE");
         public final static Property ApprovalRequired = new Property(13, Boolean.class, "ApprovalRequired", false, "APPROVAL_REQUIRED");
         public final static Property OverrunOption = new Property(14, String.class, "OverrunOption", false, "OVERRUN_OPTION");
-        public final static Property IsProjectRequired = new Property(15, Boolean.class, "IsProjectRequired", false, "IS_PROJECT_REQUIRED");
+        public final static Property AirInsuranceRequired = new Property(15, Boolean.class, "AirInsuranceRequired", false, "AIR_INSURANCE_REQUIRED");
+        public final static Property IsProjectRequired = new Property(16, Boolean.class, "IsProjectRequired", false, "IS_PROJECT_REQUIRED");
     };
 
 
@@ -68,7 +69,8 @@ public class UserInfoDao extends AbstractDao<UserInfo, Void> {
                 "'CORP_PAY_MODE' TEXT," + // 12: CorpPayMode
                 "'APPROVAL_REQUIRED' INTEGER," + // 13: ApprovalRequired
                 "'OVERRUN_OPTION' TEXT," + // 14: OverrunOption
-                "'IS_PROJECT_REQUIRED' INTEGER);"); // 15: IsProjectRequired
+                "'AIR_INSURANCE_REQUIRED' INTEGER," + // 15: AirInsuranceRequired
+                "'IS_PROJECT_REQUIRED' INTEGER);"); // 16: IsProjectRequired
     }
 
     /** Drops the underlying database table. */
@@ -157,9 +159,14 @@ public class UserInfoDao extends AbstractDao<UserInfo, Void> {
             stmt.bindString(15, OverrunOption);
         }
  
+        Boolean AirInsuranceRequired = entity.getAirInsuranceRequired();
+        if (AirInsuranceRequired != null) {
+            stmt.bindLong(16, AirInsuranceRequired ? 1l: 0l);
+        }
+ 
         Boolean IsProjectRequired = entity.getIsProjectRequired();
         if (IsProjectRequired != null) {
-            stmt.bindLong(16, IsProjectRequired ? 1l: 0l);
+            stmt.bindLong(17, IsProjectRequired ? 1l: 0l);
         }
     }
 
@@ -188,7 +195,8 @@ public class UserInfoDao extends AbstractDao<UserInfo, Void> {
             cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // CorpPayMode
             cursor.isNull(offset + 13) ? null : cursor.getShort(offset + 13) != 0, // ApprovalRequired
             cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // OverrunOption
-            cursor.isNull(offset + 15) ? null : cursor.getShort(offset + 15) != 0 // IsProjectRequired
+            cursor.isNull(offset + 15) ? null : cursor.getShort(offset + 15) != 0, // AirInsuranceRequired
+            cursor.isNull(offset + 16) ? null : cursor.getShort(offset + 16) != 0 // IsProjectRequired
         );
         return entity;
     }
@@ -211,7 +219,8 @@ public class UserInfoDao extends AbstractDao<UserInfo, Void> {
         entity.setCorpPayMode(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
         entity.setApprovalRequired(cursor.isNull(offset + 13) ? null : cursor.getShort(offset + 13) != 0);
         entity.setOverrunOption(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
-        entity.setIsProjectRequired(cursor.isNull(offset + 15) ? null : cursor.getShort(offset + 15) != 0);
+        entity.setAirInsuranceRequired(cursor.isNull(offset + 15) ? null : cursor.getShort(offset + 15) != 0);
+        entity.setIsProjectRequired(cursor.isNull(offset + 16) ? null : cursor.getShort(offset + 16) != 0);
      }
     
     /** @inheritdoc */

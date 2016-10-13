@@ -21,7 +21,7 @@ public class ProfileHolder extends TreeNode.BaseNodeViewHolder<DepartmentRsp.Dep
     @Override
     public View createNodeView(TreeNode node, DepartmentRsp.DepartmentBean value) {
         final LayoutInflater inflater = LayoutInflater.from(context);
-        final View view = inflater.inflate(R.layout.layout_place_node, null, false);
+        final View view = inflater.inflate(R.layout.choose_passenger_item_1, null, false);
         TextView tvValue = (TextView) view.findViewById(R.id.node_value);
         tvValue.setText(value.getName());
 

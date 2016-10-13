@@ -2,7 +2,7 @@
 <resources>
 
     <string-array name="seatName">
-        <item>不限机舱</item>
+        <item>不限舱位</item>
         <item>经济舱</item>
         <item>公务舱/头等舱</item>
     </string-array>

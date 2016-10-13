@@ -217,7 +217,7 @@ public class OrderDetailFragment extends BaseFragment {
                                 orderAmount.setText(getString(R.string.money_no_end, orderBean.getFeeInfo().getPaymentAmount()));
                                 orderNum.setText(orderBean.getOrderNo());
                                 orderType.setText(orderBean.getPayMode());
-                                orderStatus.setText(orderBean.getStatus());
+                                orderStatus.setText(orderBean.getPaymentStatus());
                                 AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean.PassengerBean passengerBean = orderBean.getPassenger();
                                 passengerName.setText(passengerBean.getPassengerName());
                                 passengerJob.setText(passengerBean.getBelongedDeptName());

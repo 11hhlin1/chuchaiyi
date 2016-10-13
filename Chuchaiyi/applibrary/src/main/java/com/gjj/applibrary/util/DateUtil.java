@@ -55,8 +55,7 @@ public class DateUtil {
      *
      * @return
      */
-    public static String getDateTitleByCalendar() {
-        Calendar calendar = Calendar.getInstance();
+    public static String getDateTitleByCalendar(Calendar calendar) {
         StringBuilder dateTitle = Util.getThreadSafeStringBuilder();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM月dd日");
         dateTitle.append(simpleDateFormat.format(calendar.getTime()));

@@ -57,6 +57,7 @@ public class ChooseCityFragment extends BaseFragment {
     private List<CitySort> filterCitySorts;
     public static final int SET_OUT = 0;
     public static final int ARRIVE = 1;
+    private View mHeadView;
 
     private int mType;
     private String mSelCity;
@@ -141,7 +142,8 @@ public class ChooseCityFragment extends BaseFragment {
         allCitySorts = new ArrayList<>();
         Collections.sort(allCitySorts, new PinyinComparator());
         adapter = new SortAdapter(getActivity(), allCitySorts, mSelCity);
-        countryList.addHeaderView(initHeadView());
+        mHeadView = initHeadView();
+        countryList.addHeaderView(mHeadView);
         countryList.setAdapter(adapter);
     }
 
@@ -185,10 +187,13 @@ public class ChooseCityFragment extends BaseFragment {
                 //当输入框里面的值为空，更新为原来的列表，否则为过滤数据列表
                 if(s.toString().length() > 0) {
                     filterData(s.toString());
+                    mHeadView.setVisibility(View.GONE);
                 } else {
+                    mHeadView.setVisibility(View.VISIBLE);
                     Collections.sort(allCitySorts, new PinyinComparator());
                     adapter.setData(allCitySorts);
                 }
+
 
             }
 

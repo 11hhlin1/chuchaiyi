@@ -167,11 +167,11 @@ public class EditPassengerFragment extends BaseFragment {
         mPassengerInfo.setMobile(etPhone.getText().toString());
         EventOfSelPassenger eventOfSelPassenger = new EventOfSelPassenger();
         eventOfSelPassenger.mPassenger = mPassengerInfo;
-        if (mApproval == null) {
+        if (mApproval == null && userInfo.getApprovalRequired()) {
             ToastUtil.shortToast(R.string.choose_check_num);
             return;
         }
-        if (mProjectsBean == null) {
+        if (mProjectsBean == null && userInfo.getIsProjectRequired()) {
             ToastUtil.shortToast(R.string.choose_project);
             return;
         }
@@ -191,7 +191,7 @@ public class EditPassengerFragment extends BaseFragment {
     }
 
     private PassengerInfo mPassengerInfo;
-
+    private UserInfo userInfo;
     @Override
     public int getContentViewLayout() {
         return R.layout.fragment_edit_passenger;
@@ -203,7 +203,7 @@ public class EditPassengerFragment extends BaseFragment {
         getCardType();
         Bundle bundle = getArguments();
         String  employeeId = bundle.getString("EmployeeId");
-        UserInfo userInfo = BaseApplication.getUserMgr().getUser();
+        userInfo = BaseApplication.getUserMgr().getUser();
 
         if (userInfo.getApprovalRequired()) {
             chooseCheckNum.setVisibility(View.VISIBLE);
@@ -215,6 +215,13 @@ public class EditPassengerFragment extends BaseFragment {
             chooseProjectRl.setVisibility(View.VISIBLE);
         } else {
             chooseProjectRl.setVisibility(View.GONE);
+        }
+        if(userInfo.getIsGreenChannel()) {
+            chooseCheckNum.setVisibility(View.GONE);
+            chooseProjectRl.setVisibility(View.GONE);
+        } else {
+            chooseProjectRl.setVisibility(View.VISIBLE);
+            chooseCheckNum.setVisibility(View.VISIBLE);
         }
         if (userInfo.getCanBookingForOthers()) {
             mPassengerRl.setEnabled(true);

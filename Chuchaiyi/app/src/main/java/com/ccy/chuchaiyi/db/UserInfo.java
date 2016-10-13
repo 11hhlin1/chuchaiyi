@@ -21,12 +21,13 @@ public class UserInfo {
     private String CorpPayMode;
     private Boolean ApprovalRequired;
     private String OverrunOption;
+    private Boolean AirInsuranceRequired;
     private Boolean IsProjectRequired;
 
     public UserInfo() {
     }
 
-    public UserInfo(String Token, Integer EmployeeId, String EmployeeName, String Mobile, String Email, Boolean IsAdmin, Boolean IsGreenChannel, Boolean CanBookingForOthers, Integer CorpId, String CorpName, String DeptName, String CorpBusinessTypes, String CorpPayMode, Boolean ApprovalRequired, String OverrunOption, Boolean IsProjectRequired) {
+    public UserInfo(String Token, Integer EmployeeId, String EmployeeName, String Mobile, String Email, Boolean IsAdmin, Boolean IsGreenChannel, Boolean CanBookingForOthers, Integer CorpId, String CorpName, String DeptName, String CorpBusinessTypes, String CorpPayMode, Boolean ApprovalRequired, String OverrunOption, Boolean AirInsuranceRequired, Boolean IsProjectRequired) {
         this.Token = Token;
         this.EmployeeId = EmployeeId;
         this.EmployeeName = EmployeeName;
@@ -42,6 +43,7 @@ public class UserInfo {
         this.CorpPayMode = CorpPayMode;
         this.ApprovalRequired = ApprovalRequired;
         this.OverrunOption = OverrunOption;
+        this.AirInsuranceRequired = AirInsuranceRequired;
         this.IsProjectRequired = IsProjectRequired;
     }
 
@@ -163,6 +165,14 @@ public class UserInfo {
 
     public void setOverrunOption(String OverrunOption) {
         this.OverrunOption = OverrunOption;
+    }
+
+    public Boolean getAirInsuranceRequired() {
+        return AirInsuranceRequired;
+    }
+
+    public void setAirInsuranceRequired(Boolean AirInsuranceRequired) {
+        this.AirInsuranceRequired = AirInsuranceRequired;
     }
 
     public Boolean getIsProjectRequired() {

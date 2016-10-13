@@ -74,6 +74,7 @@ public class AuthorizeDetailRsp implements Serializable{
         private String AuditEmployeeName;
         private String AuditDate;
         private String Status;
+        private String AuditOpinion;
         private String CreateTime;
         /**
          * OrderId : 0
@@ -165,6 +166,13 @@ public class AuthorizeDetailRsp implements Serializable{
             this.AuditPositionName = AuditPositionName;
         }
 
+        public String getAuditOpinion() {
+            return AuditOpinion;
+        }
+
+        public void setAuditOpinion(String auditOpinion) {
+            AuditOpinion = auditOpinion;
+        }
         public String getAuditPositionEmployeeNames() {
             return AuditPositionEmployeeNames;
         }

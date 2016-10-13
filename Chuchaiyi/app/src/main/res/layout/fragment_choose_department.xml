@@ -4,12 +4,21 @@
     android:layout_height="match_parent"
     >
 
-    <RelativeLayout
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/margin_30p"-->
+        <!--android:background="@color/white"-->
+        <!--android:id="@+id/container">-->
+
+    <!--</RelativeLayout>-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_30p"
-        android:background="@color/white"
-        android:id="@+id/container">
+        android:background="@null">
 
-    </RelativeLayout>
+    </android.support.v7.widget.RecyclerView>
 </RelativeLayout>

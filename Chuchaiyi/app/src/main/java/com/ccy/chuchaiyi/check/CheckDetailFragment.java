@@ -172,14 +172,26 @@ public class CheckDetailFragment extends BaseFragment {
                                     String hiStatus = approvalHisBean.getStatus();
                                     if(hiStatus.equals("审批通过")) {
                                         viewHolder.checkStateIcon.setImageResource(R.mipmap.icon_order_approve1);
+                                        viewHolder.checkDetailTv.setTextColor(getResources().getColor(R.color.color_80c41c));
+                                        viewHolder.checkDetailTv.setText(hiStatus);
                                     } else if(hiStatus.equals("审批拒绝")) {
                                         viewHolder.checkStateIcon.setImageResource(R.mipmap.icon_order_approve3);
+                                        viewHolder.checkDetailTv.setTextColor(getResources().getColor(R.color.color_aaaaaa));
+                                        StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+                                        stringBuilder.append(hiStatus);
+                                        if(!TextUtils.isEmpty(approvalHisBean.getAuditOpinion())) {
+                                            stringBuilder.append("(").append(approvalHisBean.getAuditOpinion()).append(")");
+                                        }
+                                        viewHolder.checkDetailTv.setText(stringBuilder.toString());
                                     } else if(hiStatus.equals("待审批")) {
                                         viewHolder.checkStateIcon.setImageResource(R.mipmap.icon_order_approve2);
+                                        viewHolder.checkDetailTv.setTextColor(getResources().getColor(R.color.color_aaaaaa));
+                                        viewHolder.checkDetailTv.setText(hiStatus);
                                     } else {
                                         viewHolder.checkStateIcon.setImageResource(R.mipmap.icon_order_approve2);
+                                        viewHolder.checkDetailTv.setTextColor(getResources().getColor(R.color.color_80c41c));
+                                        viewHolder.checkDetailTv.setText(hiStatus);
                                     }
-                                    viewHolder.checkDetailTv.setText(hiStatus);
                                     viewHolder.checkTime.setText(DateUtil.getYYYYMMDDHHMMDate(approvalHisBean.getAuditDate()));
                                     checkStateLl.addView(viewHolder.parent);
                                 }

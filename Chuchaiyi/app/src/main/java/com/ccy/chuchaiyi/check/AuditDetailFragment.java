@@ -274,14 +274,27 @@ public class AuditDetailFragment extends BaseFragment {
 
                                            if(hiStatus.equals("授权通过")) {
                                                viewHolder.checkStateIcon.setImageResource(R.mipmap.icon_order_approve1);
+                                               viewHolder.checkDetailTv.setTextColor(getResources().getColor(R.color.color_80c41c));
+                                               viewHolder.checkDetailTv.setText(detail.getStatus());
                                            } else if(hiStatus.equals("授权拒绝")) {
                                                viewHolder.checkStateIcon.setImageResource(R.mipmap.icon_order_approve3);
+                                               viewHolder.checkDetailTv.setTextColor(getResources().getColor(R.color.color_aaaaaa));
+                                               StringBuilder stringBuilder1 = Util.getThreadSafeStringBuilder();
+                                               stringBuilder1.append(hiStatus);
+                                               if(!TextUtils.isEmpty(detail.getAuditOpinion())) {
+                                                   stringBuilder1.append("(").append(detail.getAuditOpinion()).append(")");
+                                               }
+                                               viewHolder.checkDetailTv.setText(stringBuilder1.toString());
                                            } else if(hiStatus.equals("待授权")) {
                                                viewHolder.checkStateIcon.setImageResource(R.mipmap.icon_order_approve2);
+                                               viewHolder.checkDetailTv.setTextColor(getResources().getColor(R.color.color_aaaaaa));
+                                               viewHolder.checkDetailTv.setText(detail.getStatus());
                                            } else {
                                                viewHolder.checkStateIcon.setImageResource(R.mipmap.icon_order_approve2);
+                                               viewHolder.checkDetailTv.setTextColor(getResources().getColor(R.color.color_80c41c));
+                                               viewHolder.checkDetailTv.setText(detail.getStatus());
                                            }
-                                           viewHolder.checkDetailTv.setText(detail.getStatus());
+//                                           viewHolder.checkDetailTv.setText(detail.getStatus());
                                            viewHolder.checkTime.setText(DateUtil.getYYYYMMDDHHMMDate(detail.getAuditDate()));
                                            checkStateLl.addView(viewHolder.parent);
                                        }

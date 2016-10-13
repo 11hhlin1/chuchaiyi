@@ -113,29 +113,45 @@ public class IndexContentFragment extends BaseFragment {
             seatType.mName = names[i];
             mItemList.add(seatType);
         }
-        if(mIndex == 0) {
-            returnDate.setVisibility(View.GONE);
-        } else {
-            returnDate.setVisibility(View.VISIBLE);
-        }
+
 //        mItemList.add("不限机舱");
 //        mItemList.add("经济舱");
 //        mItemList.add("公务舱/头等舱");
         seatTv.setText(mItemList.get(mSeatIndex).mName);
 //        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM月dd日");
-        setOutDateTv.setText(DateUtil.getDateTitleByCalendar());
 
         Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 1);
         SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy#MM#dd");
         mSelSetOutDate = simpleDateFormat1.format(calendar.getTime());
+        setOutDateTv.setText(DateUtil.getDateTitleByCalendar(calendar));
+        if(mIndex == 0) {
+            returnDate.setVisibility(View.GONE);
+        } else {
+            returnDate.setVisibility(View.VISIBLE);
+            calendar.add(Calendar.DATE, 1);
+            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy#MM#dd");
+            mSelReturnDate = simpleDateFormat2.format(calendar.getTime());
+            returnDateTv.setText(DateUtil.getDateTitleByCalendar(calendar));
+        }
         EventBus.getDefault().register(this);
 
         mSetOutCity = (CitySort) SaveObjUtil.unSerialize(PreferencesManager.getInstance().get(Constants.SET_OUT_CITY));
         mArriveCity = (CitySort) SaveObjUtil.unSerialize(PreferencesManager.getInstance().get(Constants.ARRIVE_CITY));
         if(mArriveCity != null) {
             arriveCity.setText(mArriveCity.getName());
+        } else {
+            mArriveCity = new CitySort();
+            mArriveCity.setCode("BJS");
+            mArriveCity.setName("北京");
+            arriveCity.setText(mArriveCity.getName());
         }
         if(mSetOutCity != null) {
+            chufaCity.setText(mSetOutCity.getName());
+        } else {
+            mSetOutCity = new CitySort();
+            mSetOutCity.setCode("SZX");
+            mSetOutCity.setName("深圳");
             chufaCity.setText(mSetOutCity.getName());
         }
     }
