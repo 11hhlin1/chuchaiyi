@@ -469,12 +469,20 @@ public class EditOrderFragment extends BaseFragment {
 //    }
     private void commitOrder() {
         if(mConfirmDialog == null) {
-            PayDialogData payDialogData = new PayDialogData();
-            StringBuilder name = Util.getThreadSafeStringBuilder();
             if(Util.isListEmpty(mPassengers)) {
                 ToastUtil.shortToast(R.string.choose_passenger);
                 return;
             }
+            if(TextUtils.isEmpty(contactPhone.getText())) {
+                ToastUtil.shortToast(R.string.enter_phone);
+                return;
+            }
+            if(TextUtils.isEmpty(contactName.getText())) {
+                ToastUtil.shortToast(R.string.enter_contact);
+                return;
+            }
+            PayDialogData payDialogData = new PayDialogData();
+            StringBuilder name = Util.getThreadSafeStringBuilder();
             for (Passenger passenger : mPassengers) {
                 name.append(passenger.PassengerName).append("  ");
             }
@@ -504,14 +512,6 @@ public class EditOrderFragment extends BaseFragment {
                 @Override
                 public void onClick(View v) {
                     showLoadingDialog(R.string.commit, false);
-                    if(TextUtils.isEmpty(contactPhone.getText())) {
-                        ToastUtil.shortToast(R.string.enter_phone);
-                        return;
-                    }
-                    if(TextUtils.isEmpty(contactName.getText())) {
-                        ToastUtil.shortToast(R.string.enter_contact);
-                        return;
-                    }
                     PlaceAskOrderRequest request = new PlaceAskOrderRequest();
                     request.FirstRoute = mFlightInfo;
                     request.ContactMobile = contactPhone.getText().toString();
