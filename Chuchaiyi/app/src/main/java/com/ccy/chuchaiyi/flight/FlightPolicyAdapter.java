@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
@@ -72,32 +73,39 @@ public class FlightPolicyAdapter extends BaseRecyclerViewAdapter<PolicyReason> {
                 ViewHolderContent viewHolderTitle = (ViewHolderContent)holder;
                 viewHolderTitle.mName.setText(reason.mTitle);
                 viewHolderTitle.mCheckIcon.setTag(position);
-                viewHolderTitle.mCheckIcon.setOnCheckedChangeListener(null);
-                viewHolderTitle.mCheckIcon.setChecked(reason.isSel);
-                viewHolderTitle.mCheckIcon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                        if(b) {
-                            if(position < mDividePos) {
-                                for (int i = 0; i < mDividePos; i++) {
-                                    items.get(i).isSel = false;
-                                }
-                                mFirstReasonPos = position;
-                            } else {
-                                int size = items.size();
-                                for (int i = mDividePos + 1; i < size; i++) {
-                                    items.get(i).isSel = false;
-                                }
-                                mSecondReasonPos = position;
-                            }
-
-                        }
-                        PolicyReason reason = items.get(position);
-                        reason.isSel = b;
-                        notifyDataSetChanged();
-
-                    }
-                });
+//                viewHolderTitle.mCheckIcon.setOnCheckedChangeListener(null);
+                if(reason.isSel) {
+                    viewHolderTitle.mName.setTextColor(mContext.getResources().getColor(R.color.orange));
+                    viewHolderTitle.mCheckIcon.setImageResource(R.mipmap.icon_radio_pr);
+                } else {
+                    viewHolderTitle.mName.setTextColor(mContext.getResources().getColor(R.color.color_aaaaaa));
+                    viewHolderTitle.mCheckIcon.setImageResource(R.mipmap.icon_radio_un);
+                }
+//                viewHolderTitle.mCheckIcon.setChecked(reason.isSel);
+//                viewHolderTitle.mCheckIcon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                    @Override
+//                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                        if(b) {
+//                            if(position < mDividePos) {
+//                                for (int i = 0; i < mDividePos; i++) {
+//                                    items.get(i).isSel = false;
+//                                }
+//                                mFirstReasonPos = position;
+//                            } else {
+//                                int size = items.size();
+//                                for (int i = mDividePos + 1; i < size; i++) {
+//                                    items.get(i).isSel = false;
+//                                }
+//                                mSecondReasonPos = position;
+//                            }
+//
+//                        }
+//                        PolicyReason reason = items.get(position);
+//                        reason.isSel = b;
+//                        notifyDataSetChanged();
+//
+//                    }
+//                });
                 break;
             }
         }
@@ -119,13 +127,36 @@ public class FlightPolicyAdapter extends BaseRecyclerViewAdapter<PolicyReason> {
 
         @Bind(R.id.reason_name)
         TextView mName;
+//        @Bind(R.id.reason_check_icon)
+//        CheckBox mCheckIcon;
         @Bind(R.id.reason_check_icon)
-        CheckBox mCheckIcon;
-
+        ImageView mCheckIcon;
         public ViewHolderContent(View view) {
             super(view);
             ButterKnife.bind(this, view);
-
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = (int) mCheckIcon.getTag();
+                    PolicyReason reason = items.get(position);
+                    if(!reason.isSel) {
+                        if(position < mDividePos) {
+                            for (int i = 0; i < mDividePos; i++) {
+                                items.get(i).isSel = false;
+                            }
+                            mFirstReasonPos = position;
+                        } else {
+                            int size = items.size();
+                            for (int i = mDividePos + 1; i < size; i++) {
+                                items.get(i).isSel = false;
+                            }
+                            mSecondReasonPos = position;
+                        }
+                        reason.isSel = true;
+                    }
+                    notifyDataSetChanged();
+                }
+            });
         }
     }
 }

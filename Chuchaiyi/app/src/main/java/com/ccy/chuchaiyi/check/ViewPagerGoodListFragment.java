@@ -97,7 +97,7 @@ public class ViewPagerGoodListFragment extends BaseFragment implements ViewPager
         }
         mTextViews[0].setTextColor(mRedColor);
         //mDoneRadioBtn.setTextColor(mSecondaryGrayColor);
-        viewPager.setOffscreenPageLimit(1);
+        viewPager.setOffscreenPageLimit(size - 1);
         viewPager.setOnPageChangeListener(this);
         mFragmentAdapter = new ViewPagerFragmentAdapter(getChildFragmentManager(), mFragmentCache, mDataArrayList);
         mPageVp.setAdapter(mFragmentAdapter);

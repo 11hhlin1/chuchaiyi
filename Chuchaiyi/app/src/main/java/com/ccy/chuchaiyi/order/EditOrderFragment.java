@@ -32,6 +32,7 @@ import com.ccy.chuchaiyi.contact.ChoosePassengerFragment;
 import com.ccy.chuchaiyi.contact.PassengerInfo;
 import com.ccy.chuchaiyi.db.UserInfo;
 import com.ccy.chuchaiyi.event.EventOfChangeTab;
+import com.ccy.chuchaiyi.event.EventOfRefreshOrderList;
 import com.ccy.chuchaiyi.event.EventOfSelPassenger;
 import com.ccy.chuchaiyi.flight.FlightInfo;
 import com.ccy.chuchaiyi.flight.PolicyResultInfo;
@@ -39,6 +40,7 @@ import com.ccy.chuchaiyi.flight.ReturnFlightPolicy;
 import com.ccy.chuchaiyi.flight.StopInfoRsp;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.util.CallUtil;
+import com.ccy.chuchaiyi.widget.CallDialog;
 import com.ccy.chuchaiyi.widget.PolicyDialog;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.util.DateUtil;
@@ -133,10 +135,35 @@ public class EditOrderFragment extends BaseFragment {
     private PolicyDialog mPolicyDialog;
 //    private String title;
     private UserInfo userInfo;
+    private boolean mIsBack = true;
     @Override
     public void onRightBtnClick() {
         super.onRightBtnClick();
         CallUtil.askForMakeCall(getActivity(), "", "400-600-2084");
+    }
+
+
+
+    @Override
+    public boolean goBack(boolean fromKeyboard) {
+        if (mIsBack) {
+            if (!Util.isListEmpty(mPassengers)) {
+                CallDialog confirmDialog = new CallDialog(getActivity(), R.style.white_bg_dialog);
+                confirmDialog.setCancelable(true);
+                confirmDialog.setContent(getString(R.string.dialog_content_give_up_submit));
+                confirmDialog.setCanceledOnTouchOutside(false);
+                confirmDialog.setConfirmClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        mIsBack = false;
+                        onBackPressed();
+                    }
+                });
+                confirmDialog.show();
+            }
+        }
+        return mIsBack;
     }
 
     @Override
@@ -354,93 +381,179 @@ public class EditOrderFragment extends BaseFragment {
         }
     }
 
+//    private void commitOrder() {
+//        showLoadingDialog(R.string.commit, false);
+//        PlaceAskOrderRequest request = new PlaceAskOrderRequest();
+//        request.FirstRoute = mFlightInfo;
+//        request.ContactMobile = contactPhone.getText().toString();
+//        request.ContactName = contactName.getText().toString();
+//        request.FirstRoutePolicyInfo = mSetoutResonInfo;
+//        request.SecondRoute = mReturnFlightInfo;
+//        request.SecondRoutePolicyInfo = mReturnResonInfo;
+//        if(Util.isListEmpty(mPassengers)) {
+//            ToastUtil.shortToast(R.string.choose_passenger);
+//            return;
+//        }
+//        request.Passengers = mPassengers;
+//        OkHttpUtils.post(ApiConstants.COMMIT_ORDER)
+//                .tag(this)
+//                .cacheMode(CacheMode.NO_CACHE)
+//                .postJson(JSON.toJSONString(request))
+//                .execute(new JsonCallback<String>(String.class) {
+//                    @Override
+//                    public void onResponse(boolean b, final String rsp, Request request, @Nullable Response response) {
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                dismissLoadingDialog();
+//                                ToastUtil.shortToast(R.string.commit_success);
+//                                if(mConfirmDialog == null) {
+//                                    PayDialogData payDialogData = new PayDialogData();
+//                                    StringBuilder name = Util.getThreadSafeStringBuilder();
+//                                    for (Passenger passenger : mPassengers) {
+//                                        name.append(passenger.PassengerName).append("  ");
+//                                    }
+//                                    payDialogData.passenger = name.toString();
+//                                    StringBuilder city = Util.getThreadSafeStringBuilder();
+//                                    if(mReturnFlightInfo == null) {
+//                                        city.append("单程");
+//                                    } else {
+//                                        city.append("往返");
+//                                    }
+//                                    city.append(mFlightInfo.getDeparture().getCityName()).append("-").append(mFlightInfo.getArrival().getCityName());
+//                                    payDialogData.travelCity = city.toString();
+//                                    StringBuilder time = Util.getThreadSafeStringBuilder();
+//                                    time.append(mFlightInfo.getDeparture().getDateTime()).append("出发");
+//                                    payDialogData.travelTime = time.toString();
+//                                    payDialogData.amount = mAmount;
+//                                    PayDialog payDialog = new PayDialog(getActivity(),payDialogData);
+//                                    mConfirmDialog = payDialog;
+//                                    payDialog.setCanceledOnTouchOutside(false);
+//                                    payDialog.setCancelClickListener(new View.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View view) {
+//                                            dismissConfirmDialog();
+//                                            getActivity().finish();
+//                                            EventOfChangeTab eventOfChangeTab = new EventOfChangeTab();
+//                                            eventOfChangeTab.mIndex = 2;
+//                                            EventBus.getDefault().post(eventOfChangeTab);
+//                                        }
+//                                    });
+//                                    payDialog.setConfirmClickListener(new View.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//                                            JSONObject json = (JSONObject) JSON.parse(rsp);
+//                                            int order = json.getIntValue("AskOrderId");
+//                                            dismissConfirmDialog();
+//                                            confirmOrder(order);
+//
+//                                        }
+//                                    });
+//                                }
+//                                mConfirmDialog.show();
+//                            }
+//                        });
+//                    }
+//
+//                    @Override
+//                    public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+//                        super.onError(isFromCache, call, response, e);
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                dismissLoadingDialog();
+//                            }
+//                        });
+//                    }
+//                });
+//    }
     private void commitOrder() {
-        showLoadingDialog(R.string.commit, false);
-        PlaceAskOrderRequest request = new PlaceAskOrderRequest();
-        request.FirstRoute = mFlightInfo;
-        request.ContactMobile = contactPhone.getText().toString();
-        request.ContactName = contactName.getText().toString();
-        request.FirstRoutePolicyInfo = mSetoutResonInfo;
-        request.SecondRoute = mReturnFlightInfo;
-        request.SecondRoutePolicyInfo = mReturnResonInfo;
-        if(Util.isListEmpty(mPassengers)) {
-            ToastUtil.shortToast(R.string.choose_passenger);
-            return;
-        }
-        request.Passengers = mPassengers;
-        OkHttpUtils.post(ApiConstants.COMMIT_ORDER)
-                .tag(this)
-                .cacheMode(CacheMode.NO_CACHE)
-                .postJson(JSON.toJSONString(request))
-                .execute(new JsonCallback<String>(String.class) {
-                    @Override
-                    public void onResponse(boolean b, final String rsp, Request request, @Nullable Response response) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                dismissLoadingDialog();
-                                ToastUtil.shortToast(R.string.commit_success);
-                                if(mConfirmDialog == null) {
-                                    PayDialogData payDialogData = new PayDialogData();
-                                    StringBuilder name = Util.getThreadSafeStringBuilder();
-                                    for (Passenger passenger : mPassengers) {
-                                        name.append(passenger.PassengerName).append("  ");
-                                    }
-                                    payDialogData.passenger = name.toString();
-                                    StringBuilder city = Util.getThreadSafeStringBuilder();
-                                    if(mReturnFlightInfo == null) {
-                                        city.append("单程");
-                                    } else {
-                                        city.append("往返");
-                                    }
-                                    city.append(mFlightInfo.getDeparture().getCityName()).append("-").append(mFlightInfo.getArrival().getCityName());
-                                    payDialogData.travelCity = city.toString();
-                                    StringBuilder time = Util.getThreadSafeStringBuilder();
-                                    time.append(mFlightInfo.getDeparture().getDateTime()).append("出发");
-                                    payDialogData.travelTime = time.toString();
-                                    payDialogData.amount = mAmount;
-                                    PayDialog payDialog = new PayDialog(getActivity(),payDialogData);
-                                    mConfirmDialog = payDialog;
-                                    payDialog.setCanceledOnTouchOutside(false);
-                                    payDialog.setCancelClickListener(new View.OnClickListener() {
+        if(mConfirmDialog == null) {
+            PayDialogData payDialogData = new PayDialogData();
+            StringBuilder name = Util.getThreadSafeStringBuilder();
+            for (Passenger passenger : mPassengers) {
+                name.append(passenger.PassengerName).append("  ");
+            }
+            payDialogData.passenger = name.toString();
+            StringBuilder city = Util.getThreadSafeStringBuilder();
+            if(mReturnFlightInfo == null) {
+                city.append("单程");
+            } else {
+                city.append("往返");
+            }
+            city.append(mFlightInfo.getDeparture().getCityName()).append("-").append(mFlightInfo.getArrival().getCityName());
+            payDialogData.travelCity = city.toString();
+            StringBuilder time = Util.getThreadSafeStringBuilder();
+            time.append(mFlightInfo.getDeparture().getDateTime()).append("出发");
+            payDialogData.travelTime = time.toString();
+            payDialogData.amount = mAmount;
+            PayDialog payDialog = new PayDialog(getActivity(),payDialogData);
+            mConfirmDialog = payDialog;
+            payDialog.setCanceledOnTouchOutside(false);
+            payDialog.setCancelClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismissConfirmDialog();
+                }
+            });
+            payDialog.setConfirmClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showLoadingDialog(R.string.commit, false);
+                    if(TextUtils.isEmpty(contactPhone.getText())) {
+                        ToastUtil.shortToast(R.string.enter_phone);
+                        return;
+                    }
+                    if(TextUtils.isEmpty(contactName.getText())) {
+                        ToastUtil.shortToast(R.string.enter_contact);
+                        return;
+                    }
+                    PlaceAskOrderRequest request = new PlaceAskOrderRequest();
+                    request.FirstRoute = mFlightInfo;
+                    request.ContactMobile = contactPhone.getText().toString();
+                    request.ContactName = contactName.getText().toString();
+                    request.FirstRoutePolicyInfo = mSetoutResonInfo;
+                    request.SecondRoute = mReturnFlightInfo;
+                    request.SecondRoutePolicyInfo = mReturnResonInfo;
+                    if(Util.isListEmpty(mPassengers)) {
+                        ToastUtil.shortToast(R.string.choose_passenger);
+                        return;
+                    }
+                    request.Passengers = mPassengers;
+                    OkHttpUtils.post(ApiConstants.COMMIT_ORDER)
+                            .tag(this)
+                            .cacheMode(CacheMode.NO_CACHE)
+                            .postJson(JSON.toJSONString(request))
+                            .execute(new JsonCallback<String>(String.class) {
+                                @Override
+                                public void onResponse(boolean b, final String rsp, Request request, @Nullable Response response) {
+                                    runOnUiThread(new Runnable() {
                                         @Override
-                                        public void onClick(View view) {
-                                            dismissConfirmDialog();
-                                            getActivity().finish();
-                                            EventOfChangeTab eventOfChangeTab = new EventOfChangeTab();
-                                            eventOfChangeTab.mIndex = 2;
-                                            EventBus.getDefault().post(eventOfChangeTab);
-                                        }
-                                    });
-                                    payDialog.setConfirmClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
+                                        public void run() {
                                             JSONObject json = (JSONObject) JSON.parse(rsp);
                                             int order = json.getIntValue("AskOrderId");
-                                            dismissConfirmDialog();
                                             confirmOrder(order);
-
                                         }
                                     });
                                 }
-                                mConfirmDialog.show();
-                            }
-                        });
-                    }
 
-                    @Override
-                    public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
-                        super.onError(isFromCache, call, response, e);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                dismissLoadingDialog();
-                            }
-                        });
-                    }
-                });
+                                @Override
+                                public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                                    super.onError(isFromCache, call, response, e);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            dismissLoadingDialog();
+                                        }
+                                    });
+                                }
+                            });
+                }
+            });
+        }
+        mConfirmDialog.show();
+
     }
-
     private void confirmOrder(int orderId) {
 
         StringBuilder url = Util.getThreadSafeStringBuilder();
@@ -451,6 +564,8 @@ public class EditOrderFragment extends BaseFragment {
                 .execute(new JsonCallback<String>(String.class) {
                     @Override
                     public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
+                        dismissLoadingDialog();
+                        ToastUtil.shortToast(R.string.commit_success);
                         Bundle bundle = new Bundle();
                         StringBuilder name = Util.getThreadSafeStringBuilder();
                         for (Passenger passenger : mPassengers) {
@@ -477,10 +592,11 @@ public class EditOrderFragment extends BaseFragment {
                     @Override
                     public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
                         super.onError(isFromCache, call, response, e);
-                        getActivity().finish();
-                        EventOfChangeTab eventOfChangeTab = new EventOfChangeTab();
-                        eventOfChangeTab.mIndex = 2;
-                        EventBus.getDefault().post(eventOfChangeTab);
+//                        getActivity().finish();
+//                        EventOfChangeTab eventOfChangeTab = new EventOfChangeTab();
+//                        eventOfChangeTab.mIndex = 2;
+//                        EventBus.getDefault().post(eventOfChangeTab);
+                        dismissLoadingDialog();
                     }
                 });
 

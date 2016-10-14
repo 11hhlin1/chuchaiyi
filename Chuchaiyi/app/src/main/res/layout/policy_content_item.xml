@@ -14,15 +14,24 @@
         android:layout_marginLeft="@dimen/margin_30p"
         android:layout_alignParentLeft="true"
         android:textColor="@color/color_aaaaaa"/>
-    <CheckBox
+    <!--<CheckBox-->
+        <!--android:id="@+id/reason_check_icon"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@drawable/selector_check_box"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_marginRight="@dimen/margin_30p"-->
+        <!--android:enabled="false"-->
+        <!--android:button="@null" />-->
+
+    <ImageView
         android:id="@+id/reason_check_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/selector_check_box"
         android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/margin_30p"
-        android:button="@null" />
+        android:layout_alignParentRight="true"/>
     <View
         style="@style/personal_page_bottom_line"/>
 </RelativeLayout>

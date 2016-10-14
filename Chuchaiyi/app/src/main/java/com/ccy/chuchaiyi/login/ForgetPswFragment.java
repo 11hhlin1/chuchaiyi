@@ -13,19 +13,14 @@ import android.widget.CompoundButton;
 
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
-import com.ccy.chuchaiyi.db.UserInfo;
+import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.widget.EditTextWithDel;
 import com.gjj.applibrary.http.callback.JsonCallback;
-import com.gjj.applibrary.util.AndroidUtil;
 import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.cache.CacheMode;
-
-import org.json.JSONObject;
-
-import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -82,19 +77,12 @@ public class ForgetPswFragment extends BaseFragment {
 
                     @Override
                     public void onResponse(boolean b, GetSmsCode getSmsCode, Request request, @Nullable Response response) {
-//                        mgetSmsCode = getSmsCode;
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                countDownSms();
-//                            }
-//                        });
+                        PageSwitcher.switchToTopNavPage(getActivity(), ChangePswSuccessFragment.class, null, getString(R.string.set_psw_done),null);
                     }
 
                     @Override
                     public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
                         super.onError(isFromCache, call, response, e);
-                        ToastUtil.shortToast(R.string.get_sms_code_fail);
                     }
                 });
 

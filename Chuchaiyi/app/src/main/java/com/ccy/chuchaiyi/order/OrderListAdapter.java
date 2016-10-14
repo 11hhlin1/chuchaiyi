@@ -1,9 +1,14 @@
 package com.ccy.chuchaiyi.order;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,12 +17,16 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.base.SimpleRecyclerViewAdapter;
+import com.ccy.chuchaiyi.event.EventOfChangeTab;
 import com.ccy.chuchaiyi.event.EventOfRefreshOrderList;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.util.DiscountUtil;
+import com.ccy.chuchaiyi.widget.CallDialog;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.util.DateUtil;
 import com.gjj.applibrary.util.ToastUtil;
@@ -215,50 +224,81 @@ public class OrderListAdapter extends SimpleRecyclerViewAdapter<OrderInfo.Orders
         }
 
         private void handleBtn(Button button) {
-            OrderInfo.OrdersBean ordersBean = (OrderInfo.OrdersBean) passenger.getTag();
+            final OrderInfo.OrdersBean ordersBean = (OrderInfo.OrdersBean) passenger.getTag();
             String str = button.getText().toString();
             if(str.equals(mContext.getString(R.string.dialog_default_cancel_title))) {
-                StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
-                stringBuilder.append(ApiConstants.CANCEL_ORDER).append("?").append("orderId=").append(ordersBean.getOrderId());
-                OkHttpUtils.post(stringBuilder.toString())
-                        .tag(mContext)
-                        .cacheMode(CacheMode.NO_CACHE)
-                        .execute(new JsonCallback<String>(String.class) {
+                CallDialog confirmDialog = new CallDialog(mContext, R.style.white_bg_dialog);
+                confirmDialog.setCancelable(true);
+                confirmDialog.setContent("你确认取消此订单?");
+                confirmDialog.setCanceledOnTouchOutside(false);
+                confirmDialog.setConfirmClickListener(new View.OnClickListener() {
 
-                            @Override
-                            public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
-                                EventOfRefreshOrderList eventOfRefreshOrderList = new EventOfRefreshOrderList();
-                                EventBus.getDefault().post(eventOfRefreshOrderList);
-                                ToastUtil.shortToast(R.string.success);
-                            }
+                    @Override
+                    public void onClick(View v) {
+                        StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+                        stringBuilder.append(ApiConstants.CANCEL_ORDER).append("?").append("orderId=").append(ordersBean.getOrderId());
+                        OkHttpUtils.post(stringBuilder.toString())
+                                .tag(mContext)
+                                .cacheMode(CacheMode.NO_CACHE)
+                                .execute(new JsonCallback<String>(String.class) {
 
-                            @Override
-                            public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
-                                super.onError(isFromCache, call, response, e);
-                            }
+                                    @Override
+                                    public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
+                                        EventOfRefreshOrderList eventOfRefreshOrderList = new EventOfRefreshOrderList();
+                                        EventBus.getDefault().post(eventOfRefreshOrderList);
+                                        ToastUtil.shortToast(R.string.success);
+                                    }
 
-                        });
+                                    @Override
+                                    public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                                        super.onError(isFromCache, call, response, e);
+                                    }
+
+                                });
+                    }
+                });
+                confirmDialog.show();
+
             } else if(str.equals(mContext.getString(R.string.pay))) {
-                StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
-                stringBuilder.append(ApiConstants.CONFIRM_ORDER_BY_LIST).append("?").append("orderId=").append(ordersBean.getOrderId());
-                OkHttpUtils.post(stringBuilder.toString())
-                        .tag(mContext)
-                        .cacheMode(CacheMode.NO_CACHE)
-                        .execute(new JsonCallback<String>(String.class) {
+                PayDialogData payDialogData = new PayDialogData();
+                payDialogData.passenger = ordersBean.getPassengerName();
+                StringBuilder city = Util.getThreadSafeStringBuilder();
+                city.append(ordersBean.getDepartureCityName()).append("-").append(ordersBean.getArrivalCityName());
+                payDialogData.travelCity = city.toString();
+                StringBuilder time = Util.getThreadSafeStringBuilder();
+                time.append(ordersBean.getDepartureDateTime()).append("出发");
+                payDialogData.travelTime = time.toString();
+                payDialogData.amount = ordersBean.getPaymentAmount();
+                PayDialog payDialog = new PayDialog(mContext,payDialogData);
+                payDialog.setCanceledOnTouchOutside(false);
+                payDialog.setConfirmClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+                        stringBuilder.append(ApiConstants.CONFIRM_ORDER_BY_LIST).append("?").append("orderId=").append(ordersBean.getOrderId());
+                        OkHttpUtils.post(stringBuilder.toString())
+                                .tag(mContext)
+                                .cacheMode(CacheMode.NO_CACHE)
+                                .execute(new JsonCallback<String>(String.class) {
 
-                            @Override
-                            public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
-                                EventOfRefreshOrderList eventOfRefreshOrderList = new EventOfRefreshOrderList();
-                                EventBus.getDefault().post(eventOfRefreshOrderList);
-                                ToastUtil.shortToast(R.string.success);
-                            }
+                                    @Override
+                                    public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
+                                        EventOfRefreshOrderList eventOfRefreshOrderList = new EventOfRefreshOrderList();
+                                        EventBus.getDefault().post(eventOfRefreshOrderList);
+                                        ToastUtil.shortToast(R.string.success);
+                                    }
 
-                            @Override
-                            public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
-                                super.onError(isFromCache, call, response, e);
-                            }
+                                    @Override
+                                    public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                                        super.onError(isFromCache, call, response, e);
+                                    }
 
-                        });
+                                });
+
+                    }
+                });
+                payDialog.show();
+
             } else if(str.equals(mContext.getString(R.string.returnPolicy))) {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("order", ordersBean);

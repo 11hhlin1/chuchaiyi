@@ -29,7 +29,6 @@
             android:gravity="center"
             android:layout_marginLeft="@dimen/margin_30p"
             android:textSize="@dimen/textsize_15sp"
-            android:inputType="number"
             android:textColor="@color/color_222222"
             android:text="@string/phone"
             />
@@ -60,7 +59,7 @@
             style="@style/login_edittext"
             android:layout_toRightOf="@+id/phone_title"
             android:layout_toLeftOf="@+id/line"
-            android:digits="\@-+._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ"
+            android:inputType="number"
             android:hint="@string/hint_login_phone"
             android:imeOptions="actionNext"/>
     </RelativeLayout>
@@ -85,7 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             style="@style/login_edittext"
-            android:digits="\@-+._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ"
+            android:inputType="number"
             android:hint="@string/hint_sms_code"
             android:imeOptions="actionNext"/>
     </LinearLayout>
