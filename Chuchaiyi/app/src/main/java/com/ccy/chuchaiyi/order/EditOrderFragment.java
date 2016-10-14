@@ -471,6 +471,10 @@ public class EditOrderFragment extends BaseFragment {
         if(mConfirmDialog == null) {
             PayDialogData payDialogData = new PayDialogData();
             StringBuilder name = Util.getThreadSafeStringBuilder();
+            if(Util.isListEmpty(mPassengers)) {
+                ToastUtil.shortToast(R.string.choose_passenger);
+                return;
+            }
             for (Passenger passenger : mPassengers) {
                 name.append(passenger.PassengerName).append("  ");
             }
@@ -515,10 +519,6 @@ public class EditOrderFragment extends BaseFragment {
                     request.FirstRoutePolicyInfo = mSetoutResonInfo;
                     request.SecondRoute = mReturnFlightInfo;
                     request.SecondRoutePolicyInfo = mReturnResonInfo;
-                    if(Util.isListEmpty(mPassengers)) {
-                        ToastUtil.shortToast(R.string.choose_passenger);
-                        return;
-                    }
                     request.Passengers = mPassengers;
                     OkHttpUtils.post(ApiConstants.COMMIT_ORDER)
                             .tag(this)
