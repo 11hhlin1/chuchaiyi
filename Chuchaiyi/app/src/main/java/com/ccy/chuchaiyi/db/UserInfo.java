@@ -23,11 +23,12 @@ public class UserInfo {
     private String OverrunOption;
     private Boolean AirInsuranceRequired;
     private Boolean IsProjectRequired;
+    private String DefaultCity;
 
     public UserInfo() {
     }
 
-    public UserInfo(String Token, Integer EmployeeId, String EmployeeName, String Mobile, String Email, Boolean IsAdmin, Boolean IsGreenChannel, Boolean CanBookingForOthers, Integer CorpId, String CorpName, String DeptName, String CorpBusinessTypes, String CorpPayMode, Boolean ApprovalRequired, String OverrunOption, Boolean AirInsuranceRequired, Boolean IsProjectRequired) {
+    public UserInfo(String Token, Integer EmployeeId, String EmployeeName, String Mobile, String Email, Boolean IsAdmin, Boolean IsGreenChannel, Boolean CanBookingForOthers, Integer CorpId, String CorpName, String DeptName, String CorpBusinessTypes, String CorpPayMode, Boolean ApprovalRequired, String OverrunOption, Boolean AirInsuranceRequired, Boolean IsProjectRequired, String DefaultCity) {
         this.Token = Token;
         this.EmployeeId = EmployeeId;
         this.EmployeeName = EmployeeName;
@@ -45,6 +46,7 @@ public class UserInfo {
         this.OverrunOption = OverrunOption;
         this.AirInsuranceRequired = AirInsuranceRequired;
         this.IsProjectRequired = IsProjectRequired;
+        this.DefaultCity = DefaultCity;
     }
 
     public String getToken() {
@@ -181,6 +183,14 @@ public class UserInfo {
 
     public void setIsProjectRequired(Boolean IsProjectRequired) {
         this.IsProjectRequired = IsProjectRequired;
+    }
+
+    public String getDefaultCity() {
+        return DefaultCity;
+    }
+
+    public void setDefaultCity(String DefaultCity) {
+        this.DefaultCity = DefaultCity;
     }
 
 }

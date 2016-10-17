@@ -1,6 +1,7 @@
 package com.ccy.chuchaiyi.main;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.app.BaseApplication;
@@ -37,6 +38,8 @@ public class MainActivity extends BaseMainActivity {
     @Bind(R.id.group_tab)
     NestRadioGroup mRadioGroup;
 
+    @Bind(R.id.redTip)
+    ImageView mRedTip;
     private boolean mIsBackPressed = false;
     private static MainActivity sMainActivity;
 
@@ -106,6 +109,12 @@ public class MainActivity extends BaseMainActivity {
                 break;
         }
     }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void changeTab(EventOfChangeTab event) {
+//        if(isFinishing())
+//            return;
+//        mRedTip.setVisibility();
+//    }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

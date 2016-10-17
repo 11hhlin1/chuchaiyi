@@ -20,12 +20,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
+import com.ccy.chuchaiyi.app.BaseApplication;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.calendar.CalendarSelectorFragment;
 import com.ccy.chuchaiyi.city.ChooseCityFragment;
 import com.ccy.chuchaiyi.city.CitySort;
 import com.ccy.chuchaiyi.flight.FlightInfo;
+import com.ccy.chuchaiyi.user.UserMgr;
 import com.gjj.applibrary.util.DateUtil;
 import com.gjj.applibrary.util.SaveObjUtil;
 import com.ccy.chuchaiyi.constant.Constants;
@@ -141,18 +143,22 @@ public class IndexContentFragment extends BaseFragment {
         if(mArriveCity != null) {
             arriveCity.setText(mArriveCity.getName());
         } else {
-            mArriveCity = new CitySort();
-            mArriveCity.setCode("BJS");
-            mArriveCity.setName("北京");
-            arriveCity.setText(mArriveCity.getName());
+
+
         }
         if(mSetOutCity != null) {
             chufaCity.setText(mSetOutCity.getName());
         } else {
-            mSetOutCity = new CitySort();
-            mSetOutCity.setCode("SZX");
-            mSetOutCity.setName("深圳");
-            chufaCity.setText(mSetOutCity.getName());
+            UserMgr userMgr = BaseApplication.getUserMgr();
+            String defaultCity = userMgr.getUser().getDefaultCity();
+            if(defaultCity.contains(",")) {
+                String[] cityArray = defaultCity.split(",");
+                mSetOutCity = new CitySort();
+                mSetOutCity.setCode(cityArray[0]);
+                mSetOutCity.setName(cityArray[1]);
+                chufaCity.setText(mSetOutCity.getName());
+            }
+//            chufaCity.setText(mSetOutCity.getName());
         }
     }
 

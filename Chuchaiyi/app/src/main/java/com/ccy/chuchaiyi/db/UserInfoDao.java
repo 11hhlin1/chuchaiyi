@@ -39,6 +39,7 @@ public class UserInfoDao extends AbstractDao<UserInfo, Void> {
         public final static Property OverrunOption = new Property(14, String.class, "OverrunOption", false, "OVERRUN_OPTION");
         public final static Property AirInsuranceRequired = new Property(15, Boolean.class, "AirInsuranceRequired", false, "AIR_INSURANCE_REQUIRED");
         public final static Property IsProjectRequired = new Property(16, Boolean.class, "IsProjectRequired", false, "IS_PROJECT_REQUIRED");
+        public final static Property DefaultCity = new Property(17, String.class, "DefaultCity", false, "DEFAULT_CITY");
     };
 
 
@@ -70,7 +71,8 @@ public class UserInfoDao extends AbstractDao<UserInfo, Void> {
                 "'APPROVAL_REQUIRED' INTEGER," + // 13: ApprovalRequired
                 "'OVERRUN_OPTION' TEXT," + // 14: OverrunOption
                 "'AIR_INSURANCE_REQUIRED' INTEGER," + // 15: AirInsuranceRequired
-                "'IS_PROJECT_REQUIRED' INTEGER);"); // 16: IsProjectRequired
+                "'IS_PROJECT_REQUIRED' INTEGER," + // 16: IsProjectRequired
+                "'DEFAULT_CITY' TEXT);"); // 17: DefaultCity
     }
 
     /** Drops the underlying database table. */
@@ -168,6 +170,11 @@ public class UserInfoDao extends AbstractDao<UserInfo, Void> {
         if (IsProjectRequired != null) {
             stmt.bindLong(17, IsProjectRequired ? 1l: 0l);
         }
+ 
+        String DefaultCity = entity.getDefaultCity();
+        if (DefaultCity != null) {
+            stmt.bindString(18, DefaultCity);
+        }
     }
 
     /** @inheritdoc */
@@ -196,7 +203,8 @@ public class UserInfoDao extends AbstractDao<UserInfo, Void> {
             cursor.isNull(offset + 13) ? null : cursor.getShort(offset + 13) != 0, // ApprovalRequired
             cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // OverrunOption
             cursor.isNull(offset + 15) ? null : cursor.getShort(offset + 15) != 0, // AirInsuranceRequired
-            cursor.isNull(offset + 16) ? null : cursor.getShort(offset + 16) != 0 // IsProjectRequired
+            cursor.isNull(offset + 16) ? null : cursor.getShort(offset + 16) != 0, // IsProjectRequired
+            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17) // DefaultCity
         );
         return entity;
     }
@@ -221,6 +229,7 @@ public class UserInfoDao extends AbstractDao<UserInfo, Void> {
         entity.setOverrunOption(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
         entity.setAirInsuranceRequired(cursor.isNull(offset + 15) ? null : cursor.getShort(offset + 15) != 0);
         entity.setIsProjectRequired(cursor.isNull(offset + 16) ? null : cursor.getShort(offset + 16) != 0);
+        entity.setDefaultCity(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
      }
     
     /** @inheritdoc */
