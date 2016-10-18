@@ -1,5 +1,13 @@
 package com.gjj.applibrary.log;
 
+import android.annotation.TargetApi;
+import android.content.pm.ApplicationInfo;
+import android.os.Build;
+import android.support.v4.app.FragmentManager;
+import android.webkit.WebView;
+
+import butterknife.ButterKnife;
+
 /**
  * 
  * 类/接口注释
@@ -8,7 +16,7 @@ package com.gjj.applibrary.log;
  * @createDate Dec 29, 2014
  *
  */
-class LogManager {
+public class LogManager {
 
     static final int LOG_LEVEL_TRACE = 1;
     static final int LOG_LEVEL_DEBUG = 2;
@@ -43,6 +51,7 @@ class LogManager {
             synchronized(LogManager.class) {
                 if (mLogManager == null) {
                     mLogManager = new LogManager();
+                    mLogManager.initMainProcessLogConfig();
                 }
             }
         }
@@ -53,7 +62,15 @@ class LogManager {
     LogManager() {
 
     }
-
+    private void initMainProcessLogConfig() {
+        if (printLevel == LOG_LEVEL_TRACE) {
+            ButterKnife.setDebug(true);
+            FragmentManager.enableDebugLogging(true);
+        } else {
+            ButterKnife.setDebug(false);
+            FragmentManager.enableDebugLogging(false);
+        }
+    }
     /**
      * 指定日志级别是否达到打印级别
      * @param level

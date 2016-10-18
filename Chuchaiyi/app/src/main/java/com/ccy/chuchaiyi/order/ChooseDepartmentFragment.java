@@ -14,7 +14,6 @@ import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.util.ToastUtil;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.cache.CacheMode;
-import com.unnamed.b.atv.model.TreeNode;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -108,13 +107,6 @@ public class ChooseDepartmentFragment extends BaseFragment implements RecyclerIt
                 });
     }
 
-    private TreeNode.TreeNodeClickListener nodeClickListener = new TreeNode.TreeNodeClickListener() {
-        @Override
-        public void onClick(TreeNode node, Object value) {
-
-
-        }
-    };
 
 
     @Override
