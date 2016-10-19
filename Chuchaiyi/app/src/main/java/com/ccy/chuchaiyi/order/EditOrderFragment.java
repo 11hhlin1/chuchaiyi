@@ -91,6 +91,7 @@ public class EditOrderFragment extends BaseFragment {
     TextView oilFeeTv;
     @Bind(R.id.oil_fee_value)
     TextView oilFeeValue;
+
     @Bind(R.id.add_passenger)
     TextView addPassenger;
     @Bind(R.id.passenger_ll)
@@ -127,6 +128,7 @@ public class EditOrderFragment extends BaseFragment {
     private int airportFee;
     private int oilFee;
     private int safeFeeMoney;
+    private int serviceFee;
     private int mAmount;
 //    private int delayFeeMoney;
     private FlightInfoDialog mFlightInfoDialog;
@@ -146,8 +148,10 @@ public class EditOrderFragment extends BaseFragment {
 
     @Override
     public boolean goBack(boolean fromKeyboard) {
-        if (mIsBack) {
-            if (!Util.isListEmpty(mPassengers)) {
+        if(Util.isListEmpty(mPassengers)) {
+            return false;
+        }
+            if (mIsBack) {
                 CallDialog confirmDialog = new CallDialog(getActivity(), R.style.white_bg_dialog);
                 confirmDialog.setCancelable(true);
                 confirmDialog.setContent(getString(R.string.dialog_content_give_up_submit));
@@ -162,7 +166,7 @@ public class EditOrderFragment extends BaseFragment {
                 });
                 confirmDialog.show();
             }
-        }
+
         return mIsBack;
     }
 
@@ -212,8 +216,9 @@ public class EditOrderFragment extends BaseFragment {
             jiJianValue.setText(getString(R.string.money_no_end, String.valueOf(airportFee)));
             oilFeeValue.setText(getString(R.string.money_no_end, String.valueOf(oilFee)));
             safeFeeMoney = mFlightInfo.getInsuranceFeeUnitPrice();
+            serviceFee = mFlightInfo.getTicketServiceFee();
 //            delayFeeValue.setText(stringBuilder.toString());
-            mAmount = planePrice + airportFee + oilFee;
+            mAmount = planePrice + airportFee + oilFee + serviceFee;
         } else {
             setDepartureTv();
             setReturnTv();
@@ -223,9 +228,10 @@ public class EditOrderFragment extends BaseFragment {
             jiJianValue.setText(getString(R.string.money_no_end, String.valueOf(airportFee)));
             oilFee = mFlightInfo.getOilFee() + mReturnFlightInfo.getOilFee();
             oilFeeValue.setText(getString(R.string.money_no_end, String.valueOf(oilFee)));
-            safeFeeMoney = mFlightInfo.getInsuranceFeeUnitPrice();
+            safeFeeMoney = mFlightInfo.getInsuranceFeeUnitPrice() + mReturnFlightInfo.getInsuranceFeeUnitPrice();
+            serviceFee = mFlightInfo.getTicketServiceFee() + mReturnFlightInfo.getTicketServiceFee();
 //            delayFeeValue.setText(stringBuilder.toString());
-            mAmount = planePrice + airportFee + oilFee ;
+            mAmount = planePrice + airportFee + oilFee + serviceFee;
         }
         setSafeFeeValue();
         setAmountTv();
@@ -262,10 +268,10 @@ public class EditOrderFragment extends BaseFragment {
 
     private void setAmountTv() {
         if(safeFeeCheckIcon.isChecked()) {
-            int amount = (mAmount * mPassengerNum) + safeFeeMoney * mPassengerNum;
+            int amount = (mAmount + safeFeeMoney)* mPassengerNum;
            orderMoney.setText(getString(R.string.money_no_end, amount));
         } else {
-            int amount = (mAmount * mPassengerNum);
+            int amount = mAmount * mPassengerNum;
             orderMoney.setText(getString(R.string.money_no_end, amount));
         }
     }
@@ -668,13 +674,13 @@ public class EditOrderFragment extends BaseFragment {
             viewHolder = (ViewHolder) contentView.getTag();
         }
         StringBuilder planePriceStr = Util.getThreadSafeStringBuilder();
-        planePriceStr.append(getString(R.string.money_no_end, planePrice)).append("*  ").append(mPassengerNum).append(" 人");
+        planePriceStr.append(getString(R.string.money_no_end, planePrice)).append("x  ").append(mPassengerNum).append(" 人");
         viewHolder.ticketValue.setText(planePriceStr);
         StringBuilder airportFeeStr = Util.getThreadSafeStringBuilder();
-        airportFeeStr.append(getString(R.string.money_no_end, airportFee)).append("*  ").append(mPassengerNum).append(" 人");
+        airportFeeStr.append(getString(R.string.money_no_end, airportFee)).append("x  ").append(mPassengerNum).append(" 人");
         viewHolder.airportFee.setText(airportFeeStr);
         StringBuilder oilFeeStr = Util.getThreadSafeStringBuilder();
-        oilFeeStr.append(getString(R.string.money_no_end, oilFee)).append("*  ").append(mPassengerNum).append(" 人");
+        oilFeeStr.append(getString(R.string.money_no_end, oilFee)).append("x  ").append(mPassengerNum).append(" 人");
         viewHolder.oilFee.setText(oilFeeStr);
 //        StringBuilder delayStr = Util.getThreadSafeStringBuilder();
 //        delayStr.append(getString(R.string.money_no_end, safeFeeMoney)).append("*  ").append(mPassengerNum).append(" 人");
@@ -682,10 +688,19 @@ public class EditOrderFragment extends BaseFragment {
         if(safeFeeCheckIcon.isChecked()) {
             viewHolder.safeFeeRl.setVisibility(View.VISIBLE);
             StringBuilder safeStr = Util.getThreadSafeStringBuilder();
-            safeStr.append(getString(R.string.money_no_end, safeFeeMoney)).append("*  ").append(mPassengerNum).append(" 人");
+            safeStr.append(getString(R.string.money_no_end, safeFeeMoney)).append("x  ").append(mPassengerNum).append(" 人");
             viewHolder.safeFee.setText(safeStr);
         } else {
             viewHolder.safeFeeRl.setVisibility(View.GONE);
+        }
+
+        if(serviceFee > 0) {
+            viewHolder.serviceRl.setVisibility(View.VISIBLE);
+            StringBuilder service = Util.getThreadSafeStringBuilder();
+            service.append(getString(R.string.money_no_end, serviceFee)).append("x  ").append(mPassengerNum).append(" 人");
+            viewHolder.serviceTv.setText(service);
+        } else {
+            viewHolder.serviceRl.setVisibility(View.GONE);
         }
         //判读window是否显示，消失了就执行动画
         if (!popupWindow.isShowing()) {
@@ -720,9 +735,10 @@ public class EditOrderFragment extends BaseFragment {
         TextView safeFee;
         @Bind(R.id.safe_fee_rl)
         RelativeLayout safeFeeRl;
-//        @Bind(R.id.pop_delay_fee)
-//        TextView delayFee;
-
+        @Bind(R.id.service_fee_rl)
+        RelativeLayout serviceRl;
+        @Bind(R.id.service_fee)
+        TextView serviceTv;
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }

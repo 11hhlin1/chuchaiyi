@@ -8,6 +8,7 @@ import com.ccy.chuchaiyi.app.BaseApplication;
 import com.ccy.chuchaiyi.base.BaseMainActivity;
 import com.ccy.chuchaiyi.check.CategoryData;
 import com.ccy.chuchaiyi.check.CheckFragment;
+import com.ccy.chuchaiyi.check.NoCheckTypeFragment;
 import com.ccy.chuchaiyi.check.ViewPagerGoodListFragment;
 import com.ccy.chuchaiyi.db.UserInfo;
 import com.ccy.chuchaiyi.event.EventOfChangeTab;
@@ -163,7 +164,11 @@ public class MainActivity extends BaseMainActivity {
             dataList.add(categoryData2);
         }
         bundle.putParcelableArrayList("data", dataList);
-        replaceFragment(ViewPagerGoodListFragment.class,bundle);
+        if(dataList.size() > 0) {
+            replaceFragment(ViewPagerGoodListFragment.class,bundle);
+        }  else {
+            replaceFragment(NoCheckTypeFragment.class,bundle);
+        }
     }
 
     private void showIndexTab() {

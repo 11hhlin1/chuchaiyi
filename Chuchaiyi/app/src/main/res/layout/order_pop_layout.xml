@@ -112,28 +112,29 @@
             android:textSize="@dimen/textsize_13sp"
             android:text="30 * 1"/>
     </RelativeLayout>
-    <!--<RelativeLayout-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
+    <RelativeLayout
+        android:id="@+id/service_fee_rl"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <!--<TextView-->
-            <!--android:layout_alignParentLeft="true"-->
-            <!--android:layout_marginLeft="@dimen/margin_30p"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textColor="@color/color_222222"-->
-            <!--android:textSize="@dimen/textsize_13sp"-->
-            <!--android:text="@string/delay_fee"/>-->
-        <!--<TextView-->
-            <!--android:id="@+id/pop_delay_fee"-->
-            <!--android:layout_marginRight="@dimen/margin_30p"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textColor="@color/orange"-->
-            <!--android:textSize="@dimen/textsize_13sp"-->
-            <!--android:text="30 * 1"/>-->
-    <!--</RelativeLayout>-->
+        <TextView
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_13sp"
+            android:text="服务费"/>
+        <TextView
+            android:id="@+id/service_fee"
+            android:layout_marginRight="@dimen/margin_30p"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/textsize_13sp"
+            android:text="30 * 1"/>
+    </RelativeLayout>
 </LinearLayout>
 </RelativeLayout>

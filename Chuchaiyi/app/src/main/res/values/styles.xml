@@ -160,7 +160,7 @@
     <style name="error_tv" parent="@style/empty_tv">
         <item name="android:id">@id/error_tv</item>
         <item name="android:text">@string/load_fail_click_reload</item>
-        <!--<item name="android:drawableTop">@drawable/blank_img_failed</item>-->
+        <item name="android:drawableTop">@mipmap/ic_launcher</item>
     </style>
 
     <style name="TreeNodeStyleCustom">

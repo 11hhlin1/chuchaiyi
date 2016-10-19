@@ -167,20 +167,24 @@ public class EditPassengerFragment extends BaseFragment {
         mPassengerInfo.setMobile(etPhone.getText().toString());
         EventOfSelPassenger eventOfSelPassenger = new EventOfSelPassenger();
         eventOfSelPassenger.mPassenger = mPassengerInfo;
-        if (mApproval == null && userInfo.getApprovalRequired()) {
-            ToastUtil.shortToast(R.string.choose_check_num);
-            return;
+        if(userInfo.getApprovalRequired()) {
+            if (mApproval == null) {
+                ToastUtil.shortToast(R.string.choose_check_num);
+                return;
+            }
+            eventOfSelPassenger.ApprovalId = mApproval.getApprovalId();
+            eventOfSelPassenger.ApprovalNo = mApproval.getApprovalNo();
         }
-        if (mProjectsBean == null && userInfo.getIsProjectRequired()) {
-            ToastUtil.shortToast(R.string.choose_project);
-            return;
+        if (userInfo.getIsProjectRequired()) {
+            if (mProjectsBean == null) {
+                ToastUtil.shortToast(R.string.choose_project);
+                return;
+            }
+            eventOfSelPassenger.ProjectId = mProjectsBean.getProjectId();
+            eventOfSelPassenger.ProjectName = mProjectsBean.getProjectName();
         }
-        eventOfSelPassenger.ApprovalId = mApproval.getApprovalId();
-        eventOfSelPassenger.ProjectId = mProjectsBean.getProjectId();
-        eventOfSelPassenger.ProjectName = mProjectsBean.getProjectName();
-        eventOfSelPassenger.ApprovalNo = mApproval.getApprovalNo();
-        EventBus.getDefault().post(eventOfSelPassenger);
 
+        EventBus.getDefault().post(eventOfSelPassenger);
         TopNavSubActivity activity = (TopNavSubActivity) getActivity();
         Bundle bundle = new Bundle();
         String title = PreferencesManager.getInstance().get(Constants.EDIT_ORDER_TITLE);
