@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.event.EventOfAgreeCheck;
+import com.ccy.chuchaiyi.event.EventOfCancelApproval;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.util.DiscountUtil;
 import com.gjj.applibrary.http.callback.JsonCallback;
@@ -69,7 +70,7 @@ public class CheckDetailFragment extends BaseFragment {
     @Bind(R.id.bottom_rl)
     RelativeLayout bottomRl;
     private LayoutInflater inflater;
-    int approvalId;
+    private int approvalId;
     private RejectDialog mConfirmDialog;
 
     @Override
@@ -109,6 +110,8 @@ public class CheckDetailFragment extends BaseFragment {
                                     stateIcon.setImageResource(R.mipmap.icon_approve_ing);
                                 } else if(status.equals("已撤消")) {
                                     stateIcon.setImageResource(R.mipmap.icon_approve_cannel);
+                                    refuseBtn.setVisibility(View.GONE);
+                                    agreeBtn.setText(getString(R.string.checkcancle));
                                 }
                                 checkStateTv.setText(detail.getStatus());
                                 tripReason.setText(detail.getTravelReason());
@@ -225,7 +228,30 @@ public class CheckDetailFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.agree_btn:
-                checkApproval(ApiConstants.AUDIT_PASS_APPROVAL,"");
+                if(agreeBtn.getText().toString().equals(getString(R.string.checkcancle))) {
+                    StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+                    stringBuilder.append(ApiConstants.CANCEL_APPROVAL).append("?").append("approvalId=").append(approvalId);
+                    OkHttpUtils.post(stringBuilder.toString())
+                            .tag(getActivity())
+                            .cacheMode(CacheMode.NO_CACHE)
+                            .execute(new JsonCallback<String>(String.class) {
+
+                                @Override
+                                public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
+                                    EventOfCancelApproval eventOfCancelApproval = new EventOfCancelApproval();
+                                    eventOfCancelApproval.mType = CategoryData.MY_APPLY;
+                                    EventBus.getDefault().post(eventOfCancelApproval);
+                                }
+
+                                @Override
+                                public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                                    super.onError(isFromCache, call, response, e);
+                                }
+
+                            });
+                } else {
+                    checkApproval(ApiConstants.AUDIT_PASS_APPROVAL,"");
+                }
                 break;
             case R.id.refuse_btn:
                 final RejectDialog rejectDialog = new RejectDialog(getActivity());

@@ -124,7 +124,7 @@ public class ChoosePassengerFragment extends BaseFragment implements ChoosePasse
             for (PassengerData sortModel : dataList) {
                 if(sortModel.mStoreUser == null) {
                     String name = sortModel.name;
-                    if (sortModel.mViewType != ChoosePassengerAdapter.VIEW_TYPE_ITEM || name.contains(filterStr) || PinyinUtils.getPingYin(name).toUpperCase().startsWith(filterStr.toString().toUpperCase())||filterStr.toString().toUpperCase().startsWith(sortModel.sortLetters.toUpperCase())) {
+                    if (sortModel.mViewType != ChoosePassengerAdapter.VIEW_TYPE_ITEM || name.contains(filterStr) || PinyinUtils.getPingYin(name).toUpperCase().startsWith(filterStr.toUpperCase())||filterStr.toUpperCase().startsWith(sortModel.sortLetters.toUpperCase())) {
                         mList.add(sortModel);
                     }
                 } else {

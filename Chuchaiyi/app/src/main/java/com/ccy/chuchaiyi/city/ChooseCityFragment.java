@@ -187,9 +187,9 @@ public class ChooseCityFragment extends BaseFragment {
                 //当输入框里面的值为空，更新为原来的列表，否则为过滤数据列表
                 if(s.toString().length() > 0) {
                     filterData(s.toString());
-                    mHeadView.setVisibility(View.GONE);
+                    countryList.removeHeaderView(mHeadView);
                 } else {
-                    mHeadView.setVisibility(View.VISIBLE);
+                    countryList.addHeaderView(mHeadView);
                     Collections.sort(allCitySorts, new PinyinComparator());
                     adapter.setData(allCitySorts);
                 }
@@ -249,7 +249,7 @@ public class ChooseCityFragment extends BaseFragment {
             for (CitySort sortModel : filterCitySorts) {
                 String name = sortModel.getPinyin();
                 String shortPin = sortModel.getPinyinShort();
-                if (shortPin.toUpperCase().indexOf(filterStr.toString().toUpperCase()) != -1 || PinyinUtils.getPingYin(name).toUpperCase().startsWith(filterStr.toString().toUpperCase())) {
+                if (shortPin.toUpperCase().startsWith(filterStr.toUpperCase()) || PinyinUtils.getPingYin(name).toUpperCase().startsWith(filterStr.toUpperCase())) {
                     mSortList.add(sortModel);
                 } else {
                     if (sortModel.getName().contains(filterStr)) {

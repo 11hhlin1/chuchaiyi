@@ -137,6 +137,7 @@ public class EditOrderFragment extends BaseFragment {
     private PolicyDialog mPolicyDialog;
 //    private String title;
     private UserInfo userInfo;
+    private int mAllAmount;
     private boolean mIsBack = true;
     @Override
     public void onRightBtnClick() {
@@ -267,12 +268,13 @@ public class EditOrderFragment extends BaseFragment {
     }
 
     private void setAmountTv() {
+
         if(safeFeeCheckIcon.isChecked()) {
-            int amount = (mAmount + safeFeeMoney)* mPassengerNum;
-           orderMoney.setText(getString(R.string.money_no_end, amount));
+            mAllAmount = (mAmount + safeFeeMoney)* mPassengerNum;
+           orderMoney.setText(getString(R.string.money_no_end, mAllAmount));
         } else {
-            int amount = mAmount * mPassengerNum;
-            orderMoney.setText(getString(R.string.money_no_end, amount));
+            mAllAmount = mAmount * mPassengerNum;
+            orderMoney.setText(getString(R.string.money_no_end, mAllAmount));
         }
     }
     private void getStopInfo() {
@@ -504,7 +506,7 @@ public class EditOrderFragment extends BaseFragment {
             StringBuilder time = Util.getThreadSafeStringBuilder();
             time.append(mFlightInfo.getDeparture().getDateTime()).append("出发");
             payDialogData.travelTime = time.toString();
-            payDialogData.amount = mAmount;
+            payDialogData.amount = mAllAmount;
             PayDialog payDialog = new PayDialog(getActivity(),payDialogData);
             mConfirmDialog = payDialog;
             payDialog.setCanceledOnTouchOutside(false);
@@ -674,13 +676,13 @@ public class EditOrderFragment extends BaseFragment {
             viewHolder = (ViewHolder) contentView.getTag();
         }
         StringBuilder planePriceStr = Util.getThreadSafeStringBuilder();
-        planePriceStr.append(getString(R.string.money_no_end, planePrice)).append("x  ").append(mPassengerNum).append(" 人");
+        planePriceStr.append(getString(R.string.money_no_end, planePrice)).append("  x  ").append(mPassengerNum).append(" 人");
         viewHolder.ticketValue.setText(planePriceStr);
         StringBuilder airportFeeStr = Util.getThreadSafeStringBuilder();
-        airportFeeStr.append(getString(R.string.money_no_end, airportFee)).append("x  ").append(mPassengerNum).append(" 人");
+        airportFeeStr.append(getString(R.string.money_no_end, airportFee)).append("  x  ").append(mPassengerNum).append(" 人");
         viewHolder.airportFee.setText(airportFeeStr);
         StringBuilder oilFeeStr = Util.getThreadSafeStringBuilder();
-        oilFeeStr.append(getString(R.string.money_no_end, oilFee)).append("x  ").append(mPassengerNum).append(" 人");
+        oilFeeStr.append(getString(R.string.money_no_end, oilFee)).append("  x  ").append(mPassengerNum).append(" 人");
         viewHolder.oilFee.setText(oilFeeStr);
 //        StringBuilder delayStr = Util.getThreadSafeStringBuilder();
 //        delayStr.append(getString(R.string.money_no_end, safeFeeMoney)).append("*  ").append(mPassengerNum).append(" 人");
@@ -688,7 +690,7 @@ public class EditOrderFragment extends BaseFragment {
         if(safeFeeCheckIcon.isChecked()) {
             viewHolder.safeFeeRl.setVisibility(View.VISIBLE);
             StringBuilder safeStr = Util.getThreadSafeStringBuilder();
-            safeStr.append(getString(R.string.money_no_end, safeFeeMoney)).append("x  ").append(mPassengerNum).append(" 人");
+            safeStr.append(getString(R.string.money_no_end, safeFeeMoney)).append("  x  ").append(mPassengerNum).append(" 人");
             viewHolder.safeFee.setText(safeStr);
         } else {
             viewHolder.safeFeeRl.setVisibility(View.GONE);
@@ -697,7 +699,7 @@ public class EditOrderFragment extends BaseFragment {
         if(serviceFee > 0) {
             viewHolder.serviceRl.setVisibility(View.VISIBLE);
             StringBuilder service = Util.getThreadSafeStringBuilder();
-            service.append(getString(R.string.money_no_end, serviceFee)).append("x  ").append(mPassengerNum).append(" 人");
+            service.append(getString(R.string.money_no_end, serviceFee)).append("  x  ").append(mPassengerNum).append(" 人");
             viewHolder.serviceTv.setText(service);
         } else {
             viewHolder.serviceRl.setVisibility(View.GONE);
