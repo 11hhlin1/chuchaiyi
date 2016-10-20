@@ -28,6 +28,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.TopNavSubActivity;
+import com.ccy.chuchaiyi.city.ChooseCityFragment;
+import com.ccy.chuchaiyi.constant.Constants;
+import com.ccy.chuchaiyi.event.EventOfBookBackFlight;
+import com.ccy.chuchaiyi.event.EventOfSelCity;
 import com.ccy.chuchaiyi.index.SeatType;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.order.OrderInfo;
@@ -37,6 +41,8 @@ import com.gjj.applibrary.event.EventOfTokenError;
 import com.gjj.applibrary.http.callback.CommonCallback;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.log.L;
+import com.gjj.applibrary.util.PreferencesManager;
+import com.gjj.applibrary.util.SaveObjUtil;
 import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.util.Util;
 import com.gjj.applibrary.widget.EmptyErrorViewController;
@@ -47,6 +53,8 @@ import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.cache.CacheMode;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -339,6 +347,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
         }
 
         setSeatRedTip();
+        EventBus.getDefault().register(this);
     }
 
     private void setSeatRedTip() {
@@ -771,7 +780,18 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                     }
                 });
     }
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void bookBackFlight(EventOfBookBackFlight event) {
+        mCurrentDateString = mReturnDateString;
+        String[] dates = mCurrentDateString.split("-");
+        L.d("@@@@" + mCurrentDateString);
+        calendar.set(Integer.valueOf(dates[0]), Integer.valueOf(dates[1]) - 1, Integer.valueOf(dates[2]));
+        String temp = mArrivalCode;
+        mArrivalCode = mDepartureCode;
+        mDepartureCode = temp;
+        setTodayTv();
+        mListView.setRefreshing();
+    }
     @Override
     public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
         return false;

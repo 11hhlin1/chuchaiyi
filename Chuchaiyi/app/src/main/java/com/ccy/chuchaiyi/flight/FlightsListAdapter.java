@@ -23,6 +23,7 @@ import com.alibaba.fastjson.JSON;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.constant.Constants;
+import com.ccy.chuchaiyi.event.EventOfBookBackFlight;
 import com.ccy.chuchaiyi.event.EventOfRefreshOrderList;
 import com.ccy.chuchaiyi.login.ForgetPswFragment;
 import com.ccy.chuchaiyi.net.ApiConstants;
@@ -463,28 +464,49 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
 
                             BookValidateInfo.WarningInfoBean warningInfoBean = bookValidateInfo.getWarningInfo();
                             if(warningInfoBean == null) {
-                                String  SetOutWarningInfoBean = PreferencesManager.getInstance().get("SetOutWarningInfoBean");
-                                Bundle bundle = new Bundle();
-                                if(!TextUtils.isEmpty(SetOutWarningInfoBean)) {
-                                    PolicyResultInfo resultInfo = (PolicyResultInfo) SaveObjUtil.unSerialize(SetOutWarningInfoBean);
-                                    bundle.putSerializable("SetOutWarningInfoBean", resultInfo);
-                                    bundle.putSerializable("SetOutFlightInfo", (FlightInfo)SaveObjUtil.unSerialize(PreferencesManager.getInstance().get("SetOutFlightInfo")));
-                                    bundle.putSerializable("SetOutBunksBean", (FlightInfo.BunksBean)SaveObjUtil.unSerialize(PreferencesManager.getInstance().get("SetOutBunksBean")));
-                                    FlightInfo flightInfo = bookValidateInfo.Flight;
-                                    List<FlightInfo.BunksBean> bunksBeanList = flightInfo.getBunks();
-                                    bundle.putSerializable("ReturnFlightInfo", flightInfo);
-                                    bundle.putSerializable("ReturnBunksBean", bunksBeanList.get(0));
-                                } else {
-                                    FlightInfo flightInfo = bookValidateInfo.Flight;
-                                    List<FlightInfo.BunksBean> bunksBeanList = flightInfo.getBunks();
-                                    bundle.putSerializable("SetOutFlightInfo", flightInfo);
-                                    bundle.putSerializable("SetOutBunksBean", bunksBeanList.get(0));
-                                }
+                                if(TextUtils.isEmpty(mReturnDateString)) {
+                                    String  SetOutWarningInfoBean = PreferencesManager.getInstance().get("SetOutWarningInfoBean");
+                                    Bundle bundle = new Bundle();
+                                    if(!TextUtils.isEmpty(SetOutWarningInfoBean)) {
+                                        PolicyResultInfo resultInfo = (PolicyResultInfo) SaveObjUtil.unSerialize(SetOutWarningInfoBean);
+                                        bundle.putSerializable("SetOutWarningInfoBean", resultInfo);
+                                    }
+                                    if(!TextUtils.isEmpty(PreferencesManager.getInstance().get("SetOutFlightInfo"))) {
+                                        bundle.putSerializable("SetOutFlightInfo", (FlightInfo)SaveObjUtil.unSerialize(PreferencesManager.getInstance().get("SetOutFlightInfo")));
+                                        bundle.putSerializable("SetOutBunksBean", (FlightInfo.BunksBean)SaveObjUtil.unSerialize(PreferencesManager.getInstance().get("SetOutBunksBean")));
+                                        FlightInfo flightInfo = bookValidateInfo.Flight;
+                                        List<FlightInfo.BunksBean> bunksBeanList = flightInfo.getBunks();
+                                        bundle.putSerializable("ReturnFlightInfo", flightInfo);
+                                        bundle.putSerializable("ReturnBunksBean", bunksBeanList.get(0));
+                                    } else {
+                                        FlightInfo flightInfo = bookValidateInfo.Flight;
+                                        List<FlightInfo.BunksBean> bunksBeanList = flightInfo.getBunks();
+                                        bundle.putSerializable("SetOutFlightInfo", flightInfo);
+                                        bundle.putSerializable("SetOutBunksBean", bunksBeanList.get(0));
+                                    }
 
-                                StringBuilder title = Util.getThreadSafeStringBuilder();
-                                title.append(flight.getDeparture().getCityName()).append("-").append(flight.getArrival().getCityName()).append(mContext.getString(R.string.reason_common));
-                                PreferencesManager.getInstance().put(Constants.EDIT_ORDER_TITLE,title.toString());
-                                PageSwitcher.switchToTopNavPage((Activity) mContext,EditOrderFragment.class,bundle,title.toString(),mContext.getString(R.string.reason_private));
+                                    StringBuilder title = Util.getThreadSafeStringBuilder();
+                                    title.append(flight.getDeparture().getCityName()).append("-").append(flight.getArrival().getCityName()).append(mContext.getString(R.string.reason_common));
+                                    PreferencesManager.getInstance().put(Constants.EDIT_ORDER_TITLE,title.toString());
+                                    PageSwitcher.switchToTopNavPage((Activity) mContext,EditOrderFragment.class,bundle,title.toString(),mContext.getString(R.string.reason_private));
+                                } else {
+//                                    Bundle bundle = new Bundle();
+                                    PreferencesManager.getInstance().put("SetOutFlightInfo", SaveObjUtil.serialize(flight));
+                                    PreferencesManager.getInstance().put("SetOutBunksBean", SaveObjUtil.serialize(bunks));
+
+                                    PreferencesManager.getInstance().put("SetOutWarningInfoBean", "");
+//                                    bundle.putString("DepartureCode", mArrivalCode);
+//                                    bundle.putString("ArrivalCode", mDepartureCode);
+//                                    bundle.putString("SetOutDate", mReturnDateString);
+//                                    bundle.putString("BunkType",mBunkType);
+                                    mReturnDateString = "";
+                                    EventOfBookBackFlight eventOfBookBackFlight = new EventOfBookBackFlight();
+//                                    eventOfBookBackFlight.ArrivalCode = mDepartureCode;
+//                                    eventOfBookBackFlight.DepartureCode = mArrivalCode;
+//                                    eventOfBookBackFlight.SetOutDate = mReturnDateString;
+                                    EventBus.getDefault().post(eventOfBookBackFlight);
+//                                    PageSwitcher.switchToTopNavPage((Activity) mContext, FlightsListFragment.class, bundle, mTitle ,mContext.getString(R.string.policy));
+                                }
 
                             } else {
                                 Bundle bundle = new Bundle();
