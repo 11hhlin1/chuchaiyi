@@ -149,7 +149,7 @@ public class CheckTypeFragment extends BaseFragment {
     }
 
     private void setEmptyTextView() {
-        mEmptyTextView.setText(getString(R.string.empty_no_data));
+        mEmptyTextView.setText(getString(R.string.empty_no_check));
     }
 
     public void doRequest(int page) {

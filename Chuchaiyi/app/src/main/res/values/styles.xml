@@ -155,6 +155,7 @@
         <item name="android:text">@string/empty_no_data</item>
         <item name="android:layout_centerInParent">true</item>
         <item name="android:visibility">gone</item>
+        <item name="android:drawableTop">@mipmap/icon_noinfo</item>
     </style>
     <!-- 空白页 -->
     <style name="error_tv" parent="@style/empty_tv">

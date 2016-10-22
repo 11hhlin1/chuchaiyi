@@ -54,6 +54,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/margin_200p"
             style="@style/login_edittext"
+            android:inputType="textPassword"
             android:digits="\@-+._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ"
             android:hint="@string/hint_new_psw"
             android:textSize="@dimen/textsize_13sp"
@@ -85,6 +86,7 @@
             style="@style/login_edittext"
             android:digits="\@-+._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ"
             android:hint="@string/hint_check_psw"
+            android:inputType="textPassword"
             android:textSize="@dimen/textsize_13sp"
             android:imeOptions="actionNext"/>
     </FrameLayout>
