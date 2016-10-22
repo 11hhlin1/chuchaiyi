@@ -21,6 +21,7 @@ import com.ccy.chuchaiyi.check.PersonalViewHolder;
 import com.ccy.chuchaiyi.event.EventOfRefreshOrderList;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.util.DiscountUtil;
+import com.ccy.chuchaiyi.widget.CallDialog;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.util.DateUtil;
 import com.gjj.applibrary.util.ToastUtil;
@@ -369,26 +370,38 @@ private void setOrder(AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean ord
     private void handleBtn(Button button) {
         String str = button.getText().toString();
         if(str.equals(getString(R.string.dialog_default_cancel_title))) {
-            StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
-            stringBuilder.append(ApiConstants.CANCEL_ORDER).append("?").append("orderId=").append(ordersBean.getOrderId());
-            OkHttpUtils.post(stringBuilder.toString())
-                    .tag(this)
-                    .cacheMode(CacheMode.NO_CACHE)
-                    .execute(new JsonCallback<String>(String.class) {
+            CallDialog confirmDialog = new CallDialog(getActivity(), R.style.white_bg_dialog);
+            confirmDialog.setCancelable(true);
+            confirmDialog.setContent("你确认取消此订单?");
+            confirmDialog.setCanceledOnTouchOutside(false);
+            confirmDialog.setConfirmClickListener(new View.OnClickListener() {
 
-                        @Override
-                        public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
-                            EventOfRefreshOrderList eventOfRefreshOrderList = new EventOfRefreshOrderList();
-                            EventBus.getDefault().post(eventOfRefreshOrderList);
-                            ToastUtil.shortToast(R.string.success);
-                        }
+                @Override
+                public void onClick(View v) {
+                    StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
+                    stringBuilder.append(ApiConstants.CANCEL_ORDER).append("?").append("orderId=").append(ordersBean.getOrderId());
+                    OkHttpUtils.post(stringBuilder.toString())
+                            .tag(getActivity())
+                            .cacheMode(CacheMode.NO_CACHE)
+                            .execute(new JsonCallback<String>(String.class) {
 
-                        @Override
-                        public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
-                            super.onError(isFromCache, call, response, e);
-                        }
+                                @Override
+                                public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
+                                    EventOfRefreshOrderList eventOfRefreshOrderList = new EventOfRefreshOrderList();
+                                    EventBus.getDefault().post(eventOfRefreshOrderList);
+                                    onBackPressed();
+                                    ToastUtil.shortToast(R.string.cancel_success);
+                                }
 
-                    });
+                                @Override
+                                public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                                    super.onError(isFromCache, call, response, e);
+                                }
+
+                            });
+                }
+            });
+            confirmDialog.show();
         } else if(str.equals(getString(R.string.pay))) {
             StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
             stringBuilder.append(ApiConstants.CONFIRM_ORDER_BY_LIST).append("?").append("orderId=").append(ordersBean.getOrderId());

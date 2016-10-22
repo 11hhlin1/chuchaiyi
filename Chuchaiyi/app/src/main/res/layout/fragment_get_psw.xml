@@ -125,7 +125,7 @@
             android:layout_toLeftOf="@+id/psw_icon"
             android:inputType="textPassword"
             android:digits="\@-+._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ"
-            android:hint="@string/hint_login_new_psw"
+            android:hint= "@string/hint_login_new_psw"
             android:imeOptions="actionNext"/>
     </RelativeLayout>
 
