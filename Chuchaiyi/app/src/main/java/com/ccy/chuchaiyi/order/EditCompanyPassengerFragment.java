@@ -205,22 +205,21 @@ public class EditCompanyPassengerFragment extends BaseFragment{
             setPassengerInfo();
         }
         getCardType();
-        if (userInfo.getIsProjectRequired()) {
-            chooseProjectRl.setVisibility(View.VISIBLE);
-        } else {
-            chooseProjectRl.setVisibility(View.GONE);
-        }
-        if (userInfo.getApprovalRequired()) {
-            chooseCheckNum.setVisibility(View.VISIBLE);
-        } else {
-            chooseCheckNum.setVisibility(View.GONE);
-        }
+
         if(userInfo.getIsGreenChannel()) {
             chooseCheckNum.setVisibility(View.GONE);
             chooseProjectRl.setVisibility(View.GONE);
         } else {
-            chooseProjectRl.setVisibility(View.VISIBLE);
-            chooseCheckNum.setVisibility(View.VISIBLE);
+            if (userInfo.getIsProjectRequired()) {
+                chooseProjectRl.setVisibility(View.VISIBLE);
+            } else {
+                chooseProjectRl.setVisibility(View.GONE);
+            }
+            if (userInfo.getApprovalRequired()) {
+                chooseCheckNum.setVisibility(View.VISIBLE);
+            } else {
+                chooseCheckNum.setVisibility(View.GONE);
+            }
         }
         EventBus.getDefault().register(this);
 

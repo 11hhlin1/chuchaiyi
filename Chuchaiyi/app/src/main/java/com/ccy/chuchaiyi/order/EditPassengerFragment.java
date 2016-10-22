@@ -209,23 +209,20 @@ public class EditPassengerFragment extends BaseFragment {
         String  employeeId = bundle.getString("EmployeeId");
         userInfo = BaseApplication.getUserMgr().getUser();
 
-        if (userInfo.getApprovalRequired()) {
-            chooseCheckNum.setVisibility(View.VISIBLE);
-        } else {
-            chooseCheckNum.setVisibility(View.GONE);
-        }
-
-        if (userInfo.getIsProjectRequired()) {
-            chooseProjectRl.setVisibility(View.VISIBLE);
-        } else {
-            chooseProjectRl.setVisibility(View.GONE);
-        }
         if(userInfo.getIsGreenChannel()) {
             chooseCheckNum.setVisibility(View.GONE);
             chooseProjectRl.setVisibility(View.GONE);
         } else {
-            chooseProjectRl.setVisibility(View.VISIBLE);
-            chooseCheckNum.setVisibility(View.VISIBLE);
+            if (userInfo.getIsProjectRequired()) {
+                chooseProjectRl.setVisibility(View.VISIBLE);
+            } else {
+                chooseProjectRl.setVisibility(View.GONE);
+            }
+            if (userInfo.getApprovalRequired()) {
+                chooseCheckNum.setVisibility(View.VISIBLE);
+            } else {
+                chooseCheckNum.setVisibility(View.GONE);
+            }
         }
         if (userInfo.getCanBookingForOthers()) {
             mPassengerRl.setEnabled(true);
