@@ -19,6 +19,7 @@ import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.log.L;
 import com.gjj.applibrary.util.MD5Util;
 import com.gjj.applibrary.util.ToastUtil;
+import com.gjj.applibrary.util.Util;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.cache.CacheMode;
 
@@ -73,11 +74,13 @@ public class ChangePswFragment extends BaseFragment {
         showLoadingDialog(R.string.submitting, true);
 
 //        final JSONObject jsonObject = new JSONObject(params);
-        OkHttpUtils.post(ApiConstants.CHANGE_PSW)
+        StringBuilder url = Util.getThreadSafeStringBuilder();
+        url.append(ApiConstants.CHANGE_PSW).append("?oldPassword=").append(oldPsw).append("&newPassword=").append(newPsw);
+        OkHttpUtils.post(url.toString())
                 .tag(this)
                 .cacheMode(CacheMode.NO_CACHE)
 //                .params(params)
-                .postJson(JSON.toJSONString(params))
+//                .postJson(JSON.toJSONString(params))
                 .execute(new JsonCallback<String>(String.class) {
                     @Override
                     public void onResponse(boolean b, String s, Request request, @Nullable Response response) {
@@ -85,6 +88,7 @@ public class ChangePswFragment extends BaseFragment {
                             @Override
                             public void run() {
                                 dismissLoadingDialog();
+                                onBackPressed();
                                 ToastUtil.shortToast(R.string.change_psw_success);
                             }
                         });

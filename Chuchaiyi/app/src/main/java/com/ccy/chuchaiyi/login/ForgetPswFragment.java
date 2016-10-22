@@ -57,7 +57,7 @@ public class ForgetPswFragment extends BaseFragment {
 
         if(mgetSmsCode == null)
             return;
-        String sms = loginName.getText().toString().trim();
+        String sms = smsCode.getText().toString().trim();
         if (!mgetSmsCode.getSmsValidateCode().equals(sms)) {
             ToastUtil.shortToast(R.string.check_sms_code_fail);
             return;
