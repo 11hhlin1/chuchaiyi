@@ -25,6 +25,7 @@
     <string name="hint_login_username">手机/邮箱/账号</string>
     <string name="hint_login_phone">请输入手机号</string>
     <string name="hint_check_login_phone">请输入正确的手机号</string>
+    <string name="hint_card_num">请输入证件号码</string>
     <string name="hint_sms_code">请填写验证码</string>
     <string name="sms_code">验证码</string>
     <string name="new_psw">新密码</string>

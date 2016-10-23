@@ -190,7 +190,9 @@ public class EditOrderFragment extends BaseFragment {
         userInfo = BaseApplication.getUserMgr().getUser();
         contactName.setText(userInfo.getEmployeeName());
         contactPhone.setText(userInfo.getMobile());
-
+        if(mPassengers == null) {
+            mPassengers = new ArrayList<>();
+        }
         if(userInfo.getCanBookingForOthers()) {
             mPassengerNum = 0 ;
             addPassenger.setVisibility(View.VISIBLE);
@@ -765,9 +767,7 @@ public class EditOrderFragment extends BaseFragment {
         passenger.PassengerName = passengerInfo.getEmployeeName();
         passenger.ReceiveFlightDynamic = true;
         passenger.InsuranceCount = safeFeeCheckIcon.isChecked() ? 1 : 0;
-        if(mPassengers == null) {
-            mPassengers = new ArrayList<>();
-        }
+
         if(!mPassengers.contains(passenger)) {
             PassengerViewHolder holder = inflatePassengerView(getActivity().getLayoutInflater());
             holder.passengerName.setText(passengerInfo.getEmployeeName());
@@ -824,12 +824,24 @@ public class EditOrderFragment extends BaseFragment {
         View parent;
         @OnClick(R.id.delete_passenger)
         void deletePassenger() {
-            Passenger passenger = (Passenger) deletePassenger.getTag();
-            mPassengers.remove(passenger);
-            passengerLl.removeView(parent);
-            mPassengerNum--;
-            setSafeFeeValue();
-            setAmountTv();
+            CallDialog confirmDialog = new CallDialog(getActivity(), R.style.white_bg_dialog);
+            confirmDialog.setCancelable(true);
+            confirmDialog.setContent("你确认删除该乘机人?");
+            confirmDialog.setCanceledOnTouchOutside(false);
+            confirmDialog.setConfirmClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Passenger passenger = (Passenger) deletePassenger.getTag();
+                    mPassengers.remove(passenger);
+                    passengerLl.removeView(parent);
+                    mPassengerNum--;
+                    setSafeFeeValue();
+                    setAmountTv();
+                }
+            });
+            confirmDialog.show();
+
         }
         PassengerViewHolder(View view) {
             parent = view;

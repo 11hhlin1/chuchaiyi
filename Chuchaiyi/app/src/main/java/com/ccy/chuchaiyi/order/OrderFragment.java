@@ -152,7 +152,7 @@ public class OrderFragment extends BaseFragment{
     }
 
     private void setEmptyTextView() {
-        mEmptyTextView.setText(getString(R.string.empty_no_data));
+        mEmptyTextView.setText(getString(R.string.empty_no_check));
     }
 
     public void doRequest(final int page) {

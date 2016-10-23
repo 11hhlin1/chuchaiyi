@@ -278,6 +278,7 @@
                     android:textSize="@dimen/textsize_13sp"
                     android:background="@null"
                     android:hint="必填"
+                    android:singleLine="true"
                     android:textColorHint="@color/color_aaaaaa"
                     android:text="小明"/>
             </RelativeLayout>
@@ -307,6 +308,7 @@
                     android:textColor="@color/color_222222"
                     android:textSize="@dimen/textsize_13sp"
                     android:background="@null"
+                    android:singleLine="true"
                     android:hint="必填"
                     android:textColorHint="@color/color_aaaaaa"
                     android:text="13255555"/>

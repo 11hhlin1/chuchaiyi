@@ -159,10 +159,10 @@ public class EditPassengerFragment extends BaseFragment {
     @Override
     public void onRightBtnClick() {
         super.onRightBtnClick();
-//        if(!Util.isMobileNO(etPhone.getText().toString())) {
-//            ToastUtil.shortToast(R.string.hint_check_login_phone);
-//            return;
-//        }
+        if(TextUtils.isEmpty(etCard.getText().toString())) {
+            ToastUtil.shortToast(R.string.hint_card_num);
+            return;
+        }
         mPassengerInfo.setDefaultCertNo(etCard.getText().toString());
         mPassengerInfo.setMobile(etPhone.getText().toString());
         EventOfSelPassenger eventOfSelPassenger = new EventOfSelPassenger();
@@ -337,6 +337,7 @@ public class EditPassengerFragment extends BaseFragment {
                     @Override
                     public void onResponse(boolean b, CertTypes certTypes, Request request, @Nullable Response response) {
                         mCertTypeList = certTypes.CertTypes;
+
                     }
 
                     @Override
@@ -453,6 +454,11 @@ public class EditPassengerFragment extends BaseFragment {
         public ListPopupAdapter(Context context) {
             mContext = context;
             mInflater=LayoutInflater.from(context);
+            for (int i = 0; i < mCertTypeList.size(); i++) {
+                if(mCertTypeList.get(i).equals(mPassengerInfo.getDefaultCertType())) {
+                    mCertTypeIndex = i;
+                }
+            }
         }
 
         @Override

@@ -141,6 +141,10 @@ public class EditCompanyPassengerFragment extends BaseFragment{
             ToastUtil.shortToast(R.string.choose_certType);
             return;
         }
+        if(TextUtils.isEmpty(etCard.getText().toString())) {
+            ToastUtil.shortToast(R.string.hint_card_num);
+            return;
+        }
         mPassengerInfo.setDefaultCertNo(etCard.getText().toString());
         mPassengerInfo.setDefaultCertType(cardTypeValue.getText().toString());
         mPassengerInfo.setMobile(etPhone.getText().toString());

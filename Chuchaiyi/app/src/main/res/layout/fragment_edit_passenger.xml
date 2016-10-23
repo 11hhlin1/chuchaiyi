@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/add_company_passenger_ll"
@@ -11,46 +11,49 @@
         android:layout_marginTop="@dimen/margin_30p"
         android:background="@drawable/personal_item"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/add_company_passenger"
-            android:textColor="@color/color_0071c4"
-            android:textSize="@dimen/textsize_14sp"
-            android:drawablePadding="4dp"
             android:layout_marginLeft="@dimen/margin_30p"
             android:drawableLeft="@mipmap/icon_flight_addpersonal"
-            android:gravity="left|center_vertical"/>
+            android:drawablePadding="4dp"
+            android:gravity="left|center_vertical"
+            android:text="@string/add_company_passenger"
+            android:textColor="@color/color_0071c4"
+            android:textSize="@dimen/textsize_14sp" />
     </LinearLayout>
 
 
     <RelativeLayout
         android:id="@+id/passenger_rl"
         android:layout_width="match_parent"
-        android:background="@color/white"
+        android:layout_height="44dp"
         android:layout_marginTop="@dimen/margin_30p"
-        android:layout_height="44dp">
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/passenger_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_30p"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:text="乘机人    "
             android:textColor="@color/color_222222"
-            android:textSize="@dimen/textsize_13sp"
-            android:text="乘机人    "/>
+            android:textSize="@dimen/textsize_13sp" />
+
         <TextView
             android:id="@+id/passenger_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_60p"
             android:layout_toRightOf="@+id/passenger_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:text=""
             android:textColor="@color/color_222222"
-            android:textSize="@dimen/textsize_13sp"
-            android:text=""/>
+            android:textSize="@dimen/textsize_13sp" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,100 +62,108 @@
             android:layout_marginRight="@dimen/margin_30p"
             android:src="@mipmap/icon_enter" />
     </RelativeLayout>
-    <View
-        style="@style/horizontal_line"/>
+
+    <View style="@style/horizontal_line" />
+
     <RelativeLayout
         android:id="@+id/choose_card_type_rl"
-    android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="44dp">
-
-    <TextView
-        android:id="@+id/card_type_tv"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/margin_30p"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/color_222222"
-        android:textSize="@dimen/textsize_13sp"
-        android:text="@string/card_type"/>
-    <TextView
-        android:id="@+id/card_type_value"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/margin_60p"
-        android:layout_toRightOf="@+id/card_type_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/color_222222"
-        android:textSize="@dimen/textsize_13sp"
-        android:text="@string/id_card"/>
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/margin_30p"
-        android:src="@mipmap/icon_enter" />
-</RelativeLayout>
-    <View
-        style="@style/horizontal_line"/>
-    <RelativeLayout
         android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_height="44dp">
+        android:layout_height="44dp"
+        android:background="@color/white">
 
         <TextView
-            android:id="@+id/card_num"
+            android:id="@+id/card_type_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_30p"
+            android:text="@string/card_type"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_13sp" />
+
+        <TextView
+            android:id="@+id/card_type_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_60p"
+            android:layout_toRightOf="@+id/card_type_tv"
+            android:text="@string/id_card"
             android:textColor="@color/color_222222"
-            android:textSize="@dimen/textsize_13sp"
-            android:text="@string/card_num"/>
+            android:textSize="@dimen/textsize_13sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_30p"
+            android:src="@mipmap/icon_enter" />
+    </RelativeLayout>
+
+    <View style="@style/horizontal_line" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/card_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_30p"
+            android:text="@string/card_num"
+            android:textColor="@color/color_222222"
+            android:textSize="@dimen/textsize_13sp" />
+
         <EditText
             android:id="@+id/et_card"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_60p"
             android:layout_toRightOf="@+id/card_num"
-            android:hint="必填"
-            android:textColorHint="@color/color_aaaaaa"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:background="@null"
+            android:hint="必填"
+            android:singleLine="true"
             android:textColor="@color/color_222222"
+            android:textColorHint="@color/color_aaaaaa"
             android:textSize="@dimen/textsize_13sp" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/depart_rl"
         android:layout_width="match_parent"
-        android:background="@color/white"
+        android:layout_height="44dp"
         android:layout_marginTop="@dimen/margin_30p"
-        android:layout_height="44dp">
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/depart_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_30p"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:text="归属部门"
             android:textColor="@color/color_222222"
-            android:textSize="@dimen/textsize_13sp"
-            android:text="归属部门"/>
+            android:textSize="@dimen/textsize_13sp" />
+
         <TextView
             android:id="@+id/depart_value"
-            android:layout_marginLeft="@dimen/margin_60p"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/depart_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/margin_60p"
+            android:layout_toRightOf="@+id/depart_tv"
+            android:text=""
             android:textColor="@color/color_222222"
-            android:textSize="@dimen/textsize_13sp"
-            android:text=""/>
+            android:textSize="@dimen/textsize_13sp" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -161,36 +172,40 @@
             android:layout_marginRight="@dimen/margin_30p"
             android:src="@mipmap/icon_enter" />
     </RelativeLayout>
-    <View
-        style="@style/horizontal_line"/>
+
+    <View style="@style/horizontal_line" />
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_height="44dp">
+        android:layout_height="44dp"
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/phone_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_30p"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:text="手机号    "
             android:textColor="@color/color_222222"
-            android:textSize="@dimen/textsize_13sp"
-            android:text="手机号    "/>
+            android:textSize="@dimen/textsize_13sp" />
+
         <EditText
             android:id="@+id/et_phone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_60p"
             android:layout_toRightOf="@+id/phone_num"
-            android:hint="选填"
-            android:textColorHint="@color/color_aaaaaa"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:background="@null"
+            android:hint="选填"
+            android:singleLine="true"
             android:textColor="@color/color_222222"
+            android:textColorHint="@color/color_aaaaaa"
             android:textSize="@dimen/textsize_13sp" />
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/choose_check_num"
         android:layout_width="match_parent"
@@ -215,10 +230,10 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
             android:drawablePadding="8dp"
+            android:drawableRight="@mipmap/icon_enter"
             android:text="@string/must_choose"
             android:textColor="@color/color_222222"
-            android:textSize="@dimen/textsize_12sp"
-            android:drawableRight="@mipmap/icon_enter" />
+            android:textSize="@dimen/textsize_12sp" />
     </RelativeLayout>
 
 
@@ -249,9 +264,9 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="16dp"
             android:drawablePadding="8dp"
+            android:drawableRight="@mipmap/icon_enter"
             android:text="@string/must_choose"
             android:textColor="@color/color_222222"
-            android:textSize="@dimen/textsize_12sp"
-            android:drawableRight="@mipmap/icon_enter" />
+            android:textSize="@dimen/textsize_12sp" />
     </RelativeLayout>
 </LinearLayout>
