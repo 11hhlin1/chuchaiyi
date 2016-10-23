@@ -166,10 +166,15 @@ public class ChooseCityFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                ToastUtil.shortToast(getActivity(), adapter.getItem(position - 1).getName());
+                CitySort citySort;
+                if(TextUtils.isEmpty(etSearch.getText().toString())) {
+                    citySort = adapter.getItem(position - 1);
+                } else {
+                    citySort = adapter.getItem(position);
+                }
                 onBackPressed();
                 EventOfSelCity eventOfSelCity = new EventOfSelCity();
-                eventOfSelCity.mCity = adapter.getItem(position - 1);
+                eventOfSelCity.mCity = citySort;
                 eventOfSelCity.mType = mType;
                 EventBus.getDefault().post(eventOfSelCity);
             }
