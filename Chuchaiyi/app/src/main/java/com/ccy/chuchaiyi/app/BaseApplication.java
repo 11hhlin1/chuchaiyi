@@ -71,8 +71,8 @@ public class BaseApplication extends Application {
         sb.append(AndroidUtil.getVersionName(this)).append('_').append(AndroidUtil.getVersionCode(this));
         CrashReport.setAppVersion(this, sb.toString());
 
-//        JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
-//        JPushInterface.init(this);     		// 初始化 JPush
+        JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);     		// 初始化 JPush
 
         ForegroundTaskExecutor.executeTask(new Runnable() {
             @Override

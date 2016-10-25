@@ -129,14 +129,19 @@ public class LoginActivity extends Activity implements AndroidBug5497Workaround.
                                 public void run() {
                                     UserMgr userMgr = BaseApplication.getUserMgr();
                                     userMgr.saveUserInfo(rspInfo);
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            JPushInterface.setAliasAndTags(getApplicationContext(), String.valueOf(rspInfo.getEmployeeId()), null, mAliasCallback);
+                                            Intent intent = new Intent();
+                                            intent.setClass(LoginActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    });
                                 }
                             });
-//                            JPushInterface.setAliasAndTags(getApplicationContext(), String.valueOf(rspInfo.getEmployeeId()), null, mAliasCallback);
 
-                            Intent intent = new Intent();
-                            intent.setClass(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
                         }
                     }
                     @Override
@@ -160,7 +165,6 @@ public class LoginActivity extends Activity implements AndroidBug5497Workaround.
                     logs = "Set tag and alias success";
                     L.i(logs);
                     break;
-
                 case 6002:
                     logs = "Failed to set alias and tags due to timeout. Try again after 60s.";
                     L.i(logs);

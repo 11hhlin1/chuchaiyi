@@ -22,6 +22,7 @@ import com.lzy.okhttputils.cache.CacheMode;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -69,6 +70,7 @@ public class PersonalFragment extends BaseFragment {
                         BaseApplication.getUserMgr().logOut();
                         Intent intent = new Intent();
                         Activity activity = getActivity();
+                        JPushInterface.setAliasAndTags(activity.getApplicationContext(), "", null, null);
                         intent.setClass(activity, LoginActivity.class);
                         activity.startActivity(intent);
                         activity.finish();
