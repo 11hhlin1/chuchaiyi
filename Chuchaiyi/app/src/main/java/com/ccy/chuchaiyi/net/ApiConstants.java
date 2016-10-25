@@ -46,5 +46,6 @@ public class ApiConstants {
     public static final String GET_AUTHORIZE_DETAIL = host+ "Approval/GetAuthorizeDetail";
     public static final String PASS_AUTHORIZE_DETAIL = host+ "Approval/AuditPassAuthorize";
     public static final String REJECT_AUTHORIZE_DETAIL = host+ "Approval/AuditRejectAuthorize";
+    public static final String GET_APPROVAL_COUNT = host+ "Approval/GetApprovalAndAuthorizeCount";
 
 }

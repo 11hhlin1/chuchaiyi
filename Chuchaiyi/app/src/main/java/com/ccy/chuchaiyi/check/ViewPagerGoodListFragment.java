@@ -2,6 +2,7 @@ package com.ccy.chuchaiyi.check;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
@@ -16,12 +17,26 @@ import android.widget.TextView;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.PageSwitcher;
+import com.ccy.chuchaiyi.event.EventOfCancelApproval;
+import com.ccy.chuchaiyi.main.ApprovalCountRsp;
+import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.widget.NavLineView;
+import com.gjj.applibrary.http.callback.JsonCallback;
+import com.gjj.applibrary.util.Util;
+import com.lzy.okhttputils.OkHttpUtils;
+import com.lzy.okhttputils.cache.CacheMode;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by Chuck on 2016/9/5.
@@ -101,6 +116,8 @@ public class ViewPagerGoodListFragment extends BaseFragment implements ViewPager
         viewPager.setOnPageChangeListener(this);
         mFragmentAdapter = new ViewPagerFragmentAdapter(getChildFragmentManager(), mFragmentCache, mDataArrayList);
         mPageVp.setAdapter(mFragmentAdapter);
+        getApprovalCount();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -114,7 +131,7 @@ public class ViewPagerGoodListFragment extends BaseFragment implements ViewPager
 
     @Override
     public void onPageSelected(int position) {
-        for (int i =0 ; i< mTextViews.length; i++) {
+        for (int i = 0 ; i< mTextViews.length; i++) {
             if(i == position) {
                 mTextViews[i].setTextColor(mRedColor);
             } else {
@@ -128,6 +145,41 @@ public class ViewPagerGoodListFragment extends BaseFragment implements ViewPager
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void redTip(ApprovalCountRsp event) {
+        if(getActivity() == null) {
+            return;
+        }
+        if(event.ApprovalCount > 0) {
+            if(mTextViews[1] != null) {
+                CategoryData categoryData = mDataArrayList.get(1);
+                if(categoryData.mCateName.equals(getString(R.string.un_check))) {
+                    StringBuilder name = Util.getThreadSafeStringBuilder();
+                    name.append(categoryData.mCateName).append("(").append(event.ApprovalCount).append(")");
+                    mTextViews[1].setText(name.toString());
+                }
+            }
+        }
+        if(event.AuthorizeCount > 0) {
+            if(mTextViews.length == 3 && mTextViews[1] != null) {
+                CategoryData categoryData = mDataArrayList.get(1);
+                if(categoryData.mCateName.equals(getString(R.string.un_audit))) {
+                    StringBuilder name = Util.getThreadSafeStringBuilder();
+                    name.append(categoryData.mCateName).append("(").append(event.AuthorizeCount).append(")");
+                    mTextViews[1].setText(name.toString());
+                }
+
+            }
+            if(mTextViews.length == 5 && mTextViews[3] != null) {
+                CategoryData categoryData = mDataArrayList.get(3);
+                if(categoryData.mCateName.equals(getString(R.string.un_audit))) {
+                    StringBuilder name = Util.getThreadSafeStringBuilder();
+                    name.append(categoryData.mCateName).append("(").append(event.AuthorizeCount).append(")");
+                    mTextViews[3].setText(name.toString());
+                }
+            }
+        }
+    }
     /**
      * 设置滑动条的宽度为屏幕的1/mFragmentList.size();(根据Tab的个数而定)
      */
@@ -141,6 +193,21 @@ public class ViewPagerGoodListFragment extends BaseFragment implements ViewPager
         BaseFragment fragment = (BaseFragment) mFragmentAdapter.getItem(mPageVp.getCurrentItem());
         fragment.onTitleBtnClick();
     }
+    private void getApprovalCount() {
+        OkHttpUtils.get(ApiConstants.GET_APPROVAL_COUNT)
+                .tag(this)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new JsonCallback<ApprovalCountRsp>(ApprovalCountRsp.class) {
 
+                    @Override
+                    public void onResponse(boolean b, final ApprovalCountRsp approvalCountRsp, Request request, @Nullable Response response) {
+                        redTip(approvalCountRsp);
+                    }
+
+                    @Override
+                    public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                    }
+                });
+    }
 
 }

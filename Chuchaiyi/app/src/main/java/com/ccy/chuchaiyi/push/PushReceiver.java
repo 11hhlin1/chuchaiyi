@@ -18,12 +18,13 @@ import cn.jpush.android.api.JPushInterface;
  */
 public class PushReceiver extends BroadcastReceiver {
     private static final String TAG = "JPush";
+    public static final String KEY_PUSH_ACTION_TYPE = "chuchaiyiPush";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
         Log.d(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
-
+        
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
             String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
             Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
@@ -45,6 +46,7 @@ public class PushReceiver extends BroadcastReceiver {
             Intent i = new Intent(context, MainActivity.class);
             i.putExtras(bundle);
             //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.setAction(KEY_PUSH_ACTION_TYPE);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(i);
 

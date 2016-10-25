@@ -183,5 +183,6 @@
     <string name="check_sms_code_fail">验证码不一致</string>
     <string name="dialog_content_give_up_submit">确认放弃已有操作？</string>
     <string name="cancel_success">取消成功</string>
+    <string name="travel_apply">出差申请</string>
 
 </resources>

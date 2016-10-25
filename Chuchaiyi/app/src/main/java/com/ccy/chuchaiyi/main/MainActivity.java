@@ -1,6 +1,11 @@
 package com.ccy.chuchaiyi.main;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.ccy.chuchaiyi.R;
@@ -14,11 +19,17 @@ import com.ccy.chuchaiyi.db.UserInfo;
 import com.ccy.chuchaiyi.event.EventOfChangeTab;
 import com.ccy.chuchaiyi.event.EventOfSelPassenger;
 import com.ccy.chuchaiyi.index.IndexFragment;
+import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.order.OrderFragment;
 import com.ccy.chuchaiyi.person.PersonalFragment;
+import com.ccy.chuchaiyi.push.PushReceiver;
+import com.ccy.chuchaiyi.user.UserMgr;
 import com.ccy.chuchaiyi.widget.NestRadioGroup;
+import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.task.MainTaskExecutor;
 import com.gjj.applibrary.util.ToastUtil;
+import com.lzy.okhttputils.OkHttpUtils;
+import com.lzy.okhttputils.cache.CacheMode;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -28,6 +39,10 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
+import okhttp3.Call;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by chuck on 16/7/17.
@@ -95,6 +110,8 @@ public class MainActivity extends BaseMainActivity {
         EventBus.getDefault().register(this);
 //        Glide.with(this).load("http://jcodecraeer.com/uploads/20150327/1427445294447874.jpg")
 //                .into(imageView);
+        handleIntent(getIntent());
+        getApprovalCount();
 
     }
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -116,6 +133,26 @@ public class MainActivity extends BaseMainActivity {
 //            return;
 //        mRedTip.setVisibility();
 //    }
+
+    public void handleIntent(Intent intent) {
+        if (intent == null) {
+            return;
+        }
+        String actionType = intent.getAction();
+        if(TextUtils.isEmpty(actionType))
+            return;
+        if(actionType.equals(PushReceiver.KEY_PUSH_ACTION_TYPE)) {
+            Bundle bundle = intent.getExtras();
+            String alert = bundle.getString(JPushInterface.EXTRA_ALERT);
+            if(alert.contains(getString(R.string.travel_apply))) {
+                mRadioGroup.check(R.id.check_tab);
+                getApprovalCount();
+            } else {
+                mRadioGroup.check(R.id.order_tab);
+            }
+        }
+
+    }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -177,6 +214,12 @@ public class MainActivity extends BaseMainActivity {
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+    }
+
+    @Override
     public void onBackPressed() {
         if (mIsBackPressed) {
             mIsBackPressed = false;
@@ -196,4 +239,31 @@ public class MainActivity extends BaseMainActivity {
     }
 
 
+    private void getApprovalCount() {
+        OkHttpUtils.get(ApiConstants.GET_APPROVAL_COUNT)
+                .tag(this)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new JsonCallback<ApprovalCountRsp>(ApprovalCountRsp.class) {
+
+                    @Override
+                    public void onResponse(boolean b, final ApprovalCountRsp approvalCountRsp, Request request, @Nullable Response response) {
+                        EventBus.getDefault().post(approvalCountRsp);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(approvalCountRsp.ApprovalCount > 0 || approvalCountRsp.AuthorizeCount > 0) {
+                                    mRedTip.setVisibility(View.VISIBLE);
+                                } else {
+                                    mRedTip.setVisibility(View.INVISIBLE);
+                                }
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                    }
+                });
+    }
 }
