@@ -68,7 +68,7 @@ public class MainActivity extends BaseMainActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        sMainActivity = this;
         mRadioGroup.setOnCheckedChangeListener(new NestRadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(NestRadioGroup group, int checkedId) {

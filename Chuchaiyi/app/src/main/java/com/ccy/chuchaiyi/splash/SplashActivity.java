@@ -42,7 +42,7 @@ public class SplashActivity extends Activity {
                     public void run() {
                         UserMgr userMgr = BaseApplication.getUserMgr();
                         if(userMgr.isLogin()) {
-                            Intent intent = new Intent();
+                            Intent intent = getIntent();
                             intent.setClass(SplashActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();

@@ -110,6 +110,8 @@ public class EditOrderFragment extends BaseFragment {
     EditText contactPhone;
     @Bind(R.id.pay_type)
     TextView payType;
+    @Bind(R.id.order_detail_rl)
+    RelativeLayout orderDetailRl;
     @Bind(R.id.order_money)
     TextView orderMoney;
     @Bind(R.id.order_money_detail)
@@ -383,7 +385,11 @@ public class EditOrderFragment extends BaseFragment {
 
                 break;
             case R.id.order_money_detail:
-                showPickupWindow();
+                if(mAllAmount > 0) {
+                    showPickupWindow();
+                } else {
+                    ToastUtil.shortToast(R.string.choose_passenger);
+                }
                 break;
             case R.id.commit_order:
                 commitOrder();
@@ -644,6 +650,8 @@ public class EditOrderFragment extends BaseFragment {
         // dismissConstructNoticeWindow();
         View contentView;
         ViewHolder viewHolder;
+        Rect r = new Rect();
+        int height = getResources().getDimensionPixelSize(R.dimen.margin_88p);
         PopupWindow popupWindow = mPickUpPopWindow;
         if (popupWindow == null) {
             contentView = LayoutInflater.from(getActivity()).inflate(
@@ -656,11 +664,9 @@ public class EditOrderFragment extends BaseFragment {
                     dismissConstructNoticeWindow();
                 }
             });
-            Rect r = new Rect();
             mRootView.getWindowVisibleDisplayFrame(r);
             final int[] location = new int[2];
             mRootView.getLocationOnScreen(location);
-            int height = getResources().getDimensionPixelSize(R.dimen.margin_88p);
             popupWindow = new PopupWindow(contentView, LinearLayout.LayoutParams.MATCH_PARENT, r.bottom - height, false);
             mPickUpPopWindow = popupWindow;
             popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -711,7 +717,7 @@ public class EditOrderFragment extends BaseFragment {
             Animation animation2 = AnimationUtils.loadAnimation(getActivity(), R.anim.effect_bg_show);
             contentView.startAnimation(animation2);
         }
-        popupWindow.showAtLocation(mRootView, Gravity.TOP, 0, 0);
+        popupWindow.showAtLocation(mRootView, Gravity.BOTTOM, 0, height);
 
     }
 

@@ -8,6 +8,7 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.ccy.chuchaiyi.main.MainActivity;
+import com.ccy.chuchaiyi.splash.SplashActivity;
 
 import java.util.Iterator;
 
@@ -24,7 +25,7 @@ public class PushReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
         Log.d(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
-        
+
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
             String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
             Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
@@ -41,9 +42,13 @@ public class PushReceiver extends BroadcastReceiver {
 
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
-
+            Intent i;
             //打开自定义的Activity
-            Intent i = new Intent(context, MainActivity.class);
+            if(MainActivity.getMainActivity() == null) {
+                i = new Intent(context, SplashActivity.class);
+            } else {
+                i = new Intent(context, MainActivity.class);
+            }
             i.putExtras(bundle);
             //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.setAction(KEY_PUSH_ACTION_TYPE);
