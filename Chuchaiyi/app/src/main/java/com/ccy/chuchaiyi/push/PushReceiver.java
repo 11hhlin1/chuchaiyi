@@ -4,15 +4,28 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
+
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.ccy.chuchaiyi.main.ApprovalCountRsp;
 import com.ccy.chuchaiyi.main.MainActivity;
+import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.splash.SplashActivity;
+import com.gjj.applibrary.http.callback.JsonCallback;
+import com.lzy.okhttputils.OkHttpUtils;
+import com.lzy.okhttputils.cache.CacheMode;
 
 import java.util.Iterator;
 
 import cn.jpush.android.api.JPushInterface;
+import okhttp3.Call;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by Chuck on 2016/10/8.
@@ -25,7 +38,6 @@ public class PushReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
         Log.d(TAG, "[MyReceiver] onReceive - " + intent.getAction() + ", extras: " + printBundle(bundle));
-
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
             String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
             Log.d(TAG, "[MyReceiver] 接收Registration Id : " + regId);
@@ -39,7 +51,7 @@ public class PushReceiver extends BroadcastReceiver {
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
             Log.d(TAG, "[MyReceiver] 接收到推送下来的通知的ID: " + notifactionId);
-
+            getApprovalCount();
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
             Log.d(TAG, "[MyReceiver] 用户点击打开了通知");
             Intent i;
@@ -100,7 +112,22 @@ public class PushReceiver extends BroadcastReceiver {
         }
         return sb.toString();
     }
+    private void getApprovalCount() {
+        OkHttpUtils.get(ApiConstants.GET_APPROVAL_COUNT)
+                .tag(this)
+                .cacheMode(CacheMode.NO_CACHE)
+                .execute(new JsonCallback<ApprovalCountRsp>(ApprovalCountRsp.class) {
 
+                    @Override
+                    public void onResponse(boolean b, final ApprovalCountRsp approvalCountRsp, Request request, @Nullable Response response) {
+                        EventBus.getDefault().post(approvalCountRsp);
+                    }
+
+                    @Override
+                    public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
+                    }
+                });
+    }
 //    //send msg to MainActivity
 //    private void processCustomMessage(Context context, Bundle bundle) {
 //        if (MainActivity.isForeground) {

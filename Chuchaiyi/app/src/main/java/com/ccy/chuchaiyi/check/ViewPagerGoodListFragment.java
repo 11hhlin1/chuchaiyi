@@ -159,6 +159,13 @@ public class ViewPagerGoodListFragment extends BaseFragment implements ViewPager
                     mTextViews[1].setText(name.toString());
                 }
             }
+        } else {
+            if(mTextViews[1] != null) {
+                CategoryData categoryData = mDataArrayList.get(1);
+                if(categoryData.mCateName.equals(getString(R.string.un_check))) {
+                    mTextViews[1].setText(categoryData.mCateName);
+                }
+            }
         }
         if(event.AuthorizeCount > 0) {
             if(mTextViews.length == 3 && mTextViews[1] != null) {
@@ -176,6 +183,20 @@ public class ViewPagerGoodListFragment extends BaseFragment implements ViewPager
                     StringBuilder name = Util.getThreadSafeStringBuilder();
                     name.append(categoryData.mCateName).append("(").append(event.AuthorizeCount).append(")");
                     mTextViews[3].setText(name.toString());
+                }
+            }
+        } else {
+            if(mTextViews.length == 3 && mTextViews[1] != null) {
+                CategoryData categoryData = mDataArrayList.get(1);
+                if(categoryData.mCateName.equals(getString(R.string.un_audit))) {
+                    mTextViews[1].setText(categoryData.mCateName);
+                }
+
+            }
+            if(mTextViews.length == 5 && mTextViews[3] != null) {
+                CategoryData categoryData = mDataArrayList.get(3);
+                if(categoryData.mCateName.equals(getString(R.string.un_audit))) {
+                    mTextViews[3].setText(categoryData.mCateName);
                 }
             }
         }

@@ -28,6 +28,7 @@ import com.ccy.chuchaiyi.widget.NestRadioGroup;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.task.MainTaskExecutor;
 import com.gjj.applibrary.util.ToastUtil;
+import com.gjj.applibrary.util.Util;
 import com.lzy.okhttputils.OkHttpUtils;
 import com.lzy.okhttputils.cache.CacheMode;
 
@@ -146,7 +147,6 @@ public class MainActivity extends BaseMainActivity {
             String alert = bundle.getString(JPushInterface.EXTRA_ALERT);
             if(alert.contains(getString(R.string.travel_apply))) {
                 mRadioGroup.check(R.id.check_tab);
-                getApprovalCount();
             } else {
                 mRadioGroup.check(R.id.order_tab);
             }
@@ -237,7 +237,17 @@ public class MainActivity extends BaseMainActivity {
             });
         }
     }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void redTip(ApprovalCountRsp event) {
+        if(isFinishing())
+            return;
+        if(event.ApprovalCount > 0 || event.AuthorizeCount > 0) {
+            mRedTip.setVisibility(View.VISIBLE);
+        } else {
+            mRedTip.setVisibility(View.INVISIBLE);
+        }
 
+    }
 
     private void getApprovalCount() {
         OkHttpUtils.get(ApiConstants.GET_APPROVAL_COUNT)
