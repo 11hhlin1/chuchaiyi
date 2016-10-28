@@ -79,7 +79,7 @@ public class BaseApplication extends Application {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        CrashReport.initCrashReport(this, "ae81ed68d6", true, strategy);
+        CrashReport.initCrashReport(this, "ae81ed68d6", false, strategy);
         StringBuilder sb = Util.getThreadSafeStringBuilder();
         sb.append(AndroidUtil.getVersionName(this)).append('_').append(AndroidUtil.getVersionCode(this));
         CrashReport.setAppVersion(this, sb.toString());

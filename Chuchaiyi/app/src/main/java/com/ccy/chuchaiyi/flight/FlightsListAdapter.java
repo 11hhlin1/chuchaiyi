@@ -491,8 +491,8 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
                                     PageSwitcher.switchToTopNavPage((Activity) mContext,EditOrderFragment.class,bundle,title.toString(),mContext.getString(R.string.reason_private));
                                 } else {
 //                                    Bundle bundle = new Bundle();
-                                    PreferencesManager.getInstance().put("SetOutFlightInfo", SaveObjUtil.serialize(flight));
-                                    PreferencesManager.getInstance().put("SetOutBunksBean", SaveObjUtil.serialize(bunks));
+                                    PreferencesManager.getInstance().put("SetOutFlightInfo", SaveObjUtil.serialize(bookValidateInfo.Flight));
+                                    PreferencesManager.getInstance().put("SetOutBunksBean", SaveObjUtil.serialize(bookValidateInfo.Flight.getBunks().get(0)));
 
                                     PreferencesManager.getInstance().put("SetOutWarningInfoBean", "");
 //                                    bundle.putString("DepartureCode", mArrivalCode);

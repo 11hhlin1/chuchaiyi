@@ -133,10 +133,10 @@ public class EditCompanyPassengerFragment extends BaseFragment{
     public void onRightBtnClick() {
         super.onRightBtnClick();
 
-//        if(!Util.isMobileNO(etPhone.getText().toString())) {
-//            ToastUtil.shortToast(R.string.hint_check_login_phone);
-//            return;
-//        }
+        if(TextUtils.isEmpty(passengerValue.getText().toString())) {
+            ToastUtil.shortToast(R.string.choose_passenger);
+            return;
+        }
         if(TextUtils.isEmpty(cardTypeValue.getText().toString())) {
             ToastUtil.shortToast(R.string.choose_certType);
             return;
@@ -145,24 +145,32 @@ public class EditCompanyPassengerFragment extends BaseFragment{
             ToastUtil.shortToast(R.string.hint_card_num);
             return;
         }
+        if(TextUtils.isEmpty(departValue.getText().toString())) {
+            ToastUtil.shortToast(R.string.choose_department);
+            return;
+        }
         mPassengerInfo.setDefaultCertNo(etCard.getText().toString());
         mPassengerInfo.setDefaultCertType(cardTypeValue.getText().toString());
         mPassengerInfo.setMobile(etPhone.getText().toString());
         mPassengerInfo.setEmployeeName(passengerValue.getText().toString());
         EventOfSelPassenger eventOfSelPassenger = new EventOfSelPassenger();
         eventOfSelPassenger.mPassenger = mPassengerInfo;
-        if (mApproval == null && userInfo.getApprovalRequired()) {
-            ToastUtil.shortToast(R.string.choose_check_num);
-            return;
+        if(userInfo.getApprovalRequired()) {
+            if (mApproval == null) {
+                ToastUtil.shortToast(R.string.choose_check_num);
+                return;
+            }
+            eventOfSelPassenger.ApprovalId = mApproval.getApprovalId();
+            eventOfSelPassenger.ApprovalNo = mApproval.getApprovalNo();
         }
-        if (mProjectsBean == null && userInfo.getIsProjectRequired()) {
-            ToastUtil.shortToast(R.string.choose_project);
-            return;
+        if (userInfo.getIsProjectRequired()) {
+            if (mProjectsBean == null) {
+                ToastUtil.shortToast(R.string.choose_project);
+                return;
+            }
+            eventOfSelPassenger.ProjectId = mProjectsBean.getProjectId();
+            eventOfSelPassenger.ProjectName = mProjectsBean.getProjectName();
         }
-        eventOfSelPassenger.ApprovalId = mApproval.getApprovalId();
-        eventOfSelPassenger.ProjectId = mProjectsBean.getProjectId();
-        eventOfSelPassenger.ProjectName = mProjectsBean.getProjectName();
-        eventOfSelPassenger.ApprovalNo = mApproval.getApprovalNo();
         EventBus.getDefault().post(eventOfSelPassenger);
 
         TopNavSubActivity activity = (TopNavSubActivity) getActivity();

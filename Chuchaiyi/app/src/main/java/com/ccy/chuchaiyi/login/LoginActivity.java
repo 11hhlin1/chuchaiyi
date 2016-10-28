@@ -147,10 +147,6 @@ public class LoginActivity extends Activity implements AndroidBug5497Workaround.
                     @Override
                     public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
                         dismissProgressDialog();
-                        if(response != null) {
-                            L.d("LoginActivity[%s]", response.message());
-                            ToastUtil.shortToast(LoginActivity.this, response.message());
-                        }
                     }
                 });
     }
