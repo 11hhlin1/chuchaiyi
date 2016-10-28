@@ -165,7 +165,7 @@ public class FlightPolicyFragment extends BaseFragment {
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         List<PolicyReason> reasonList = new ArrayList<>();
-        if(!Util.isListEmpty(warningInfo.getLowPriceReasons())) {
+        if(!TextUtils.isEmpty(warningInfo.getLowPriceWarningMsg()) && !Util.isListEmpty(warningInfo.getLowPriceReasons())) {
             PolicyReason reason = new PolicyReason();
             reason.mViewType = FlightPolicyAdapter.VIEW_TITLE;
             reason.mTitle = getString(R.string.low_price_title);
@@ -178,7 +178,7 @@ public class FlightPolicyFragment extends BaseFragment {
             }
         }
         dividePos = reasonList.size();
-        if(!Util.isListEmpty(warningInfo.getLowPriceReasons())) {
+        if(!TextUtils.isEmpty(warningInfo.getPreNDaysWarningMsg()) && !Util.isListEmpty(warningInfo.getPreNDaysReasons())) {
             PolicyReason reason2 = new PolicyReason();
             reason2.mViewType = FlightPolicyAdapter.VIEW_TITLE;
             reason2.mTitle = getString(R.string.pre_day_title);
