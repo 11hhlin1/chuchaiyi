@@ -2,6 +2,7 @@ package com.ccy.chuchaiyi.check;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -157,6 +158,18 @@ public class AddCheckFragement extends BaseFragment {
     }
 
     private void createCheck() {
+        if(TextUtils.isEmpty(tripReason.getText().toString())) {
+            ToastUtil.shortToast(R.string.edit_reason);
+            return;
+        }
+        if(TextUtils.isEmpty(mSelSetOutDate) || TextUtils.isEmpty(mSelReturnDate)) {
+            ToastUtil.shortToast(R.string.choose_date);
+            return;
+        }
+        if(passengerInfoList.size() < 1) {
+            ToastUtil.shortToast(R.string.choose_passenger);
+            return;
+        }
         CreateCheckReq createCheckReq = new CreateCheckReq();
         UserInfo userInfo = BaseApplication.getUserMgr().getUser();
         createCheckReq.CorpId = userInfo.getCorpId();

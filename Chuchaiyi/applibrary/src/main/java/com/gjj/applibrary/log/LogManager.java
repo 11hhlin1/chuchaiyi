@@ -32,7 +32,7 @@ public class LogManager {
      * 打包测试包时为LOG_LEVEL_TRACE，即所有级别都会打印，
      * 打包release包时为LOG_LEVEL_NO，即所有级别都不会打印
      */
-    private int printLevel = LOG_LEVEL_TRACE;
+    private int printLevel = LOG_LEVEL_NO;
     /**
      * 当前日志上传级别
      * 打包测试包时为LOG_LEVEL_TRACE，即所有级别都不会上传，

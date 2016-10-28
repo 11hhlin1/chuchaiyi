@@ -29,6 +29,7 @@ public class DepartmentRsp implements Serializable{
     }
 
     public static class DepartmentBean implements Serializable{
+        private static final long serialVersionUID = -7360242218523497255L;
         private int Id;
         private String Name;
         private int ParentId;

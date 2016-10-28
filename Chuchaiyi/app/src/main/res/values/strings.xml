@@ -61,6 +61,7 @@
     <string name="choose_set_out_city">选择出发城市</string>
     <string name="choose_arrive_city">选择到达城市</string>
     <string name="choose_reason">请选择原因</string>
+    <string name="edit_reason">填写原因</string>
     <string name="year">年</string>
     <string name="month">月</string>
     <string name="monday">一</string>

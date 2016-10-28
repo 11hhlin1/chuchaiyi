@@ -62,7 +62,8 @@ public class CheckDetailRsp implements Serializable{
         this.ApprovalDetail = ApprovalDetail;
     }
 
-    public static class ApprovalDetailBean {
+    public static class ApprovalDetailBean implements Serializable{
+        private static final long serialVersionUID = 8440235034030640741L;
         private int ApprovalId;
         private String ApprovalNo;
         private String EmployeeName;
@@ -255,7 +256,8 @@ public class CheckDetailRsp implements Serializable{
             this.ApprovalHis = ApprovalHis;
         }
 
-        public static class FlightOrdersBean {
+        public static class FlightOrdersBean implements Serializable{
+            private static final long serialVersionUID = 2794825307937821333L;
             private int OrderId;
             private String OrderNo;
             private String PassengerName;
@@ -366,7 +368,7 @@ public class CheckDetailRsp implements Serializable{
             }
         }
 
-        public static class HotelOrdersBean {
+        public static class HotelOrdersBean implements Serializable{
             private int OrderId;
             private String OrderNo;
             private String GuestName;
@@ -468,7 +470,8 @@ public class CheckDetailRsp implements Serializable{
             }
         }
 
-        public static class ApprovalHisBean {
+        public static class ApprovalHisBean implements Serializable{
+            private static final long serialVersionUID = 5332551004893383618L;
             private int AuditLevel;
             private String AuditPositionName;
             private String AuditPositionEmployeeNames;

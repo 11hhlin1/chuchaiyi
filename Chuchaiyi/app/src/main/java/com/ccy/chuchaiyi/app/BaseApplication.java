@@ -3,6 +3,8 @@ package com.ccy.chuchaiyi.app;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.support.annotation.Nullable;
 
 import com.ccy.chuchaiyi.db.DaoMaster;
@@ -66,12 +68,23 @@ public class BaseApplication extends Application {
         headers.put(HttpHeaders.HEAD_KEY_CONTENT_TYPE, "application/json");
         OkHttpUtils.getInstance().addCommonHeaders(headers);
         EventBus.getDefault().register(this);
-        CrashReport.initCrashReport(this, "ae81ed68d6", true);
+        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(this); // App的策略Bean
+        ApplicationInfo appInfo = null;
+        try {
+            appInfo = getPackageManager()
+                    .getApplicationInfo(getPackageName(),
+                            PackageManager.GET_META_DATA);
+            String channel = appInfo.metaData.getString("UMENG_CHANNEL");
+            strategy.setAppChannel(channel);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        CrashReport.initCrashReport(this, "ae81ed68d6", true, strategy);
         StringBuilder sb = Util.getThreadSafeStringBuilder();
         sb.append(AndroidUtil.getVersionName(this)).append('_').append(AndroidUtil.getVersionCode(this));
         CrashReport.setAppVersion(this, sb.toString());
 
-        JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
+        JPushInterface.setDebugMode(false); 	// 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);     		// 初始化 JPush
 
         ForegroundTaskExecutor.executeTask(new Runnable() {

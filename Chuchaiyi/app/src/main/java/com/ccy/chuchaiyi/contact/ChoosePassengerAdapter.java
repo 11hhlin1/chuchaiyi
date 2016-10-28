@@ -106,16 +106,19 @@ public class ChoosePassengerAdapter extends BaseRecyclerViewAdapter<PassengerDat
         }
     }
     public int getPositionForSection(int section) {
+        int pos = -1;
         for (int i = 0; i < getItemCount(); i++) {
             String sortStr = items.get(i).sortLetters;
-            if(TextUtils.isEmpty(sortStr) || sortStr.length() > 1)
-                return -1;
+            if(TextUtils.isEmpty(sortStr) || sortStr.length() > 1) {
+                continue;
+            }
             char firstChar = sortStr.toUpperCase().charAt(0);
             if (firstChar == section) {
-                return i;
+                pos = i;
+                break;
             }
         }
-        return -1;
+        return pos;
     }
     class ViewHolderHeader extends RecyclerView.ViewHolder {
         @Bind(R.id.common_title)

@@ -16,6 +16,8 @@ public class DateUtil {
      * @return
      */
     public static String getDateTitle(String date) {
+        if(TextUtils.isEmpty(date))
+            return "";
         String before = date.split(" ")[0];
         return getDateTitleWithoutEnd(before);
     }
@@ -26,6 +28,8 @@ public class DateUtil {
      * @return
      */
     public static String getDateTitleWithoutEnd(String date) {
+        if(TextUtils.isEmpty(date))
+            return "";
         String[] dates = date.split("-");
         Calendar calendar = Calendar.getInstance();
         calendar.set(Integer.valueOf(dates[0]), Integer.valueOf(dates[1]) - 1, Integer.valueOf(dates[2]));
@@ -83,6 +87,8 @@ public class DateUtil {
      * @return
      */
     public static String getDate(String date) {
+        if(TextUtils.isEmpty(date))
+             return "";
         String[] dates = date.split("-");
         Calendar calendar = Calendar.getInstance();
         if(TextUtils.isEmpty(dates[0]) || TextUtils.isEmpty(dates[1])|| TextUtils.isEmpty(dates[2]))

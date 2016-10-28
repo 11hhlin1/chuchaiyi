@@ -1,10 +1,13 @@
 package com.ccy.chuchaiyi.flight;
 
+import java.io.Serializable;
+
 /**
  * Created by Chuck on 2016/8/17.
  */
-public class GetFlightsRequest {
+public class GetFlightsRequest implements Serializable{
 
+    private static final long serialVersionUID = 6386732683403106970L;
     /**
      * DepartureCode : SZX
      * DepartureCodeIsCity : true

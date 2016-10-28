@@ -36,7 +36,8 @@ public class Approval implements Serializable{
         this.Approvals = Approvals;
     }
 
-    public static class ApprovalsBean {
+    public static class ApprovalsBean implements Serializable {
+        private static final long serialVersionUID = 7217597603125397510L;
         private int ApprovalId;
         private String ApprovalNo;
         private int EmployeeId;

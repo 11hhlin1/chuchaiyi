@@ -61,7 +61,8 @@ public class AuthorizeDetailRsp implements Serializable{
         this.AuthorizeDetail = AuthorizeDetail;
     }
 
-    public static class AuthorizeDetailBean {
+    public static class AuthorizeDetailBean implements Serializable {
+        private static final long serialVersionUID = -3366514324202225004L;
         private int AuthorizeId;
         private String OrderType;
         private int OrderId;
@@ -221,7 +222,8 @@ public class AuthorizeDetailRsp implements Serializable{
             this.FlightOrder = FlightOrder;
         }
 
-        public static class FlightOrderBean {
+        public static class FlightOrderBean implements Serializable{
+            private static final long serialVersionUID = 1299633897255955459L;
             private int OrderId;
             private String OrderNo;
             private String TravelType;
@@ -447,7 +449,8 @@ public class AuthorizeDetailRsp implements Serializable{
                 this.FeeInfo = FeeInfo;
             }
 
-            public static class PassengerBean {
+            public static class PassengerBean implements Serializable{
+                private static final long serialVersionUID = -3830692245869431739L;
                 private String BelongedDeptName;
                 private String PassengerName;
                 private String CertType;
@@ -512,7 +515,8 @@ public class AuthorizeDetailRsp implements Serializable{
                     this.TravelPolicyInfo = TravelPolicyInfo;
                 }
 
-                public static class TravelPolicyInfoBean {
+                public static class TravelPolicyInfoBean implements Serializable{
+                    private static final long serialVersionUID = 5707970975114615049L;
                     private String LowPriceWarningMsg;
                     private String NotLowPriceReason;
                     private String PreNDaysWarningMsg;
@@ -570,7 +574,8 @@ public class AuthorizeDetailRsp implements Serializable{
                 }
             }
 
-            public static class RouteBean {
+            public static class RouteBean implements Serializable{
+                private static final long serialVersionUID = 4201214248298003411L;
                 private String FlightNo;
                 private String AirlineName;
                 private String PlanTypeCode;
@@ -714,7 +719,8 @@ public class AuthorizeDetailRsp implements Serializable{
                     this.StopCity = StopCity;
                 }
 
-                public static class DepartureBean {
+                public static class DepartureBean implements Serializable{
+                    private static final long serialVersionUID = -1474327203016451662L;
                     private String CityCode;
                     private String CityName;
                     private String AirportCode;
@@ -771,7 +777,8 @@ public class AuthorizeDetailRsp implements Serializable{
                     }
                 }
 
-                public static class ArrivalBean {
+                public static class ArrivalBean implements Serializable{
+                    private static final long serialVersionUID = 7641380358728279702L;
                     private String CityCode;
                     private String CityName;
                     private String AirportCode;
@@ -828,7 +835,8 @@ public class AuthorizeDetailRsp implements Serializable{
                     }
                 }
 
-                public static class ReturnPolicyBean {
+                public static class ReturnPolicyBean implements Serializable{
+                    private static final long serialVersionUID = 1895603060170381006L;
                     private String ReturnPolicyDesc;
                     private int ReturnPolicyReturnFee;
 
@@ -849,7 +857,8 @@ public class AuthorizeDetailRsp implements Serializable{
                     }
                 }
 
-                public static class ChangePolicyBean {
+                public static class ChangePolicyBean implements Serializable{
+                    private static final long serialVersionUID = -7352064476859777619L;
                     private String ChangePolicyDesc;
                     private boolean ChangeAllowed;
                     private int ChangePolicyChangeFee;
@@ -879,7 +888,8 @@ public class AuthorizeDetailRsp implements Serializable{
                     }
                 }
 
-                public static class SignPolicyBean {
+                public static class SignPolicyBean implements Serializable{
+                    private static final long serialVersionUID = 5337097735866762526L;
                     private String SignPolicyDesc;
                     private boolean SignAllowed;
 
@@ -901,7 +911,8 @@ public class AuthorizeDetailRsp implements Serializable{
                 }
             }
 
-            public static class FeeInfoBean {
+            public static class FeeInfoBean implements Serializable{
+                private static final long serialVersionUID = 8585709001304817062L;
                 private int TicketFee;
                 private int AirportFee;
                 private int OilFee;

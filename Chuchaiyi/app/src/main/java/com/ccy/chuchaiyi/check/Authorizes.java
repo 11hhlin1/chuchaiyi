@@ -33,7 +33,8 @@ public class Authorizes implements Serializable{
         this.Authorizes = Authorizes;
     }
 
-    public static class AuthorizesBean {
+    public static class AuthorizesBean implements Serializable{
+        private static final long serialVersionUID = -5915032065999730734L;
         private int AuthorizeId;
         private String OrderType;
         private int OrderId;

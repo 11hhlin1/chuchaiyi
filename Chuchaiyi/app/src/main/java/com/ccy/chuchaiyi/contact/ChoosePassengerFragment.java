@@ -82,7 +82,7 @@ public class ChoosePassengerFragment extends BaseFragment implements ChoosePasse
                 //该字母首次出现的位置
                 int position = mAdapter.getPositionForSection(s.charAt(0));
                 if (position != -1) {
-                    linearLayoutManager.scrollToPositionWithOffset(position + 1, 10);
+                    linearLayoutManager.scrollToPositionWithOffset(position, 10);
                 }
             }
         });
@@ -116,28 +116,31 @@ public class ChoosePassengerFragment extends BaseFragment implements ChoosePasse
      * @param filterStr
      */
     private void filterData(String filterStr) {
-        List<PassengerData> mSortList = new ArrayList<>();
+//        List<PassengerData> mSortList = new ArrayList<>();
         List<PassengerData> mList = new ArrayList<>();
         if (TextUtils.isEmpty(filterStr)) {
-            mSortList = dataList;
+            mList = dataList;
         } else {
             for (PassengerData sortModel : dataList) {
                 if(sortModel.mStoreUser == null) {
                     String name = sortModel.name;
-                    if (sortModel.mViewType != ChoosePassengerAdapter.VIEW_TYPE_ITEM || name.contains(filterStr) || PinyinUtils.getPingYin(name).toUpperCase().startsWith(filterStr.toUpperCase())||filterStr.toUpperCase().startsWith(sortModel.sortLetters.toUpperCase())) {
-                        mList.add(sortModel);
+                    if (sortModel.mViewType == ChoosePassengerAdapter.VIEW_TYPE_ITEM) {
+                        if (name.contains(filterStr) || PinyinUtils.getPingYin(name).toUpperCase().startsWith(filterStr.toUpperCase()) || filterStr.toUpperCase().startsWith(sortModel.sortLetters.toUpperCase())) {
+                            mList.add(sortModel);
+                        }
                     }
+
                 } else {
-                    mSortList.add(sortModel);
+//                    mSortList.add(sortModel);
                 }
 
             }
             // 根据a-z进行排序
             Collections.sort(mList, new PassengerListComparator());
-            mSortList.addAll(mList);
+//            mSortList.addAll(mList);
         }
 
-        mAdapter.setData(mSortList);
+        mAdapter.setData(mList);
     }
     private void doRequest() {
         showLoadingDialog(R.string.submitting, false);
@@ -163,6 +166,8 @@ public class ChoosePassengerFragment extends BaseFragment implements ChoosePasse
                         }
                         OkHttpUtils.get(ApiConstants.GET_EMPLOYEES)
                                 .tag(this)
+                                .params("pageNumber",String.valueOf(1))
+                                .params("pageSize",String.valueOf(2000))
                                 .cacheMode(CacheMode.REQUEST_FAILED_READ_CACHE)
                                 .execute(new JsonCallback<PassengerInfoList>(PassengerInfoList.class) {
                                     @Override
@@ -173,8 +178,13 @@ public class ChoosePassengerFragment extends BaseFragment implements ChoosePasse
                                             String mLastChar = null;
                                             ArrayList<String> indexString = new ArrayList<>();
                                             for (PassengerInfo info : passengerInfoList.Employees) {
-                                                String firstChar = String.valueOf(PinyinUtils.getAlpha(info.getEmployeeName()).charAt(0));
-                                                if (firstChar.toUpperCase().matches("[A-Z]")) {
+                                                String firstChar;
+                                                if(PassengerPinyinComparator.isChinese(info.getEmployeeName().charAt(0)))  {
+                                                    firstChar = String.valueOf(PinyinUtils.getAlpha(info.getEmployeeName()).charAt(0)).toUpperCase();
+                                                } else {
+                                                    firstChar = String.valueOf(info.getEmployeeName().charAt(0)).toUpperCase();
+                                                }
+                                                if (firstChar.matches("[A-Z]")) {
                                                     if (!indexString.contains(firstChar)) {
                                                         indexString.add(firstChar);
                                                     }

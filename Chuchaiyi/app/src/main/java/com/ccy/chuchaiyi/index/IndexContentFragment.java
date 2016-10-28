@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -151,6 +152,9 @@ public class IndexContentFragment extends BaseFragment {
         } else {
             UserMgr userMgr = BaseApplication.getUserMgr();
             String defaultCity = userMgr.getUser().getDefaultCity();
+            if(TextUtils.isEmpty(defaultCity)) {
+                return;
+            }
             if(defaultCity.contains(",")) {
                 String[] cityArray = defaultCity.split(",");
                 mSetOutCity = new CitySort();

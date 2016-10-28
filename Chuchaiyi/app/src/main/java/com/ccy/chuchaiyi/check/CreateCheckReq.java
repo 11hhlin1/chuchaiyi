@@ -1,12 +1,14 @@
 package com.ccy.chuchaiyi.check;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Chuck on 2016/9/7.
  */
-public class CreateCheckReq {
+public class CreateCheckReq implements Serializable{
 
+    private static final long serialVersionUID = -5957871766414950644L;
     /**
      * CorpId : 0
      * AskEmployeeId : 0
