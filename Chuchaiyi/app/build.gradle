@@ -41,12 +41,14 @@ android {
     }
     buildTypes {
         debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"
             minifyEnabled false
             zipAlignEnabled true
             shrinkResources false
             signingConfig signingConfigs.debug
         }
         release {
+            buildConfigField "boolean", "LOG_DEBUG", "false"
             //混淆
             minifyEnabled true
             //Zipalign优化
@@ -72,6 +74,18 @@ android {
             flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
         }
 
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            def today = new Date()
+            if (variant.buildType.getName().equals("release")) {
+                if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                    def fileName = outputFile.name.replace(".apk", "-" + today.format('yyyyMMddHHmm') + "-${defaultConfig.versionName}.apk")
+                    output.outputFile = new File(outputFile.parent, fileName)
+                }
+            }
+        }
     }
 }
 

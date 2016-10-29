@@ -46,12 +46,11 @@ public class LogManager {
 
     private static volatile LogManager mLogManager;
     
-    private static LogManager getInstance() {
+    public static LogManager getInstance() {
         if (mLogManager == null) {
             synchronized(LogManager.class) {
                 if (mLogManager == null) {
                     mLogManager = new LogManager();
-                    mLogManager.initMainProcessLogConfig();
                 }
             }
         }
@@ -62,15 +61,16 @@ public class LogManager {
     LogManager() {
 
     }
-    private void initMainProcessLogConfig() {
-        if (printLevel == LOG_LEVEL_TRACE) {
-            ButterKnife.setDebug(true);
-            FragmentManager.enableDebugLogging(true);
+    public void setLogLevel(boolean isDebug) {
+        if(isDebug) {
+            printLevel = LOG_LEVEL_TRACE;
         } else {
-            ButterKnife.setDebug(false);
-            FragmentManager.enableDebugLogging(false);
+            printLevel = LOG_LEVEL_NO;
         }
+        ButterKnife.setDebug(isDebug);
+        FragmentManager.enableDebugLogging(isDebug);
     }
+
     /**
      * 指定日志级别是否达到打印级别
      * @param level
