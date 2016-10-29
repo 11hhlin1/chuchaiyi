@@ -77,9 +77,9 @@ public class ChooseCompanyAdapter extends BaseAdapter {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (position == 0 && b) {
                     int len = mCompanyList.size();
-                    for (int i = 0; i<len;i++){
+                    for (int i = 0; i < len; i++){
                         Company company = mCompanyList.get(i);
-                        if(i==0){
+                        if(i == 0) {
                             company.mIsSel  = b;
                         } else {
                             company.mIsSel = false;
@@ -104,7 +104,6 @@ public class ChooseCompanyAdapter extends BaseAdapter {
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
-
         }
     }
 }

@@ -497,10 +497,8 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
     //=============================================================adapter
     class ListPopupAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
-        private Context mContext;
 
         public ListPopupAdapter(Context context) {
-            mContext = context;
             mInflater=LayoutInflater.from(context);
         }
 
@@ -568,7 +566,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
     }
     private List<FlightInfo> doSeatFilter() {
         if (Util.isListEmpty(mOriFlightInfoList))
-            return null;
+            return new ArrayList<>();
         List<FlightInfo> flightInfos = new ArrayList<>();
         if (mSelCompanyAdapter != null) {
             List<Company> companies = mSelCompanyAdapter.getmCompanyList();
