@@ -1,15 +1,19 @@
 package com.gjj.applibrary.app;
 
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
 
+import java.util.List;
+
 /**
  * Created by Chuck on 2016/7/26.
  */
 public class AppLib {
-
+    /** 前台进程标志 */
+    public static final int PROCESS_MAIN = 2;
     private static AppLib mAppLib;
     private Application mApplication;
     private boolean mIsInitialized = false;
@@ -55,4 +59,21 @@ public class AppLib {
     }
 
 
+    public static int checkMainProcess(Context context) {
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> infoList = am.getRunningAppProcesses();
+        String pkgName = context.getPackageName();
+        int pid = android.os.Process.myPid();
+        int processType = 0;
+        for (ActivityManager.RunningAppProcessInfo appProcess : infoList) {
+            if (pid == appProcess.pid) {
+                String name = appProcess.processName;
+                if (name.equals(pkgName)) {
+                    processType = AppLib.PROCESS_MAIN;
+                }
+                break;
+            }
+        }
+        return processType;
+    }
 }

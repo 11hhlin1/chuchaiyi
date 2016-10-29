@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.ccy.chuchaiyi.BuildConfig;
 import com.ccy.chuchaiyi.db.DaoMaster;
@@ -62,29 +63,33 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mApp = this;
-        mAppLib = AppLib.onCreate(mApp);
-        OkHttpUtils.init(mApp);
-        HttpHeaders headers = new HttpHeaders();
-        headers.put(HttpHeaders.HEAD_KEY_ACCEPT, "application/json");
-        headers.put(HttpHeaders.HEAD_KEY_CONTENT_TYPE, "application/json");
-        OkHttpUtils.getInstance().addCommonHeaders(headers);
-        EventBus.getDefault().register(this);
+        int processType = AppLib.checkMainProcess(this);
+        if(processType == AppLib.PROCESS_MAIN) {
+            mAppLib = AppLib.onCreate(mApp);
+            OkHttpUtils.init(mApp);
+            HttpHeaders headers = new HttpHeaders();
+            headers.put(HttpHeaders.HEAD_KEY_ACCEPT, "application/json");
+            headers.put(HttpHeaders.HEAD_KEY_CONTENT_TYPE, "application/json");
+            OkHttpUtils.getInstance().addCommonHeaders(headers);
+            EventBus.getDefault().register(this);
 
-        JPushInterface.setDebugMode(BuildConfig.LOG_DEBUG); 	// 设置开启日志,发布时请关闭日志
-        JPushInterface.init(this);     		// 初始化 JPush
+            JPushInterface.setDebugMode(BuildConfig.LOG_DEBUG); 	// 设置开启日志,发布时请关闭日志
+            JPushInterface.init(this);     		// 初始化 JPush
 
-        ForegroundTaskExecutor.executeTask(new Runnable() {
-            @Override
-            public void run() {
-                initDB();
-                initBugly();
-                LogManager.getInstance().setLogLevel(BuildConfig.LOG_DEBUG);
-                NetworkStateMgr.getInstance();
-                mUserMgr = new UserMgr();
-                refreshUserInfo();
-                AppLib.setInitialized(true);
-            }
-        });
+            ForegroundTaskExecutor.executeTask(new Runnable() {
+                @Override
+                public void run() {
+                    initDB();
+                    initBugly();
+                    LogManager.getInstance().setLogLevel(BuildConfig.LOG_DEBUG);
+                    NetworkStateMgr.getInstance();
+                    mUserMgr = new UserMgr();
+                    refreshUserInfo();
+                    AppLib.setInitialized(true);
+                }
+            });
+        }
+
     }
 
     private void initBugly() {
