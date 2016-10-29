@@ -27,12 +27,9 @@ import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.app.BaseApplication;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.PageSwitcher;
-import com.ccy.chuchaiyi.base.TopNavSubActivity;
 import com.ccy.chuchaiyi.contact.ChoosePassengerFragment;
 import com.ccy.chuchaiyi.contact.PassengerInfo;
 import com.ccy.chuchaiyi.db.UserInfo;
-import com.ccy.chuchaiyi.event.EventOfChangeTab;
-import com.ccy.chuchaiyi.event.EventOfRefreshOrderList;
 import com.ccy.chuchaiyi.event.EventOfSelPassenger;
 import com.ccy.chuchaiyi.flight.FlightInfo;
 import com.ccy.chuchaiyi.flight.PolicyResultInfo;
@@ -122,8 +119,8 @@ public class EditOrderFragment extends BaseFragment {
     private FlightInfo.BunksBean mBunksBean;
     private FlightInfo mReturnFlightInfo;
     private FlightInfo.BunksBean mReturnBunksBean;
-    private PolicyResultInfo mSetoutResonInfo;
-    private PolicyResultInfo mReturnResonInfo;
+    private PolicyResultInfo mSetoutReasonInfo;
+    private PolicyResultInfo mReturnReasonInfo;
     private PopupWindow mPickUpPopWindow;
     private int mPassengerNum = 1;
     private int planePrice;
@@ -186,8 +183,8 @@ public class EditOrderFragment extends BaseFragment {
         mBunksBean = (FlightInfo.BunksBean) bundle.getSerializable("SetOutBunksBean");
         mReturnFlightInfo = (FlightInfo) bundle.getSerializable("ReturnFlightInfo");
         mReturnBunksBean = (FlightInfo.BunksBean) bundle.getSerializable("ReturnBunksBean");
-        mSetoutResonInfo = (PolicyResultInfo) bundle.getSerializable("SetOutWarningInfoBean");
-        mReturnResonInfo = (PolicyResultInfo) bundle.getSerializable("ReturnWarningInfoBean");
+        mSetoutReasonInfo = (PolicyResultInfo) bundle.getSerializable("SetOutWarningInfoBean");
+        mReturnReasonInfo = (PolicyResultInfo) bundle.getSerializable("ReturnWarningInfoBean");
         getStopInfo();
         userInfo = BaseApplication.getUserMgr().getUser();
         contactName.setText(userInfo.getEmployeeName());
@@ -396,93 +393,6 @@ public class EditOrderFragment extends BaseFragment {
                 break;
         }
     }
-
-//    private void commitOrder() {
-//        showLoadingDialog(R.string.commit, false);
-//        PlaceAskOrderRequest request = new PlaceAskOrderRequest();
-//        request.FirstRoute = mFlightInfo;
-//        request.ContactMobile = contactPhone.getText().toString();
-//        request.ContactName = contactName.getText().toString();
-//        request.FirstRoutePolicyInfo = mSetoutResonInfo;
-//        request.SecondRoute = mReturnFlightInfo;
-//        request.SecondRoutePolicyInfo = mReturnResonInfo;
-//        if(Util.isListEmpty(mPassengers)) {
-//            ToastUtil.shortToast(R.string.choose_passenger);
-//            return;
-//        }
-//        request.Passengers = mPassengers;
-//        OkHttpUtils.post(ApiConstants.COMMIT_ORDER)
-//                .tag(this)
-//                .cacheMode(CacheMode.NO_CACHE)
-//                .postJson(JSON.toJSONString(request))
-//                .execute(new JsonCallback<String>(String.class) {
-//                    @Override
-//                    public void onResponse(boolean b, final String rsp, Request request, @Nullable Response response) {
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                dismissLoadingDialog();
-//                                ToastUtil.shortToast(R.string.commit_success);
-//                                if(mConfirmDialog == null) {
-//                                    PayDialogData payDialogData = new PayDialogData();
-//                                    StringBuilder name = Util.getThreadSafeStringBuilder();
-//                                    for (Passenger passenger : mPassengers) {
-//                                        name.append(passenger.PassengerName).append("  ");
-//                                    }
-//                                    payDialogData.passenger = name.toString();
-//                                    StringBuilder city = Util.getThreadSafeStringBuilder();
-//                                    if(mReturnFlightInfo == null) {
-//                                        city.append("单程");
-//                                    } else {
-//                                        city.append("往返");
-//                                    }
-//                                    city.append(mFlightInfo.getDeparture().getCityName()).append("-").append(mFlightInfo.getArrival().getCityName());
-//                                    payDialogData.travelCity = city.toString();
-//                                    StringBuilder time = Util.getThreadSafeStringBuilder();
-//                                    time.append(mFlightInfo.getDeparture().getDateTime()).append("出发");
-//                                    payDialogData.travelTime = time.toString();
-//                                    payDialogData.amount = mAmount;
-//                                    PayDialog payDialog = new PayDialog(getActivity(),payDialogData);
-//                                    mConfirmDialog = payDialog;
-//                                    payDialog.setCanceledOnTouchOutside(false);
-//                                    payDialog.setCancelClickListener(new View.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(View view) {
-//                                            dismissConfirmDialog();
-//                                            getActivity().finish();
-//                                            EventOfChangeTab eventOfChangeTab = new EventOfChangeTab();
-//                                            eventOfChangeTab.mIndex = 2;
-//                                            EventBus.getDefault().post(eventOfChangeTab);
-//                                        }
-//                                    });
-//                                    payDialog.setConfirmClickListener(new View.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(View v) {
-//                                            JSONObject json = (JSONObject) JSON.parse(rsp);
-//                                            int order = json.getIntValue("AskOrderId");
-//                                            dismissConfirmDialog();
-//                                            confirmOrder(order);
-//
-//                                        }
-//                                    });
-//                                }
-//                                mConfirmDialog.show();
-//                            }
-//                        });
-//                    }
-//
-//                    @Override
-//                    public void onError(boolean isFromCache, Call call, @Nullable Response response, @Nullable Exception e) {
-//                        super.onError(isFromCache, call, response, e);
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                dismissLoadingDialog();
-//                            }
-//                        });
-//                    }
-//                });
-//    }
     private void commitOrder() {
         if(mConfirmDialog == null) {
             if(Util.isListEmpty(mPassengers)) {
@@ -532,9 +442,9 @@ public class EditOrderFragment extends BaseFragment {
                     request.FirstRoute = mFlightInfo;
                     request.ContactMobile = contactPhone.getText().toString();
                     request.ContactName = contactName.getText().toString();
-                    request.FirstRoutePolicyInfo = mSetoutResonInfo;
+                    request.FirstRoutePolicyInfo = mSetoutReasonInfo;
                     request.SecondRoute = mReturnFlightInfo;
-                    request.SecondRoutePolicyInfo = mReturnResonInfo;
+                    request.SecondRoutePolicyInfo = mReturnReasonInfo;
                     request.Passengers = mPassengers;
                     OkHttpUtils.post(ApiConstants.COMMIT_ORDER)
                             .tag(this)
@@ -686,12 +596,20 @@ public class EditOrderFragment extends BaseFragment {
         StringBuilder planePriceStr = Util.getThreadSafeStringBuilder();
         planePriceStr.append(getString(R.string.money_no_end, planePrice)).append("  x  ").append(mPassengerNum).append(" 人");
         viewHolder.ticketValue.setText(planePriceStr);
-        StringBuilder airportFeeStr = Util.getThreadSafeStringBuilder();
-        airportFeeStr.append(getString(R.string.money_no_end, airportFee)).append("  x  ").append(mPassengerNum).append(" 人");
-        viewHolder.airportFee.setText(airportFeeStr);
-        StringBuilder oilFeeStr = Util.getThreadSafeStringBuilder();
-        oilFeeStr.append(getString(R.string.money_no_end, oilFee)).append("  x  ").append(mPassengerNum).append(" 人");
-        viewHolder.oilFee.setText(oilFeeStr);
+        if(airportFee > 0) {
+            StringBuilder airportFeeStr = Util.getThreadSafeStringBuilder();
+            airportFeeStr.append(getString(R.string.money_no_end, airportFee)).append("  x  ").append(mPassengerNum).append(" 人");
+            viewHolder.airportFee.setText(airportFeeStr);
+        } else {
+            viewHolder.airportFee.setVisibility(View.GONE);
+        }
+        if(oilFee > 0) {
+            StringBuilder oilFeeStr = Util.getThreadSafeStringBuilder();
+            oilFeeStr.append(getString(R.string.money_no_end, oilFee)).append("  x  ").append(mPassengerNum).append(" 人");
+            viewHolder.oilFee.setText(oilFeeStr);
+        } else {
+            viewHolder.oilFee.setVisibility(View.GONE);
+        }
 //        StringBuilder delayStr = Util.getThreadSafeStringBuilder();
 //        delayStr.append(getString(R.string.money_no_end, safeFeeMoney)).append("*  ").append(mPassengerNum).append(" 人");
 //        viewHolder.delayFee.setText(delayStr);
@@ -782,12 +700,29 @@ public class EditOrderFragment extends BaseFragment {
             holder.orderNum.setText(event.ApprovalNo);
             holder.projectNum.setText(event.ProjectName);
             holder.deletePassenger.setTag(passenger);
+            holder.parent.setTag(holder);
             passengerLl.addView(holder.parent);
             mPassengerNum++;
             mPassengers.add(passenger);
             if(!userInfo.getCanBookingForOthers() && mPassengerNum == 1) {
                 addPassenger.setVisibility(View.GONE);
                 holder.deletePassenger.setVisibility(View.GONE);
+            }
+        } else {
+            int count = passengerLl.getChildCount();
+            for (int i = 0; i < count; i++) {
+                View view = passengerLl.getChildAt(i);
+                PassengerViewHolder holder = (PassengerViewHolder) view.getTag();
+                Passenger tagPassenger = (Passenger) holder.deletePassenger.getTag();
+                if(tagPassenger.equals(passenger)) {
+                    holder.passengerName.setText(passengerInfo.getEmployeeName());
+                    holder.passengerName.setTag(event);
+                    holder.passengerJob.setText(passengerInfo.getDepartmentName());
+                    holder.orderNum.setText(event.ApprovalNo);
+                    holder.projectNum.setText(event.ProjectName);
+                    holder.deletePassenger.setTag(passenger);
+                    holder.parent.setTag(holder);
+                }
             }
         }
         setSafeFeeValue();

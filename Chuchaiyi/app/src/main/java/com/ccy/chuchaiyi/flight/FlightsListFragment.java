@@ -677,9 +677,14 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
         request.setBunkType("");
         request.setDepartureCodeIsCity(true);
         request.setArrivalCodeIsCity(true);
-        request.setAirlines("");
         request.setFlightNo("");
-        request.setFactBunkPriceLowestLimit(0);
+        if(mAccessFlags == FROM_CHANGE_FLIGHT) {
+            request.setAirlines(mOrdersBean.getAirlineCode());
+            request.setFactBunkPriceLowestLimit(mOrdersBean.getFactTicketPrice());
+        } else {
+            request.setAirlines("");
+            request.setFactBunkPriceLowestLimit(0);
+        }
         OkHttpUtils.post(ApiConstants.GET_FLIGHT_LIST)
                 .tag(this)
                 .cacheMode(CacheMode.NO_CACHE)

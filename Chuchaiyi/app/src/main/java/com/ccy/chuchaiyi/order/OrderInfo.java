@@ -103,6 +103,7 @@ public class OrderInfo implements Serializable{
         private String CreateTime;
         private String DepartureDateTime;
         private String FlightNo;
+        private String AirlineCode;
         private String AirlineName;
         private String BunkName;
         private int Discount;
@@ -368,6 +369,14 @@ public class OrderInfo implements Serializable{
 
         public void setCanNetCheckIn(boolean CanNetCheckIn) {
             this.CanNetCheckIn = CanNetCheckIn;
+        }
+
+        public String getAirlineCode() {
+            return AirlineCode;
+        }
+
+        public void setAirlineCode(String airlineCode) {
+            AirlineCode = airlineCode;
         }
     }
 }
