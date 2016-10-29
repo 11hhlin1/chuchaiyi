@@ -17,7 +17,9 @@ import android.widget.TextView;
 import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.PageSwitcher;
+import com.ccy.chuchaiyi.event.EventOfAgreeCheck;
 import com.ccy.chuchaiyi.event.EventOfCancelApproval;
+import com.ccy.chuchaiyi.event.EventOfCheckedAudit;
 import com.ccy.chuchaiyi.main.ApprovalCountRsp;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.widget.NavLineView;
@@ -200,6 +202,30 @@ public class ViewPagerGoodListFragment extends BaseFragment implements ViewPager
                 }
             }
         }
+    }
+
+    /***
+     * 审批后刷新列表
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshList(EventOfAgreeCheck event) {
+        if(getActivity() == null) {
+            return;
+        }
+        getApprovalCount();
+    }
+
+    /***
+     * 授权审批后刷新列表
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshList(EventOfCheckedAudit event) {
+        if(getActivity() == null) {
+            return;
+        }
+        getApprovalCount();
     }
     /**
      * 设置滑动条的宽度为屏幕的1/mFragmentList.size();(根据Tab的个数而定)
