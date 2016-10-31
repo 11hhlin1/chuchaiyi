@@ -88,6 +88,10 @@ public class ChooseChangeFliReasonFragment extends BaseFragment{
 
     @OnClick(R.id.policy_btn_sure)
     public void onClick() {
+        if(mAdapter.getFirstReasonPos() == 0) {
+            ToastUtil.shortToast(R.string.choose_reason);
+            return;
+        }
         Bundle bundle = new Bundle();
         bundle.putSerializable("order", ordersBean);
         bundle.putString("reason", reasonArray[mAdapter.getFirstReasonPos() - 1]);

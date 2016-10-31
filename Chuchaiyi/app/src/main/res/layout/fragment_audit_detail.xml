@@ -315,7 +315,6 @@
                     android:textColor="@color/orange"
                     android:textSize="@dimen/textsize_12sp"
                     android:text="2400"/>
-
             </LinearLayout>
             <FrameLayout
                 android:layout_width="match_parent"

@@ -596,20 +596,14 @@ public class EditOrderFragment extends BaseFragment {
         StringBuilder planePriceStr = Util.getThreadSafeStringBuilder();
         planePriceStr.append(getString(R.string.money_no_end, planePrice)).append("  x  ").append(mPassengerNum).append(" 人");
         viewHolder.ticketValue.setText(planePriceStr);
-        if(airportFee > 0) {
-            StringBuilder airportFeeStr = Util.getThreadSafeStringBuilder();
-            airportFeeStr.append(getString(R.string.money_no_end, airportFee)).append("  x  ").append(mPassengerNum).append(" 人");
-            viewHolder.airportFee.setText(airportFeeStr);
-        } else {
-            viewHolder.airportFee.setVisibility(View.GONE);
-        }
-        if(oilFee > 0) {
-            StringBuilder oilFeeStr = Util.getThreadSafeStringBuilder();
-            oilFeeStr.append(getString(R.string.money_no_end, oilFee)).append("  x  ").append(mPassengerNum).append(" 人");
-            viewHolder.oilFee.setText(oilFeeStr);
-        } else {
-            viewHolder.oilFee.setVisibility(View.GONE);
-        }
+        StringBuilder airportFeeStr = Util.getThreadSafeStringBuilder();
+        airportFeeStr.append(getString(R.string.money_no_end, airportFee)).append("  x  ").append(mPassengerNum).append(" 人");
+        viewHolder.airportFee.setText(airportFeeStr);
+
+        StringBuilder oilFeeStr = Util.getThreadSafeStringBuilder();
+        oilFeeStr.append(getString(R.string.money_no_end, oilFee)).append("  x  ").append(mPassengerNum).append(" 人");
+        viewHolder.oilFee.setText(oilFeeStr);
+
 //        StringBuilder delayStr = Util.getThreadSafeStringBuilder();
 //        delayStr.append(getString(R.string.money_no_end, safeFeeMoney)).append("*  ").append(mPassengerNum).append(" 人");
 //        viewHolder.delayFee.setText(delayStr);

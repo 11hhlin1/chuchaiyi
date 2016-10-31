@@ -84,12 +84,22 @@ public class OrderDetailFragment extends BaseFragment {
     View bottomLine;
     @Bind(R.id.price_value)
     TextView priceValue;
+    @Bind(R.id.ji_jian_title)
+    TextView jiJianTitle;
     @Bind(R.id.ji_jian_value)
     TextView jiJianValue;
+    @Bind(R.id.oil_fee_title)
+    TextView oilFeeTitle;
     @Bind(R.id.oil_fee_value)
     TextView oilFeeValue;
+    @Bind(R.id.safe_fee_title)
+    TextView safeFeeTitle;
     @Bind(R.id.safe_fee_value)
     TextView safeFeeValue;
+    @Bind(R.id.service_fee_title)
+    TextView serviceFeeTitle;
+    @Bind(R.id.service_fee_value)
+    TextView serviceFeeValue;
     @Bind(R.id.order_amount)
     TextView orderAmount;
     @Bind(R.id.order_num)
@@ -211,10 +221,30 @@ public class OrderDetailFragment extends BaseFragment {
                                 stopInfoCity.setText(route.getStopCity());
 
                                 priceValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getTicketFee())));
-                                jiJianValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getAirportFee())));
-                                oilFeeValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getOilFee())));
-                                safeFeeValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getInsuranceFee())));
-
+                                if(feeInfo.getAirportFee() > 0) {
+                                    jiJianValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getAirportFee())));
+                                } else {
+                                    jiJianValue.setVisibility(View.GONE);
+                                    jiJianTitle.setVisibility(View.GONE);
+                                }
+                                if(feeInfo.getOilFee() > 0) {
+                                    oilFeeValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getOilFee())));
+                                } else {
+                                    oilFeeValue.setVisibility(View.GONE);
+                                    oilFeeTitle.setVisibility(View.GONE);
+                                }
+                                if(feeInfo.getInsuranceFee() > 0) {
+                                    safeFeeValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getInsuranceFee())));
+                                } else {
+                                    safeFeeValue.setVisibility(View.GONE);
+                                    safeFeeTitle.setVisibility(View.GONE);
+                                }
+                                if(feeInfo.getTicketServiceFee() > 0) {
+                                    serviceFeeValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getTicketServiceFee())));
+                                } else {
+                                    serviceFeeValue.setVisibility(View.GONE);
+                                    serviceFeeTitle.setVisibility(View.GONE);
+                                }
                                 orderAmount.setText(getString(R.string.money_no_end, orderBean.getFeeInfo().getPaymentAmount()));
                                 orderNum.setText(orderBean.getOrderNo());
                                 orderType.setText(orderBean.getPayMode());
@@ -291,6 +321,7 @@ private void setOrder(AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean ord
     ordersBean.setPassengerName(orderBean.getPassenger().getPassengerName());
     ordersBean.setDepartureDateTime(orderBean.getRoute().getDeparture().getDateTime());
     ordersBean.setFlightNo(orderBean.getRoute().getFlightNo());
+    ordersBean.setAirlineCode(orderBean.getRoute().getAirlineCode());
     ordersBean.setAirlineName(orderBean.getRoute().getAirlineName());
     ordersBean.setBunkName(orderBean.getRoute().getBunkName());
     ordersBean.setDiscount(orderBean.getRoute().getDiscount());
@@ -302,7 +333,7 @@ private void setOrder(AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean ord
     ordersBean.setArrivalAirportName(orderBean.getRoute().getArrival().getAirportName());
     ordersBean.setArrivalCityCode(orderBean.getRoute().getArrival().getCityCode());
     ordersBean.setArrivalCityName(orderBean.getRoute().getArrival().getCityName());
-    ordersBean.setFactTicketPrice(orderBean.getFeeInfo().getTicketFee());
+    ordersBean.setFactTicketPrice(orderBean.getRoute().getFactTicketPrice());
     ordersBean.setPaymentAmount(orderBean.getFeeInfo().getPaymentAmount());
 }
     @OnClick({R.id.handle_btn_1, R.id.handle_btn_2, R.id.handle_btn_3})

@@ -577,11 +577,13 @@ public class AuthorizeDetailRsp implements Serializable{
             public static class RouteBean implements Serializable{
                 private static final long serialVersionUID = 4201214248298003411L;
                 private String FlightNo;
+                private String AirlineCode;
                 private String AirlineName;
                 private String PlanTypeCode;
                 private String BunkName;
                 private String BunkCode;
                 private int Discount;
+                private int FactTicketPrice;
                 /**
                  * CityCode : string
                  * CityName : string
@@ -717,6 +719,22 @@ public class AuthorizeDetailRsp implements Serializable{
 
                 public void setStopCity(String StopCity) {
                     this.StopCity = StopCity;
+                }
+
+                public String getAirlineCode() {
+                    return AirlineCode;
+                }
+
+                public void setAirlineCode(String airlineCode) {
+                    AirlineCode = airlineCode;
+                }
+
+                public int getFactTicketPrice() {
+                    return FactTicketPrice;
+                }
+
+                public void setFactTicketPrice(int factTicketPrice) {
+                    FactTicketPrice = factTicketPrice;
                 }
 
                 public static class DepartureBean implements Serializable{

@@ -310,6 +310,7 @@
                     android:textSize="@dimen/textsize_12sp"
                     android:text="2400"/>
                 <TextView
+                    android:id="@+id/ji_jian_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -325,6 +326,7 @@
                     android:textSize="@dimen/textsize_12sp"
                     android:text="2400"/>
                 <TextView
+                    android:id="@+id/oil_fee_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -340,6 +342,7 @@
                     android:textSize="@dimen/textsize_12sp"
                     android:text="2400"/>
                 <TextView
+                    android:id="@+id/safe_fee_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -354,7 +357,22 @@
                     android:textColor="@color/orange"
                     android:textSize="@dimen/textsize_12sp"
                     android:text="2400"/>
-
+                <TextView
+                    android:id="@+id/service_fee_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/color_aaaaaa"
+                    android:textSize="@dimen/textsize_12sp"
+                    android:text="@string/service_fee"/>
+                <TextView
+                    android:id="@+id/service_fee_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/orange"
+                    android:textSize="@dimen/textsize_12sp"
+                    android:text="2400"/>
             </LinearLayout>
             <View
                 style="@style/horizontal_line"/>

@@ -17,6 +17,7 @@ import com.ccy.chuchaiyi.check.NoCheckTypeFragment;
 import com.ccy.chuchaiyi.check.ViewPagerGoodListFragment;
 import com.ccy.chuchaiyi.db.UserInfo;
 import com.ccy.chuchaiyi.event.EventOfChangeTab;
+import com.ccy.chuchaiyi.event.EventOfRefreshOrderList;
 import com.ccy.chuchaiyi.event.EventOfSelPassenger;
 import com.ccy.chuchaiyi.index.IndexFragment;
 import com.ccy.chuchaiyi.net.ApiConstants;
@@ -149,6 +150,7 @@ public class MainActivity extends BaseMainActivity {
                 mRadioGroup.check(R.id.check_tab);
             } else {
                 mRadioGroup.check(R.id.order_tab);
+                EventBus.getDefault().post(new EventOfRefreshOrderList());
             }
         }
 
