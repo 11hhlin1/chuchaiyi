@@ -1,12 +1,10 @@
 package com.ccy.chuchaiyi.order;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -16,8 +14,6 @@ import com.ccy.chuchaiyi.R;
 import com.ccy.chuchaiyi.base.BaseFragment;
 import com.ccy.chuchaiyi.base.PageSwitcher;
 import com.ccy.chuchaiyi.check.AuthorizeDetailRsp;
-import com.ccy.chuchaiyi.check.CheckDetailRsp;
-import com.ccy.chuchaiyi.check.PersonalViewHolder;
 import com.ccy.chuchaiyi.event.EventOfRefreshOrderList;
 import com.ccy.chuchaiyi.net.ApiConstants;
 import com.ccy.chuchaiyi.util.DiscountUtil;
@@ -82,24 +78,24 @@ public class OrderDetailFragment extends BaseFragment {
     TextView planeDetail;
     @Bind(R.id.bottom_line)
     View bottomLine;
-    @Bind(R.id.price_value)
-    TextView priceValue;
-    @Bind(R.id.ji_jian_title)
-    TextView jiJianTitle;
-    @Bind(R.id.ji_jian_value)
-    TextView jiJianValue;
-    @Bind(R.id.oil_fee_title)
-    TextView oilFeeTitle;
-    @Bind(R.id.oil_fee_value)
-    TextView oilFeeValue;
-    @Bind(R.id.safe_fee_title)
-    TextView safeFeeTitle;
-    @Bind(R.id.safe_fee_value)
-    TextView safeFeeValue;
-    @Bind(R.id.service_fee_title)
-    TextView serviceFeeTitle;
-    @Bind(R.id.service_fee_value)
-    TextView serviceFeeValue;
+//    @Bind(R.id.price_value)
+//    TextView priceValue;
+//    @Bind(R.id.ji_jian_title)
+//    TextView jiJianTitle;
+//    @Bind(R.id.ji_jian_value)
+//    TextView jiJianValue;
+//    @Bind(R.id.oil_fee_title)
+//    TextView oilFeeTitle;
+//    @Bind(R.id.oil_fee_value)
+//    TextView oilFeeValue;
+//    @Bind(R.id.safe_fee_title)
+//    TextView safeFeeTitle;
+//    @Bind(R.id.safe_fee_value)
+//    TextView safeFeeValue;
+//    @Bind(R.id.service_fee_title)
+//    TextView serviceFeeTitle;
+//    @Bind(R.id.service_fee_value)
+//    TextView serviceFeeValue;
     @Bind(R.id.order_amount)
     TextView orderAmount;
     @Bind(R.id.order_num)
@@ -126,8 +122,11 @@ public class OrderDetailFragment extends BaseFragment {
     RelativeLayout bottomRl;
     @Bind(R.id.warning_ll)
     LinearLayout warningLl;
+    @Bind(R.id.fee_ll)
+    LinearLayout feeLl;
     int orderId;
     private OrderInfo.OrdersBean ordersBean;
+
     @Override
     public int getContentViewLayout() {
         return R.layout.fragment_order_detail;
@@ -151,14 +150,14 @@ public class OrderDetailFragment extends BaseFragment {
                             public void run() {
                                 dismissLoadingDialog();
                                 AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean orderBean = orderDetailRsp.Order;
-                                if(orderBean == null)
+                                if (orderBean == null)
                                     return;
                                 setOrder(orderBean);
                                 checkStateTv.setText(orderBean.getStatus());
                                 AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean.PassengerBean.TravelPolicyInfoBean policy = orderBean.getPassenger().getTravelPolicyInfo();
                                 StringBuilder lowPriceMsg = Util.getThreadSafeStringBuilder();
                                 lowPriceMsg.append(policy.getLowPriceWarningMsg()).append("\n").append(policy.getNotLowPriceReason());
-                                if(TextUtils.isEmpty(policy.getLowPriceWarningMsg())) {
+                                if (TextUtils.isEmpty(policy.getLowPriceWarningMsg())) {
                                     lowPrice.setVisibility(View.GONE);
                                 } else {
                                     lowPrice.setVisibility(View.VISIBLE);
@@ -167,26 +166,26 @@ public class OrderDetailFragment extends BaseFragment {
 
                                 StringBuilder preNDayMsg = Util.getThreadSafeStringBuilder();
                                 lowPriceMsg.append(policy.getPreNDaysWarningMsg()).append("\n").append(policy.getNotPreNDaysReason());
-                                if(TextUtils.isEmpty(policy.getPreNDaysWarningMsg())) {
+                                if (TextUtils.isEmpty(policy.getPreNDaysWarningMsg())) {
                                     preNDay.setVisibility(View.GONE);
                                 } else {
                                     preNDay.setVisibility(View.VISIBLE);
                                     preNDay.setText(preNDayMsg.toString());
                                 }
 
-                                if(TextUtils.isEmpty(policy.getDiscountLimitWarningMsg())) {
+                                if (TextUtils.isEmpty(policy.getDiscountLimitWarningMsg())) {
                                     discountLimit.setVisibility(View.GONE);
                                 } else {
                                     discountLimit.setVisibility(View.VISIBLE);
                                     discountLimit.setText(policy.getDiscountLimitWarningMsg());
                                 }
-                                if(TextUtils.isEmpty(policy.getTwoCabinWarningMsg())) {
+                                if (TextUtils.isEmpty(policy.getTwoCabinWarningMsg())) {
                                     cabin.setVisibility(View.GONE);
                                 } else {
                                     cabin.setVisibility(View.VISIBLE);
                                     cabin.setText(policy.getTwoCabinWarningMsg());
                                 }
-                                if(TextUtils.isEmpty(policy.getPreNDaysWarningMsg()) && TextUtils.isEmpty(policy.getDiscountLimitWarningMsg()) && TextUtils.isEmpty(policy.getTwoCabinWarningMsg()) && TextUtils.isEmpty(policy.getTwoCabinWarningMsg())) {
+                                if (TextUtils.isEmpty(policy.getPreNDaysWarningMsg()) && TextUtils.isEmpty(policy.getDiscountLimitWarningMsg()) && TextUtils.isEmpty(policy.getTwoCabinWarningMsg()) && TextUtils.isEmpty(policy.getTwoCabinWarningMsg())) {
                                     warningLl.setVisibility(View.GONE);
                                 } else {
                                     warningLl.setVisibility(View.VISIBLE);
@@ -220,31 +219,73 @@ public class OrderDetailFragment extends BaseFragment {
                                 planeDetail.setText(stringBuilder.toString());
                                 stopInfoCity.setText(route.getStopCity());
 
-                                priceValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getTicketFee())));
-                                if(feeInfo.getAirportFee() > 0) {
-                                    jiJianValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getAirportFee())));
-                                } else {
-                                    jiJianValue.setVisibility(View.GONE);
-                                    jiJianTitle.setVisibility(View.GONE);
+                                if(feeInfo.getTicketFee() != 0) {
+                                    ViewHolder viewHolder = inflateFeeView(getActivity().getLayoutInflater());
+                                    viewHolder.feeTitle.setText(getString(R.string.flight_price));
+                                    viewHolder.feeValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getTicketFee())));
+                                    feeLl.addView(viewHolder.parent);
                                 }
-                                if(feeInfo.getOilFee() > 0) {
-                                    oilFeeValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getOilFee())));
-                                } else {
-                                    oilFeeValue.setVisibility(View.GONE);
-                                    oilFeeTitle.setVisibility(View.GONE);
+//                                priceValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getTicketFee())));
+//                                if (feeInfo.getAirportFee() > 0) {
+//                                    jiJianValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getAirportFee())));
+//                                } else {
+//                                    jiJianValue.setVisibility(View.GONE);
+//                                    jiJianTitle.setVisibility(View.GONE);
+//                                }
+                                if(feeInfo.getAirportFee() != 0) {
+                                    ViewHolder viewHolder = inflateFeeView(getActivity().getLayoutInflater());
+                                    viewHolder.feeTitle.setText(getString(R.string.airport_fee));
+                                    viewHolder.feeValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getAirportFee())));
+                                    feeLl.addView(viewHolder.parent);
                                 }
-                                if(feeInfo.getInsuranceFee() > 0) {
-                                    safeFeeValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getInsuranceFee())));
-                                } else {
-                                    safeFeeValue.setVisibility(View.GONE);
-                                    safeFeeTitle.setVisibility(View.GONE);
+                                if(feeInfo.getOilFee() != 0) {
+                                    ViewHolder viewHolder = inflateFeeView(getActivity().getLayoutInflater());
+                                    viewHolder.feeTitle.setText(getString(R.string.oil_fee));
+                                    viewHolder.feeValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getOilFee())));
+                                    feeLl.addView(viewHolder.parent);
                                 }
-                                if(feeInfo.getTicketServiceFee() > 0) {
-                                    serviceFeeValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getTicketServiceFee())));
-                                } else {
-                                    serviceFeeValue.setVisibility(View.GONE);
-                                    serviceFeeTitle.setVisibility(View.GONE);
+                                if(feeInfo.getInsuranceFee() != 0) {
+                                    ViewHolder viewHolder = inflateFeeView(getActivity().getLayoutInflater());
+                                    viewHolder.feeTitle.setText("保险");
+                                    viewHolder.feeValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getInsuranceFee())));
+                                    feeLl.addView(viewHolder.parent);
                                 }
+                                if(feeInfo.getTicketServiceFee() != 0) {
+                                    ViewHolder viewHolder = inflateFeeView(getActivity().getLayoutInflater());
+                                    viewHolder.feeTitle.setText(getString(R.string.service_fee));
+                                    viewHolder.feeValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getTicketServiceFee())));
+                                    feeLl.addView(viewHolder.parent);
+                                }
+                                if(feeInfo.getReturnTicketFee() != 0) {
+                                    ViewHolder viewHolder = inflateFeeView(getActivity().getLayoutInflater());
+                                    viewHolder.feeTitle.setText("退票手续费");
+                                    viewHolder.feeValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getReturnTicketFee())));
+                                    feeLl.addView(viewHolder.parent);
+                                }
+                                if(feeInfo.getChangeTicketFee() != 0) {
+                                    ViewHolder viewHolder = inflateFeeView(getActivity().getLayoutInflater());
+                                    viewHolder.feeTitle.setText("改签手续费");
+                                    viewHolder.feeValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getChangeTicketFee())));
+                                    feeLl.addView(viewHolder.parent);
+                                }
+//                                if (feeInfo.getOilFee() > 0) {
+//                                    oilFeeValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getOilFee())));
+//                                } else {
+//                                    oilFeeValue.setVisibility(View.GONE);
+//                                    oilFeeTitle.setVisibility(View.GONE);
+//                                }
+//                                if (feeInfo.getInsuranceFee() > 0) {
+//                                    safeFeeValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getInsuranceFee())));
+//                                } else {
+//                                    safeFeeValue.setVisibility(View.GONE);
+//                                    safeFeeTitle.setVisibility(View.GONE);
+//                                }
+//                                if (feeInfo.getTicketServiceFee() > 0) {
+//                                    serviceFeeValue.setText(getString(R.string.money_no_end, String.valueOf(feeInfo.getTicketServiceFee())));
+//                                } else {
+//                                    serviceFeeValue.setVisibility(View.GONE);
+//                                    serviceFeeTitle.setVisibility(View.GONE);
+//                                }
                                 orderAmount.setText(getString(R.string.money_no_end, orderBean.getFeeInfo().getPaymentAmount()));
                                 orderNum.setText(orderBean.getOrderNo());
                                 orderType.setText(orderBean.getPayMode());
@@ -256,34 +297,34 @@ public class OrderDetailFragment extends BaseFragment {
                                 name.append(orderBean.getContactName()).append("  ").append(orderBean.getContactMobile());
                                 contactName.setText(name.toString());
                                 StringBuilder safeFee = Util.getThreadSafeStringBuilder();
-                                safeFee.append("航意险  ").append(getString(R.string.money_no_end,orderBean.getFeeInfo().getInsuranceFee())).append("  / 份 X ").append(passengerBean.getInsuranceCount());
+                                safeFee.append("航意险  ").append(getString(R.string.money_no_end, orderBean.getFeeInfo().getInsuranceFee())).append("  / 份 X ").append(passengerBean.getInsuranceCount());
                                 safeFeeTv.setText(safeFee.toString());
 
                                 orderAudit.setText(orderBean.getApprovalStatus());
                                 moreThanAudit.setText(orderBean.getAuthorizeStatus());
 
                                 setBtnText();
-                                if(orderBean.isCanCancel()) {
+                                if (orderBean.isCanCancel()) {
                                     setBtnText(getString(R.string.dialog_default_cancel_title));
                                 } else {
                                     setBtnText(null);
                                 }
-                                if(orderBean.isCanPayment()) {
+                                if (orderBean.isCanPayment()) {
                                     setBtnText(getString(R.string.pay));
                                 } else {
                                     setBtnText(null);
                                 }
-                                if(orderBean.isCanReturn()) {
+                                if (orderBean.isCanReturn()) {
                                     setBtnText(getString(R.string.returnPolicy));
                                 } else {
                                     setBtnText(null);
                                 }
-                                if(orderBean.isCanChange()) {
+                                if (orderBean.isCanChange()) {
                                     setBtnText(getString(R.string.changePolicy));
                                 } else {
                                     setBtnText(null);
                                 }
-                                if(orderBean.isCanNetCheckIn()) {
+                                if (orderBean.isCanNetCheckIn()) {
                                     setBtnText(getString(R.string.dai_ban_zhi_ji));
                                 } else {
                                     setBtnText(null);
@@ -308,34 +349,35 @@ public class OrderDetailFragment extends BaseFragment {
 
     }
 
-private void setOrder(AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean orderBean) {
-    ordersBean.setOrderId(orderBean.getOrderId());
-    ordersBean.setOrderNo(orderBean.getOrderNo());
-    ordersBean.setTravelType(orderBean.getTravelType());
-    ordersBean.setPayMode(orderBean.getPayMode());
-    ordersBean.setStatus(orderBean.getStatus());
-    ordersBean.setPaymentStatus(orderBean.getPaymentStatus());
-    ordersBean.setApprovalStatus(orderBean.getApprovalStatus());
-    ordersBean.setAuthorizeStatus(orderBean.getAuthorizeStatus());
-    ordersBean.setBookingEmployeeName(orderBean.getBookingEmployeeName());
-    ordersBean.setPassengerName(orderBean.getPassenger().getPassengerName());
-    ordersBean.setDepartureDateTime(orderBean.getRoute().getDeparture().getDateTime());
-    ordersBean.setFlightNo(orderBean.getRoute().getFlightNo());
-    ordersBean.setAirlineCode(orderBean.getRoute().getAirlineCode());
-    ordersBean.setAirlineName(orderBean.getRoute().getAirlineName());
-    ordersBean.setBunkName(orderBean.getRoute().getBunkName());
-    ordersBean.setDiscount(orderBean.getRoute().getDiscount());
-    ordersBean.setDepartureAirportCode(orderBean.getRoute().getDeparture().getAirportCode());
-    ordersBean.setDepartureCityName(orderBean.getRoute().getDeparture().getCityName());
-    ordersBean.setDepartureAirportName(orderBean.getRoute().getDeparture().getAirportName());
-    ordersBean.setDepartureCityCode(orderBean.getRoute().getDeparture().getCityCode());
-    ordersBean.setArrivalAirportCode(orderBean.getRoute().getArrival().getAirportCode());
-    ordersBean.setArrivalAirportName(orderBean.getRoute().getArrival().getAirportName());
-    ordersBean.setArrivalCityCode(orderBean.getRoute().getArrival().getCityCode());
-    ordersBean.setArrivalCityName(orderBean.getRoute().getArrival().getCityName());
-    ordersBean.setFactTicketPrice(orderBean.getRoute().getFactTicketPrice());
-    ordersBean.setPaymentAmount(orderBean.getFeeInfo().getPaymentAmount());
-}
+    private void setOrder(AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean orderBean) {
+        ordersBean.setOrderId(orderBean.getOrderId());
+        ordersBean.setOrderNo(orderBean.getOrderNo());
+        ordersBean.setTravelType(orderBean.getTravelType());
+        ordersBean.setPayMode(orderBean.getPayMode());
+        ordersBean.setStatus(orderBean.getStatus());
+        ordersBean.setPaymentStatus(orderBean.getPaymentStatus());
+        ordersBean.setApprovalStatus(orderBean.getApprovalStatus());
+        ordersBean.setAuthorizeStatus(orderBean.getAuthorizeStatus());
+        ordersBean.setBookingEmployeeName(orderBean.getBookingEmployeeName());
+        ordersBean.setPassengerName(orderBean.getPassenger().getPassengerName());
+        ordersBean.setDepartureDateTime(orderBean.getRoute().getDeparture().getDateTime());
+        ordersBean.setFlightNo(orderBean.getRoute().getFlightNo());
+        ordersBean.setAirlineCode(orderBean.getRoute().getAirlineCode());
+        ordersBean.setAirlineName(orderBean.getRoute().getAirlineName());
+        ordersBean.setBunkName(orderBean.getRoute().getBunkName());
+        ordersBean.setDiscount(orderBean.getRoute().getDiscount());
+        ordersBean.setDepartureAirportCode(orderBean.getRoute().getDeparture().getAirportCode());
+        ordersBean.setDepartureCityName(orderBean.getRoute().getDeparture().getCityName());
+        ordersBean.setDepartureAirportName(orderBean.getRoute().getDeparture().getAirportName());
+        ordersBean.setDepartureCityCode(orderBean.getRoute().getDeparture().getCityCode());
+        ordersBean.setArrivalAirportCode(orderBean.getRoute().getArrival().getAirportCode());
+        ordersBean.setArrivalAirportName(orderBean.getRoute().getArrival().getAirportName());
+        ordersBean.setArrivalCityCode(orderBean.getRoute().getArrival().getCityCode());
+        ordersBean.setArrivalCityName(orderBean.getRoute().getArrival().getCityName());
+        ordersBean.setFactTicketPrice(orderBean.getRoute().getFactTicketPrice());
+        ordersBean.setPaymentAmount(orderBean.getFeeInfo().getPaymentAmount());
+    }
+
     @OnClick({R.id.handle_btn_1, R.id.handle_btn_2, R.id.handle_btn_3})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -359,12 +401,19 @@ private void setOrder(AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean ord
         handleBtn3.setText(null);
 
     }
-    private void setBtnText( String res) {
+
+    private ViewHolder inflateFeeView(LayoutInflater inflater) {
+        View child = inflater.inflate(R.layout.order_detail_fee_item, null);
+        ViewHolder holder = new ViewHolder(child);
+        return holder;
+    }
+
+    private void setBtnText(String res) {
         String text = handleBtn1.getText().toString();
         String text2 = handleBtn2.getText().toString();
-        if(TextUtils.isEmpty(text)) {
+        if (TextUtils.isEmpty(text)) {
             handleBtn1.setText(res);
-        } else if(TextUtils.isEmpty(text2)) {
+        } else if (TextUtils.isEmpty(text2)) {
             handleBtn2.setText(res);
         } else {
             handleBtn3.setText(res);
@@ -375,23 +424,23 @@ private void setOrder(AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean ord
         String text3 = handleBtn3.getText().toString();
         String text2 = handleBtn2.getText().toString();
         String text1 = handleBtn1.getText().toString();
-        if(TextUtils.isEmpty(text3)) {
+        if (TextUtils.isEmpty(text3)) {
             handleBtn3.setVisibility(View.GONE);
         } else {
             handleBtn3.setVisibility(View.VISIBLE);
         }
-        if(TextUtils.isEmpty(text2)) {
+        if (TextUtils.isEmpty(text2)) {
             handleBtn2.setVisibility(View.GONE);
         } else {
             handleBtn2.setVisibility(View.VISIBLE);
         }
-        if(TextUtils.isEmpty(text1)){
+        if (TextUtils.isEmpty(text1)) {
             handleBtn1.setVisibility(View.GONE);
         } else {
             handleBtn1.setVisibility(View.VISIBLE);
         }
 
-        if(TextUtils.isEmpty(text3) && TextUtils.isEmpty(text2) && TextUtils.isEmpty(text1)) {
+        if (TextUtils.isEmpty(text3) && TextUtils.isEmpty(text2) && TextUtils.isEmpty(text1)) {
             bottomRl.setVisibility(View.GONE);
         } else {
             bottomRl.setVisibility(View.VISIBLE);
@@ -400,7 +449,7 @@ private void setOrder(AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean ord
 
     private void handleBtn(Button button) {
         String str = button.getText().toString();
-        if(str.equals(getString(R.string.dialog_default_cancel_title))) {
+        if (str.equals(getString(R.string.dialog_default_cancel_title))) {
             CallDialog confirmDialog = new CallDialog(getActivity(), R.style.white_bg_dialog);
             confirmDialog.setCancelable(true);
             confirmDialog.setContent("你确认取消此订单?");
@@ -433,7 +482,7 @@ private void setOrder(AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean ord
                 }
             });
             confirmDialog.show();
-        } else if(str.equals(getString(R.string.pay))) {
+        } else if (str.equals(getString(R.string.pay))) {
             PayDialogData payDialogData = new PayDialogData();
             payDialogData.passenger = ordersBean.getPassengerName();
             StringBuilder city = Util.getThreadSafeStringBuilder();
@@ -443,7 +492,7 @@ private void setOrder(AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean ord
             time.append(ordersBean.getDepartureDateTime()).append("出发");
             payDialogData.travelTime = time.toString();
             payDialogData.amount = ordersBean.getPaymentAmount();
-            PayDialog payDialog = new PayDialog(getActivity(),payDialogData);
+            PayDialog payDialog = new PayDialog(getActivity(), payDialogData);
             payDialog.setCanceledOnTouchOutside(false);
             payDialog.setConfirmClickListener(new View.OnClickListener() {
                 @Override
@@ -473,18 +522,31 @@ private void setOrder(AuthorizeDetailRsp.AuthorizeDetailBean.FlightOrderBean ord
                 }
             });
             payDialog.show();
-        } else if(str.equals(getString(R.string.returnPolicy))) {
+        } else if (str.equals(getString(R.string.returnPolicy))) {
             Bundle bundle = new Bundle();
             bundle.putSerializable("order", ordersBean);
-            PageSwitcher.switchToTopNavPage(getActivity(), ReturnOrderFragment.class, bundle, getString(R.string.returnPolicy),null);
-        } else if(str.equals(getString(R.string.changePolicy))) {
+            PageSwitcher.switchToTopNavPage(getActivity(), ReturnOrderFragment.class, bundle, getString(R.string.returnPolicy), null);
+        } else if (str.equals(getString(R.string.changePolicy))) {
             Bundle bundle = new Bundle();
             bundle.putSerializable("order", ordersBean);
-            PageSwitcher.switchToTopNavPage(getActivity(), ChooseChangeFliReasonFragment.class, bundle, getString(R.string.changePolicy),null);
-        } else if(str.equals(getString(R.string.dai_ban_zhi_ji))) {
+            PageSwitcher.switchToTopNavPage(getActivity(), ChooseChangeFliReasonFragment.class, bundle, getString(R.string.changePolicy), null);
+        } else if (str.equals(getString(R.string.dai_ban_zhi_ji))) {
             Bundle bundle = new Bundle();
             bundle.putSerializable("order", ordersBean);
-            PageSwitcher.switchToTopNavPage(getActivity(), NetCheckInFragment.class, bundle, getString(R.string.dai_ban_zhi_ji),null);
+            PageSwitcher.switchToTopNavPage(getActivity(), NetCheckInFragment.class, bundle, getString(R.string.dai_ban_zhi_ji), null);
+        }
+    }
+
+    static class ViewHolder {
+        @Bind(R.id.fee_title)
+        TextView feeTitle;
+        @Bind(R.id.fee_value)
+        TextView feeValue;
+        View parent;
+
+        ViewHolder(View view) {
+            parent = view;
+            ButterKnife.bind(this, view);
         }
     }
 }
