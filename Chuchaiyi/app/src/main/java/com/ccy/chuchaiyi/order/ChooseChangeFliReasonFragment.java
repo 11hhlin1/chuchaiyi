@@ -66,7 +66,7 @@ public class ChooseChangeFliReasonFragment extends BaseFragment{
         List<PolicyReason> reasonList = new ArrayList<>();
         PolicyReason reason = new PolicyReason();
         reason.mViewType = FlightPolicyAdapter.VIEW_TITLE;
-        reason.mTitle = getString(R.string.return_order_title);
+        reason.mTitle = getString(R.string.change_order_title);
         reasonList.add(reason);
         reasonArray = getResources().getStringArray(R.array.changeOrderReason);
 

@@ -112,6 +112,7 @@
     <string name="low_price_title">因你未选择最低价格航班，请您选择原因：</string>
     <string name="pre_day_title">因你未提前预订航班，请您选择原因：</string>
     <string name="return_order_title">请选择退票的原因：</string>
+    <string name="change_order_title">请选择改签的原因：</string>
     <string name="commit">提交</string>
     <string name="detail">明细</string>
     <string name="return_change">退改签</string>

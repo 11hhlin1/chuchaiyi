@@ -62,7 +62,8 @@ public class ProjectInfo implements Serializable{
         this.Projects = Projects;
     }
 
-    public static class ProjectsBean {
+    public static class ProjectsBean implements Serializable{
+        private static final long serialVersionUID = 1033498790719042475L;
         private int ProjectId;
         private String ProjectCode;
         private String ProjectName;

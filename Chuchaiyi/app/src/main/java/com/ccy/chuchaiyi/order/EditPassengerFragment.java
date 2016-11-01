@@ -215,10 +215,10 @@ public class EditPassengerFragment extends BaseFragment {
         } else {
             chooseProjectRl.setVisibility(View.GONE);
         }
-        if (userInfo.getApprovalRequired() || userInfo.getIsGreenChannel()) {
-            chooseCheckNum.setVisibility(View.VISIBLE);
-        } else {
+        if (!userInfo.getApprovalRequired() || userInfo.getIsGreenChannel()) {
             chooseCheckNum.setVisibility(View.GONE);
+        } else {
+            chooseCheckNum.setVisibility(View.VISIBLE);
         }
 
         if (userInfo.getCanBookingForOthers()) {
