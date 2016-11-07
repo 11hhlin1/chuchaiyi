@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * @createDate Dec 29, 2014
  *
  */
-public class BaseMainActivity extends FragmentActivity {
+public class BaseMainActivity extends BaseFragmentActivity {
 
     private ArrayList<Fragment> mHistoryList = new ArrayList<Fragment>();
     @Override

@@ -56,6 +56,7 @@ public class PageSwitcher {
 
         intent.putExtra(BaseSubActivity.INTENT_EXTRA_FRAGMENT_ARGS, bundle);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION);
         startActivity(act, intent);
     }
     /**
@@ -73,6 +74,7 @@ public class PageSwitcher {
         intent.putExtra(BaseSubActivity.INTENT_EXTRA_FRAGMENT_ARGS, bundle);
 
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION);
         startActivity(act, intent);
     }
 

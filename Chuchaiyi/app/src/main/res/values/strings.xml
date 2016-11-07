@@ -82,6 +82,7 @@
 
     <string name="empty_no_data">这里什么都木有</string>
     <string name="empty_no_check">暂无订单</string>
+    <string name="empty_no_flight">暂无航班</string>
     <string name="load_fail_click_reload">网络错误，请重试</string>
     <string name="load_fail">网络错误</string>
     <string name="success">提交成功</string>

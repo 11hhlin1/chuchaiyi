@@ -281,7 +281,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
         mDepartureCode = bundle.getString("DepartureCode");
         mArrivalCode = bundle.getString("ArrivalCode");
         mCurrentDateString = bundle.getString("SetOutDate");
-        mReturnDateString = bundle.getString("ReturnDate","");
+        mReturnDateString = bundle.getString("ReturnDate");
         mBunkType = bundle.getString("BunkType");
         mAccessFlags = bundle.getInt("accessFlag");
         mOrdersBean = (OrderInfo.OrdersBean) bundle.getSerializable("order");
@@ -347,6 +347,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
         }
 
         setSeatRedTip();
+        setEmptyTextView();
         EventBus.getDefault().register(this);
     }
 
@@ -564,6 +565,9 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
             }
         }
     }
+    private void setEmptyTextView() {
+        mEmptyTextView.setText(getString(R.string.empty_no_flight));
+    }
     private List<FlightInfo> doSeatFilter() {
         if (Util.isListEmpty(mOriFlightInfoList))
             return new ArrayList<>();
@@ -718,6 +722,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                             public void run() {
                                 mListView.onRefreshComplete();
                                 if (!Util.isListEmpty(flightInfoList.mFlightInfoList)) {
+                                    mEmptyErrorViewController.onRequestFinish(flightInfoList.mFlightInfoList.size() > 0);
                                     mFlightInfoList = flightInfoList.mFlightInfoList;
                                     mOriFlightInfoList = new ArrayList<>();
                                     mOriFlightInfoList.addAll(flightInfoList.mFlightInfoList);
@@ -765,6 +770,8 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                                         }
 
                                     }
+                                } else {
+                                    mEmptyErrorViewController.onRequestFinish(false);
                                 }
                             }
                         });
@@ -777,6 +784,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                             @Override
                             public void run() {
                                 mListView.onRefreshComplete();
+                                mEmptyErrorViewController.onRequestError();
                                 ToastUtil.shortToast(R.string.load_fail);
                             }
                         });

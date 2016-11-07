@@ -21,7 +21,7 @@ import com.gjj.applibrary.log.L;
  * @createDate Dec 29, 2014
  * 
  */
-public class BaseSubActivity extends FragmentActivity {
+public class BaseSubActivity extends BaseFragmentActivity {
     private InputMethodManager mInputMethodManager;
     public static final String BUNDLE_KEY_BUG_POPBACKSTACK_AFTER_STATESAVED = "popbackStack_exception";
     //新增页面action

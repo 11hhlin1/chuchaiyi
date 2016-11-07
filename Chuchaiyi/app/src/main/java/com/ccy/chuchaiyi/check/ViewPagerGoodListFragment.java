@@ -170,12 +170,12 @@ public class ViewPagerGoodListFragment extends BaseFragment implements ViewPager
             }
         }
         if(event.AuthorizeCount > 0) {
-            if(mTextViews.length == 3 && mTextViews[1] != null) {
-                CategoryData categoryData = mDataArrayList.get(1);
+            if(mTextViews.length == 2 && mTextViews[0] != null) {
+                CategoryData categoryData = mDataArrayList.get(0);
                 if(categoryData.mCateName.equals(getString(R.string.un_audit))) {
                     StringBuilder name = Util.getThreadSafeStringBuilder();
                     name.append(categoryData.mCateName).append("(").append(event.AuthorizeCount).append(")");
-                    mTextViews[1].setText(name.toString());
+                    mTextViews[0].setText(name.toString());
                 }
 
             }
@@ -188,10 +188,10 @@ public class ViewPagerGoodListFragment extends BaseFragment implements ViewPager
                 }
             }
         } else {
-            if(mTextViews.length == 3 && mTextViews[1] != null) {
-                CategoryData categoryData = mDataArrayList.get(1);
+            if(mTextViews.length == 2 && mTextViews[0] != null) {
+                CategoryData categoryData = mDataArrayList.get(0);
                 if(categoryData.mCateName.equals(getString(R.string.un_audit))) {
-                    mTextViews[1].setText(categoryData.mCateName);
+                    mTextViews[0].setText(categoryData.mCateName);
                 }
 
             }
