@@ -16,7 +16,7 @@
             android:orientation="vertical"
             android:layout_centerVertical="true"
             android:paddingLeft="@dimen/margin_30p"
-            android:paddingRight="@dimen/margin_30p"
+            android:paddingRight="@dimen/margin_120p"
             android:layout_alignParentLeft="true">
 
             <TextView
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_centerVertical="true"
-            android:paddingLeft="@dimen/margin_30p"
+            android:paddingLeft="@dimen/margin_120p"
             android:paddingRight="@dimen/margin_30p"
             android:layout_alignParentRight="true">
 

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -181,6 +182,9 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                             StringBuilder detail = Util.getThreadSafeStringBuilder();
                             for (String s :PolicyItems) {
                                 detail.append(s).append("\n");
+                            }
+                            if(TextUtils.isEmpty(detail.toString())) {
+                                detail.append("无");
                             }
                             EmployeePolicyDialog employeePolicyDialog = new EmployeePolicyDialog(getActivity(), detail.toString());
                             mConfirmDialog = employeePolicyDialog;

@@ -115,7 +115,7 @@ public class FlightPolicyFragment extends BaseFragment {
         warningInfo = (BookValidateInfo.WarningInfoBean) bundle.getSerializable("warningInfoBean");
         mFlightInfo = (FlightInfo) bundle.getSerializable("FlightInfo");
         mBunksBean = (FlightInfo.BunksBean) bundle.getSerializable("BunksBean");
-        mReturnDateString = bundle.getString("returnDate","");
+        mReturnDateString = bundle.getString("returnDate");
         mDepartureCode = bundle.getString("mDepartureCode");
         mArrivalCode = bundle.getString("mArrivalCode");
         mBunkType = bundle.getString("mBunkType");
