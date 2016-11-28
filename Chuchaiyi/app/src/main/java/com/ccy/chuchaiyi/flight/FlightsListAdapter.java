@@ -290,7 +290,7 @@ public class FlightsListAdapter extends BaseExpandableListAdapter {
             childHolder.bookBtn.setTag(R.id.left_ll,groupPosition);
             childHolder.bookBtn.setTag(R.id.book_btn,childPosition);
             StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
-            stringBuilder.append(DiscountUtil.getDis(bunksBean.getBunkPrice().getFactDiscount())).append("/").append(bunksBean);
+            stringBuilder.append(DiscountUtil.getDis(bunksBean.getBunkPrice().getFactDiscount())).append("/").append(bunksBean.getBunkType());
             childHolder.discount.setText(stringBuilder.toString());
             childHolder.detailMoney.setText((mContext.getString(R.string.money_no_end, bunksBean.getBunkPrice().getFactBunkPrice())));
             if (bunksBean.getRemainNum() < 5) {

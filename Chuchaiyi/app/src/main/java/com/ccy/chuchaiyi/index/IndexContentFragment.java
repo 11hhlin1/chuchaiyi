@@ -147,6 +147,7 @@ public class IndexContentFragment extends BaseFragment {
             mArriveCity = new CitySort();
             mArriveCity.setCode("BJS");
             mArriveCity.setName("北京");
+            arriveCity.setText(mArriveCity.getName());
         }
         if(mSetOutCity != null) {
             chufaCity.setText(mSetOutCity.getName());

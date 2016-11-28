@@ -140,7 +140,7 @@ public class BaseSubActivity extends BaseFragmentActivity {
      * @param fragmentName 页面类名
      * @param include 标识指定页面是否弹出
      */
-    protected void goBackToFragment(String fragmentName,Bundle bundle, boolean include) {
+    protected void goBackToFragment(String fragmentName, Bundle bundle, boolean include) {
         FragmentManager fm = getSupportFragmentManager();
         fm.popBackStack(fragmentName, include ? FragmentManager.POP_BACK_STACK_INCLUSIVE : 0);
         if (fm.getBackStackEntryCount() <= 0) {
