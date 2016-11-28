@@ -42,6 +42,7 @@ import com.gjj.applibrary.event.EventOfTokenError;
 import com.gjj.applibrary.http.callback.CommonCallback;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.log.L;
+import com.gjj.applibrary.task.ForegroundTaskExecutor;
 import com.gjj.applibrary.util.PreferencesManager;
 import com.gjj.applibrary.util.SaveObjUtil;
 import com.gjj.applibrary.util.ToastUtil;
@@ -136,7 +137,6 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
     private List<SeatType> mItemList;
     private List<Company> companies;
     private EmployeePolicyDialog mConfirmDialog;
-
     /**
      * 重新加载
      */
@@ -443,6 +443,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                     dismissChooseCompanyWindow();
                     setCompanyRedTip();
                     doSeatFilter();
+                    mAdapter.setData(mFlightInfoList);
                 }
             });
 
@@ -564,6 +565,7 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
                         setSeatRedTip();
                         dismissConstructNoticeWindow();
                         doSeatFilter();
+                        mAdapter.setData(mFlightInfoList);
                     }
                 });
             }
@@ -645,7 +647,6 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
             flightInfos.addAll(mOriFlightInfoList);
         }
         mFlightInfoList = flightInfos;
-        mAdapter.setData(mFlightInfoList);
 
       return flightInfos;
     }
@@ -721,64 +722,77 @@ public class FlightsListFragment extends BaseFragment implements ExpandableListV
 
                     @Override
                     public void onResponse(boolean isFromCache, final FlightInfoList flightInfoList, Request request, @Nullable Response response) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+
                                 mListView.onRefreshComplete();
-                                if (!Util.isListEmpty(flightInfoList.mFlightInfoList)) {
-                                    mEmptyErrorViewController.onRequestFinish(flightInfoList.mFlightInfoList.size() > 0);
-                                    mFlightInfoList = flightInfoList.mFlightInfoList;
-                                    mOriFlightInfoList = new ArrayList<>();
-                                    mOriFlightInfoList.addAll(flightInfoList.mFlightInfoList);
-                                    int len = mFlightInfoList.size();
+                                ForegroundTaskExecutor.executeTask(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (!Util.isListEmpty(flightInfoList.mFlightInfoList)) {
+                                            mFlightInfoList = flightInfoList.mFlightInfoList;
+                                            mOriFlightInfoList = new ArrayList<>();
+                                            mOriFlightInfoList.addAll(flightInfoList.mFlightInfoList);
+                                            int len = mFlightInfoList.size();
 
-                                    //setCompanyData
-                                    companies = new ArrayList<>();
-                                    Company companyNo = new Company();
-                                    companyNo.mIsSel = true;
-                                    companyNo.mAirlineName = "不限";
-                                    companies.add(companyNo);
-                                    for (int i = 0; i < len; i++) {
-                                        Company company = new Company();
-                                        FlightInfo flightInfo = mFlightInfoList.get(i);
-                                        company.mAirlineName = flightInfo.getAirlineName();
-                                        if(!companies.contains(company)) {
-                                            companies.add(company);
-                                        }
-                                    }
-                                    setCompanyRedTip();
-                                    List<FlightInfo> flightInfos = doSeatFilter();
+                                            //setCompanyData
+                                            companies = new ArrayList<>();
+                                            Company companyNo = new Company();
+                                            companyNo.mIsSel = true;
+                                            companyNo.mAirlineName = "不限";
+                                            companies.add(companyNo);
+                                            for (int i = 0; i < len; i++) {
+                                                Company company = new Company();
+                                                FlightInfo flightInfo = mFlightInfoList.get(i);
+                                                company.mAirlineName = flightInfo.getAirlineName();
+                                                if(!companies.contains(company)) {
+                                                    companies.add(company);
+                                                }
+                                            }
 
-                                    if(mTimeType == 0 && mPriceType == 0) {
-                                        mAdapter.setData(flightInfos);
-                                    } else if(mPriceType == 0){
-                                        if(mTimeType == EARLY_TO_LATE) {
+                                            final List<FlightInfo> flightInfos = doSeatFilter();
+
+                                            if(mTimeType == 0 && mPriceType == 0) {
+                                            } else if(mPriceType == 0){
+                                                if(mTimeType == EARLY_TO_LATE) {
 //                                            Collections.sort(flightInfoList.mFlightInfoList,new TimeComparator());
 //                                            Collections.reverse(flightInfoList.mFlightInfoList);
-                                            mAdapter.setData(flightInfos);
-                                        } else {
-                                            Collections.sort(flightInfos,new TimeComparator());
-                                            Collections.reverse(flightInfos);
-                                            mAdapter.setData(flightInfos);
-                                        }
+                                                } else {
+                                                    Collections.sort(flightInfos,new TimeComparator());
+                                                    Collections.reverse(flightInfos);
+                                                }
 
-                                    } else if(mTimeType == 0) {
-                                        if(mPriceType == mLowToHigh) {
-                                            Collections.sort(flightInfos,new PriceComparator());
+                                            } else if(mTimeType == 0) {
+                                                if(mPriceType == mLowToHigh) {
+                                                    Collections.sort(flightInfos,new PriceComparator());
 //                                            Collections.reverse(flightInfoList.mFlightInfoList);
-                                            mAdapter.setData(flightInfos);
-                                        } else {
-                                            Collections.sort(flightInfos,new PriceComparator());
-                                            Collections.reverse(flightInfos);
-                                            mAdapter.setData(flightInfos);
-                                        }
+                                                } else {
+                                                    Collections.sort(flightInfos,new PriceComparator());
+                                                    Collections.reverse(flightInfos);
+                                                }
 
+                                            }
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    mEmptyErrorViewController.onRequestFinish(flightInfoList.mFlightInfoList.size() > 0);
+                                                    setCompanyRedTip();
+                                                    mAdapter.setData(flightInfos);
+                                                }
+                                            });
+
+
+                                        } else {
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    mEmptyErrorViewController.onRequestFinishImmediately(false);
+                                                }
+                                            });
+                                        }
                                     }
-                                } else {
-                                    mEmptyErrorViewController.onRequestFinish(false);
-                                }
-                            }
-                        });
+                                });
+
+
+
                     }
 
                     @Override
