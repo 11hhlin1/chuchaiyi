@@ -6,12 +6,10 @@ package com.ccy.chuchaiyi.util;
 public class DiscountUtil {
     public static String getDis(int discount) {
         float dis = discount / 10.0f;
-        if(dis == 10) {
+        if(dis >= 10) {
             return "全价";
-        } else if(dis < 10){
-            return dis + "折";
         } else {
-            return "";
+            return dis + "折";
         }
     }
 }
