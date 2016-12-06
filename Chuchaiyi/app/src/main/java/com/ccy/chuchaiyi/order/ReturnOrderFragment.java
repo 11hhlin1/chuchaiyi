@@ -86,6 +86,10 @@ public class ReturnOrderFragment extends BaseFragment {
 
     @OnClick(R.id.policy_btn_sure)
     public void onClick() {
+        if(mAdapter.getFirstReasonPos() == 0) {
+            ToastUtil.shortToast(R.string.choose_reason);
+            return;
+        }
         StringBuilder stringBuilder = Util.getThreadSafeStringBuilder();
         stringBuilder.append(ApiConstants.RETURN_ORDER).append("?").append("orderId=")
                 .append(ordersBean.getOrderId())
