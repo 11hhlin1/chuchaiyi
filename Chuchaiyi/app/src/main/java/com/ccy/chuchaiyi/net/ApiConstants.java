@@ -4,7 +4,7 @@ package com.ccy.chuchaiyi.net;
  * Created by user on 16/7/16.
  */
 public class ApiConstants {
-    public static final String host = "http://www.chuchaiyi.com/api/";
+    public static final String host = "http://www.chuchaiyi.cn/api/";
     public static final String LOGIN = host + "Account/Login";
     public static final String LOGOUT = host + "Account/Logout";
     public static final String CHANGE_PSW = host + "Account/ChangePassword";
