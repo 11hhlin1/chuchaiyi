@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.TextView;
 
 import com.ccy.chuchaiyi.R;
@@ -16,11 +18,13 @@ import com.ccy.chuchaiyi.check.Authorizes;
 import com.ccy.chuchaiyi.check.AuthorizesAdapter;
 import com.ccy.chuchaiyi.check.CategoryData;
 import com.ccy.chuchaiyi.check.CheckTypeAdapter;
+import com.ccy.chuchaiyi.city.PinyinComparator;
 import com.ccy.chuchaiyi.event.EventOfCancelApproval;
 import com.ccy.chuchaiyi.event.EventOfDumpOrderDetail;
 import com.ccy.chuchaiyi.event.EventOfRefreshOrderList;
 import com.ccy.chuchaiyi.main.MainActivity;
 import com.ccy.chuchaiyi.net.ApiConstants;
+import com.ccy.chuchaiyi.widget.EditTextWithDel;
 import com.gjj.applibrary.http.callback.JsonCallback;
 import com.gjj.applibrary.util.ToastUtil;
 import com.gjj.applibrary.widget.EmptyErrorViewController;
@@ -35,6 +39,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -59,6 +64,9 @@ public class OrderFragment extends BaseFragment{
      */
     @Bind(R.id.error_tv)
     TextView mErrorTextView;
+
+    @Bind(R.id.et_search)
+    EditTextWithDel etSearch;
 
     private OrderListAdapter mAdapter;
 
@@ -101,12 +109,12 @@ public class OrderFragment extends BaseFragment{
                 mRecyclerView.hasMore(true);
                 Object tag = mRecyclerView.getTag(R.id.error_tv);
                 mPage = 1;
-                doRequest(mPage);
+                doRequest(mPage,etSearch.getText().toString());
             }
 
             @Override
             public void onPullUpToRefresh(PullToRefreshBase<RecyclerView> refreshView) {
-                doRequest(mPage);
+                doRequest(mPage,etSearch.getText().toString());
             }
         });
 
@@ -127,6 +135,23 @@ public class OrderFragment extends BaseFragment{
                 recyclerView.setRefreshing();
             }
         });
+        //根据输入框输入值的改变来过滤搜索
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                doRequest(1,etSearch.getText().toString());
+            }
+        });
         setEmptyTextView();
         EventBus.getDefault().register(this);
 
@@ -136,7 +161,7 @@ public class OrderFragment extends BaseFragment{
         if(getActivity() == null) {
             return;
         }
-        doRequest(1);
+        doRequest(1,etSearch.getText().toString());
 
     }
 
@@ -145,7 +170,7 @@ public class OrderFragment extends BaseFragment{
         if(getActivity() == null) {
             return;
         }
-        doRequest(1);
+        doRequest(1,etSearch.getText().toString());
         Bundle bundle = new Bundle();
         bundle.putInt("orderId", event.orderId);
         PageSwitcher.switchToTopNavPage(getActivity(), OrderDetailFragment.class, bundle, "订单详情", null);
@@ -155,9 +180,10 @@ public class OrderFragment extends BaseFragment{
         mEmptyTextView.setText(getString(R.string.empty_no_check));
     }
 
-    public void doRequest(final int page) {
+    public void doRequest(final int page, String passengerName) {
         OkHttpUtils.get(ApiConstants.GET_FLIGHT_ORDER)
                 .tag(this)
+                .params("passengerName", passengerName)
                 .params("pageNumber", String.valueOf(page))
                 .params("pageSize", String.valueOf(NUM))
                 .cacheMode(CacheMode.NO_CACHE)
